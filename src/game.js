@@ -1,6 +1,3 @@
-let Controller = require('./Controller');
-Controller = new Controller();
-
 const MainMenu = require('./scenes/MainMenu');
 const Game = require('./scenes/Game');
 

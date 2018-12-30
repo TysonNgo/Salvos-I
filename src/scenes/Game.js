@@ -1,6 +1,9 @@
+let Controller = require('../Controller');
+
 module.exports = class extends Phaser.Scene {
 	constructor(){
 		super({key: 'Game', active: false});
+		this.controller = new Controller();
 	}
 
 	preload(){
@@ -10,12 +13,6 @@ module.exports = class extends Phaser.Scene {
 	}
 
 	create(){
-		this.what = {
-			w: false,
-			a: false,
-			s: false,
-			d: false
-		}
 		this.speedlines = Array(100);
 		for (let i = 0; i < this.speedlines.length; i++){
 			this.speedlines[i] = this.add.sprite(
@@ -29,10 +26,10 @@ module.exports = class extends Phaser.Scene {
 
 		this.input.keyboard.on('keydown', e => {
 			console.log(e.key)
-			this.what[e.key] = true;
+			this.controller.press(e.key);
 		})
 		this.input.keyboard.on('keyup', e => {
-			this.what[e.key] = false;
+			this.controller.release(e.key);
 		})
 	}
 
@@ -46,11 +43,11 @@ module.exports = class extends Phaser.Scene {
 			}
 		}
 
-		if (Object.values(this.what).some(i => i)){
-			this.what.a ? this.player.x-=3: ''
-			this.what.w ? this.player.y-=3: ''
-			this.what.s ? this.player.y+=3: ''
-			this.what.d ? this.player.x+=3: ''
+		if (this.controller.pressingButton()){
+			this.controller.pressingButton('left') ? this.player.x-=3: ''
+			this.controller.pressingButton('up') ? this.player.y-=3: ''
+			this.controller.pressingButton('down') ? this.player.y+=3: ''
+			this.controller.pressingButton('right') ? this.player.x+=3: ''
 		}
 	}
 }
