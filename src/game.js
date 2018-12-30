@@ -1,3 +1,5 @@
+let Controller = require('./Controller.js');
+Controller = new Controller()
 
 // SCENES
 /////////////////////////////////////////////////////////////////

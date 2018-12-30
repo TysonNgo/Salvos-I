@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "concurrently \"watchify src/game.js --debug -o dist/game.js -v\" \"node index.js\"",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha tests/ -R spec",
     "build": "browserify src/game.js -t [ babelify --presets [ @babel/env ] ] |  uglifyjs -cm -o dist/game.js "
   },
   "author": "",
@@ -19,7 +19,9 @@
     "@babel/preset-env": "^7.2.3",
     "babelify": "^10.0.0",
     "browserify": "^16.2.3",
+    "chai": "^4.2.0",
     "concurrently": "^4.1.0",
+    "mocha": "^5.2.0",
     "uglify-js": "^3.4.9",
     "watchify": "^3.11.0"
   }
