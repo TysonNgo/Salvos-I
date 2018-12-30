@@ -1,0 +1,26 @@
+{
+  "name": "Bullethell-Survival",
+  "version": "1.0.0",
+  "description": "HTML5 Game - Survive as long as possible",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"watchify src/game.js --debug -o dist/game.js -v\" \"node index.js\"",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify src/game.js -t [ babelify --presets [ @babel/env ] ] |  uglifyjs -cm -o dist/game.js "
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.4",
+    "phaser": "^3.15.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "babelify": "^10.0.0",
+    "browserify": "^16.2.3",
+    "concurrently": "^4.1.0",
+    "uglify-js": "^3.4.9",
+    "watchify": "^3.11.0"
+  }
+}
