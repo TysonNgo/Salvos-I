@@ -169,3 +169,50 @@ describe('Controller.release(key)\n' +
 		expect(Object.keys(keys).length).to.be.equal(6);
 	})
 })
+
+
+describe('Controller.pressingButton(button)\n' +
+'    button - one of [up, down, left, right, shoot, shield]', function() {
+	it('empty param; check if pressing any button', function(){
+		let controller = new Controller();
+		let expectButton = function(key){
+			controller.press(key);
+			expect(controller.pressingButton()).to.be.true;
+			controller.release(key);
+			expect(controller.pressingButton()).to.be.false;
+		}
+		expect(controller.pressingButton()).to.be.false;
+
+		expectButton('ArrowUp');
+		expectButton('ArrowDown');
+		expectButton('ArrowLeft');
+		expectButton('ArrowRight');
+		expectButton('x');
+		expectButton('z');
+	})
+	it('check pressing specific button', function(){
+		let controller = new Controller();
+		let expectButton = function(key, button){
+			let options = ['up', 'down', 'left', 'right', 'shoot', 'shield'];
+			controller.press(key);
+			options.forEach(o => {
+				if (o === button){
+					expect(controller.pressingButton(o)).to.be.true;
+				} else {
+					expect(controller.pressingButton(o)).to.be.false;
+				}
+			})
+			controller.release(key);
+			
+			options.forEach(o => {
+				expect(controller.pressingButton(o)).to.be.false;
+			})
+		}
+		expectButton('ArrowUp', 'up');
+		expectButton('ArrowDown', 'down');
+		expectButton('ArrowLeft', 'left');
+		expectButton('ArrowRight', 'right');
+		expectButton('x', 'shoot');
+		expectButton('z', 'shield');
+	})
+})

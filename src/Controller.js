@@ -7,13 +7,19 @@ class Key {
 
 module.exports = class Controller{
 	constructor(){
+		this.up = new Key('up', false);
+		this.down = new Key('down', false);
+		this.left = new Key('left', false);
+		this.right = new Key('right', false);
+		this.shoot = new Key('shoot', false);
+		this.shield = new Key('shield', false);
 		this.keys = {
-			'ArrowUp': new Key('up', false),
-			'ArrowDown': new Key('down', false),
-			'ArrowLeft': new Key('left', false),
-			'ArrowRight': new Key('right', false),
-			'x': new Key('shoot', false),
-			'z': new Key('shield', false)
+			'ArrowUp': this.up,
+			'ArrowDown': this.down,
+			'ArrowLeft': this.left,
+			'ArrowRight': this.right,
+			'x': this.shoot,
+			'z': this.shield
 		}
 	}
 
@@ -57,5 +63,12 @@ module.exports = class Controller{
 		if (key in this.keys){
 			this.keys[key].down = false;
 		}
+	}
+
+	pressingButton(button=null){
+		if (~['up', 'down', 'left', 'right', 'shoot', 'shield'].indexOf(button)){
+			return this[button].down;
+		}
+		return Object.values(this.keys).some(k => k.down);
 	}
 }
