@@ -1,3 +1,4 @@
+let Background = require('../entities/Background');
 let Boss = require('../entities/Boss');
 let Player = require('../entities/Player');
 
@@ -6,35 +7,26 @@ module.exports = class extends Phaser.Scene {
 		super({key: 'Game', active: false});
 	}
 
+	init(data){
+		this.disableBackground = data.disableBackground;
+	}
+
 	preload(){
-		this.load.image('speedline', 'assets/game/speedline.png')
+		if (!this.disableBackground) Background.loadAssets(this);
 		Boss.loadAssets(this);
 		Player.loadAssets(this);
 	}
 
 	create(){
-		this.speedlines = Array(100);
-		for (let i = 0; i < this.speedlines.length; i++){
-			this.speedlines[i] = this.add.sprite(
-				Math.random() * this.game.config.width,
-				Math.random() * this.game.config.height,
-				'speedline')
+		if (!this.disableBackground) {
+			this.background = new Background(this);
 		}
-
 		this.player = new Player(180, 500, this);
 		this.boss = new Boss(180, 100, this);
 	}
 
 	update(){
-		for (let i = 0; i < this.speedlines.length; i++){
-			this.speedlines[i].y += 10
-			if (this.speedlines[i].y > (this.game.config.height+this.speedlines[i].height)){
-				this.speedlines[i].x = Math.random() * this.game.config.width;
-				this.speedlines[i].y = Math.random() * this.game.config.height;
-				this.speedlines[i].setScale(1, Math.random() * 1.5 + 0.7)
-			}
-		}
-
+		if (!this.disableBackground) this.background.update();
 		this.boss.update();
 		this.player.update();
 	}
