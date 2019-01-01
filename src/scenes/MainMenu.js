@@ -1,10 +1,8 @@
-let Controller = require('../Controller');
-
 module.exports =  class extends Phaser.Scene {
 	constructor(){
 		super({key: 'MainMenu', active: true});
-		this.controller = new Controller();
 	}
+
 	preload(){
 		// TODO
 		// menu options:
@@ -12,9 +10,18 @@ module.exports =  class extends Phaser.Scene {
 		// CONFIG
 		// HOW TO PLAY
 	}
+
 	create(){
+		this.start = false;
 		this.input.keyboard.on('keydown', e => {
-			this.scene.start('Game')
+			this.start = true;
 		})
+	}
+	
+	update(){
+		if (this.start){
+			this.start = false;
+			this.scene.start('Game');
+		}
 	}
 }

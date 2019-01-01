@@ -1,11 +1,9 @@
-let Controller = require('../Controller');
 let Boss = require('../entities/Boss');
 let Player = require('../entities/Player');
 
 module.exports = class extends Phaser.Scene {
 	constructor(){
 		super({key: 'Game', active: false});
-		this.controller = new Controller();
 	}
 
 	preload(){
@@ -23,8 +21,8 @@ module.exports = class extends Phaser.Scene {
 				Math.random() * this.game.config.height,
 				'speedline')
 		}
-		
-		this.player = new Player(180, 500, this, this.controller);
+
+		this.player = new Player(180, 500, this);
 		this.boss = new Boss(180, 100, this);
 	}
 
@@ -38,6 +36,7 @@ module.exports = class extends Phaser.Scene {
 			}
 		}
 
+		this.boss.update();
 		this.player.update();
 	}
 }
