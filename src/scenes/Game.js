@@ -8,9 +8,8 @@ module.exports = class extends Phaser.Scene {
 
 	preload(){
 		this.load.image('speedline', 'assets/game/speedline.png')
-		this.load.image('boss_missile', 'assets/game/boss/missile.png')
-		this.load.spritesheet('boss', 'assets/game/boss/idle.png', {frameWidth: 214, frameHeight: 191})
-		this.load.spritesheet('player', 'assets/game/player/idle.png', {frameWidth: 50, frameHeight: 50})
+		Boss.loadAssets(this);
+		Player.loadAssets(this);
 	}
 
 	create(){

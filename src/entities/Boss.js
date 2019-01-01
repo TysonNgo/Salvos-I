@@ -10,6 +10,11 @@ module.exports = class extends Entity{
 		this.scene.add.sprite(this.x, this.y+100, 'boss_missile')
 	}
 
+	static loadAssets(scene){
+		scene.load.image('boss_missile', 'assets/game/boss/missile.png');
+		scene.load.spritesheet('boss', 'assets/game/boss/idle.png', {frameWidth: 214, frameHeight: 191});
+	}
+
 	createAnimations(){
 		this.scene.anims.create({
 			key: 'boss_idle',

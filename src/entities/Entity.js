@@ -4,5 +4,6 @@ module.exports = class {
 		this.y = y;
 	}
 
+	static loadAssets(scene){}
 	update(){}
 }

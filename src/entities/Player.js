@@ -12,6 +12,10 @@ module.exports = class extends Entity{
 		this.sprite.anims.play('player_idle');
 	}
 
+	static loadAssets(scene){
+		scene.load.spritesheet('player', 'assets/game/player/idle.png', {frameWidth: 50, frameHeight: 50});
+	}
+
 	createAnimations(){
 		this.scene.anims.create({
 			key: 'player_idle',
