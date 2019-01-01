@@ -1,4 +1,5 @@
 const Entity = require('./Entity');
+const Meter = require('./Meter');
 
 module.exports = class extends Entity{
 	constructor(x, y, scene){
@@ -10,6 +11,8 @@ module.exports = class extends Entity{
 		this.listenKeystrokes();
 
 		this.sprite.anims.play('player_idle');
+
+		this.meter = new Meter(0);
 	}
 
 	static loadAssets(scene){
