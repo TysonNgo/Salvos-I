@@ -1,4 +1,6 @@
 let Controller = require('../Controller');
+let Boss = require('../entities/Boss');
+let Player = require('../entities/Player');
 
 module.exports = class extends Phaser.Scene {
 	constructor(){
@@ -8,8 +10,9 @@ module.exports = class extends Phaser.Scene {
 
 	preload(){
 		this.load.image('speedline', 'assets/game/speedline.png')
-		this.load.image('boss', 'assets/game/boss/idle.png')
-		this.load.image('player', 'assets/game/player/idle.png')
+		this.load.image('boss_missile', 'assets/game/boss/missile.png')
+		this.load.spritesheet('boss', 'assets/game/boss/idle.png', {frameWidth: 214, frameHeight: 191})
+		this.load.spritesheet('player', 'assets/game/player/idle.png', {frameWidth: 50, frameHeight: 50})
 	}
 
 	create(){
@@ -20,17 +23,9 @@ module.exports = class extends Phaser.Scene {
 				Math.random() * this.game.config.height,
 				'speedline')
 		}
-
-		this.player = this.add.sprite(180, 500, 'player')
-		this.add.sprite(180, 100, 'boss')
-
-		this.input.keyboard.on('keydown', e => {
-			console.log(e.key)
-			this.controller.press(e.key);
-		})
-		this.input.keyboard.on('keyup', e => {
-			this.controller.release(e.key);
-		})
+		
+		this.player = new Player(180, 500, this, this.controller);
+		this.boss = new Boss(180, 100, this);
 	}
 
 	update(){
@@ -43,11 +38,6 @@ module.exports = class extends Phaser.Scene {
 			}
 		}
 
-		if (this.controller.pressingButton()){
-			this.controller.pressingButton('left') ? this.player.x-=3: ''
-			this.controller.pressingButton('up') ? this.player.y-=3: ''
-			this.controller.pressingButton('down') ? this.player.y+=3: ''
-			this.controller.pressingButton('right') ? this.player.x+=3: ''
-		}
+		this.player.update();
 	}
 }
