@@ -19,7 +19,7 @@ module.exports = class extends Entity{
 		let meterOverlay = this.scene.add.sprite(this.x+69, this.y+12, 'meter', 0);
 		meterOverlay.depth = 101;
 
-		this.graphics = this.scene.add.graphics({fillStyle: {color : 0xff0000}});
+		this.graphics = this.scene.add.graphics({fillStyle: {color : this.getMeterColor()}});
 		this.graphics.depth = 100
 		try{
 			// Phaser is not imported here, so the
@@ -60,9 +60,25 @@ module.exports = class extends Entity{
 		this.meter = Math.max(0, this.meter);
 	}
 
+	getMeterColor(){
+		let meterPercent = this.meter/this.meterMax;
+		if (meterPercent >= 1.0){
+			return 0xeadf00; // yellow
+		} else if (meterPercent >= 0.75){
+			return 0xe00000; // red
+		} else if (meterPercent >= 0.50){
+			return 0xff6600; // orange
+		} else if (meterPercent >= 0.25){
+			return 0x00c000; // green
+		} else {
+			return 0x4c4ccc; // blue
+		}
+	}
+
 	update(){
 		// update graphics
 		this.graphics.clear();
+		this.graphics.fillStyle(this.getMeterColor())
 		this.rect.width = (this.meter/this.meterMax)*this.width;
 		this.graphics.fillRectShape(this.rect);
 	}
