@@ -53,6 +53,12 @@ module.exports =  class extends Phaser.Scene {
 	}
 
 	drawMenuBoxes(){
+		this.drawMenuBox(0,'START');
+		this.drawMenuBox(1,'CONFIG');
+		this.drawMenuBox(2,'HOW TO PLAY');
+	}
+
+	drawMenuBox(menuPos, text){
 		let menuY = this.game.canvas.height/3*2;
 		let centerX = this.game.canvas.width/2;
 		let buttonBoxWidth = 190;
@@ -65,23 +71,10 @@ module.exports =  class extends Phaser.Scene {
 			backgroundColor: '#fff'
 		}
 
-		let startBox = [centerX-buttonBoxWidth/2, buttonBoxFirstY, buttonBoxWidth, buttonBoxHeight];
+		let startBox = [centerX-buttonBoxWidth/2, buttonBoxFirstY+buttonBoxYOffset*menuPos, buttonBoxWidth, buttonBoxHeight];
 		this.graphics.fillRect(...startBox);
 		this.graphics.strokeRect(...startBox);
-		this.startButton = this.add.text(centerX, this.cursorPositionsY[0], 'START', buttonStyle)
-		this.startButton.setOrigin(0.5);
-
-		let configBox = [centerX-buttonBoxWidth/2, buttonBoxFirstY+buttonBoxYOffset, buttonBoxWidth, buttonBoxHeight];
-		this.graphics.fillRect(...configBox);
-		this.graphics.strokeRect(...configBox);
-		this.configButton = this.add.text(centerX, this.cursorPositionsY[1], 'CONFIG', buttonStyle)
-		this.configButton.setOrigin(0.5);
-
-		let howToBox = [centerX-buttonBoxWidth/2, buttonBoxFirstY+buttonBoxYOffset*2, buttonBoxWidth, buttonBoxHeight];
-		this.graphics.fillRect(...howToBox);
-		this.graphics.strokeRect(...howToBox);
-		this.configButton = this.add.text(centerX, this.cursorPositionsY[2], 'HOW TO PLAY', buttonStyle)
-		this.configButton.setOrigin(0.5);
+		this.add.text(centerX, this.cursorPositionsY[menuPos], text, buttonStyle).setOrigin(0.5);
 	}
 
 	update(){
