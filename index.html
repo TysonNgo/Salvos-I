@@ -13,9 +13,20 @@
 			margin: 0 auto;
 			text-align: center;
 		}
+		@font-face{
+			font-family: "Kong Text";
+			src: url("assets/font/kongtext.ttf");
+			font-weight: 300;
+			font-weight: normal;
+		}
+		.font-loader{
+			font-family: "Kong Text";
+			visibility: hidden;
+		}
 	</style>
 </head>
 <body>
+<div class="font-loader">.</div>
 <script type="text/javascript" src="phaser.min.js"></script>
 <script type="text/javascript" src="game.js"></script>
 </body>
