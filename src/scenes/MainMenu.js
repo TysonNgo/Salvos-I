@@ -13,6 +13,7 @@ module.exports =  class extends Phaser.Scene {
 
 	preload(){
 		this.load.image('menuBox', 'assets/menu/menuBox.png');
+		this.load.image('updown', 'assets/menu/updown.png');
 		this.load.image('title', 'assets/menu/title.png');
 		this.load.image('ship', 'assets/menu/ship.png');
 		this.load.spritesheet('menuCursor', 'assets/menu/menuCursor.png', {frameWidth: 280, frameHeight: 27});
@@ -44,10 +45,25 @@ module.exports =  class extends Phaser.Scene {
 		this.createAnimations();
 		this.menuCursor = this.add.sprite(centerX, this.cursorPositionsY[this.cursorPosition], 'menuCursor');
 		this.menuCursor.anims.play('menuCursorAnimation')
+
+		// menu keys display
+		this.add.sprite(145, 538, 'updown')
+		let style = {
+			fontFamily: 'Kong Text',
+			fontSize: '8.5pt',
+			fill: '#000',
+			backgroundColor: '#fff'
+		}
+		this.add.text(125, 505, this.game.controller.getKey('up'), style);
+		this.add.text(125, 560, this.game.controller.getKey('down'), style);
+		this.add.text(196, 533, this.game.controller.getKey('shoot'), style);
 		////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		this.add.text(this.game.canvas.width-5, this.game.canvas.height-5, 'made by Tyson Ngo', style).setOrigin(1);
 
 		this.input.keyboard.on('keydown', e => {
 			this.game.controller.press(e.key);
+			console.log(e.key)
 		})
 		this.input.keyboard.on('keyup', e => {
 			this.game.controller.release(e.key);

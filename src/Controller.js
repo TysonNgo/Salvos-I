@@ -23,6 +23,17 @@ module.exports = class Controller{
 		}
 	}
 
+	getKey(button){
+		if (~['up', 'down', 'left', 'right', 'shoot', 'shield'].indexOf(button)){
+			button = this[button];
+			for (let key in this.keys){
+				if (this.keys[key] === button){
+					return key;
+				}
+			}
+		}
+	}
+
 	changeKey(button, key){
 		if (~['up', 'down', 'left', 'right', 'shoot', 'shield'].indexOf(button)){
 			// if key exists, swap buttons

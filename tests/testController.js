@@ -216,3 +216,24 @@ describe('Controller.pressingButton(button)\n' +
 		expectButton('z', 'shield');
 	})
 })
+
+
+describe('Controller.getKey(button)\n' +
+'    button - one of [up, down, left, right, shoot, shield]', function() {
+	it('valid button', function(){
+		let controller = new Controller();
+		
+		expect(controller.getKey('up')).to.be.equal('ArrowUp');
+		expect(controller.getKey('down')).to.be.equal('ArrowDown');
+		expect(controller.getKey('left')).to.be.equal('ArrowLeft');
+		expect(controller.getKey('right')).to.be.equal('ArrowRight');
+		expect(controller.getKey('shoot')).to.be.equal('x');
+		expect(controller.getKey('shield')).to.be.equal('z');
+	})
+
+	it('invalid button', function(){
+		let controller = new Controller();
+		
+		expect(controller.getKey('zzz')).to.be.equal(undefined);
+	})
+})
