@@ -1,6 +1,10 @@
 module.exports =  class extends Phaser.Scene {
 	constructor(){
 		super({key: 'MainMenu', active: true});
+
+		// frame buffer for adjusting input timing
+		this.i = 0;
+		this.ix = 10;
 	}
 
 	preload(){
@@ -31,6 +35,7 @@ module.exports =  class extends Phaser.Scene {
 		})
 		this.input.keyboard.on('keyup', e => {
 			this.game.controller.release(e.key);
+			this.i = 0;
 		})
 	}
 
@@ -80,11 +85,17 @@ module.exports =  class extends Phaser.Scene {
 	}
 
 	update(){
-		if (this.game.controller.pressingButton('up')){
-			this.cursorPosition = (this.cursorPosition + 1) % this.cursorPositionsY.length;
-		}
 		if (this.game.controller.pressingButton('down')){
-			this.cursorPosition = (this.cursorPosition + this.cursorPositionsY.length - 1) % this.cursorPositionsY.length;
+			if (this.i === 0){
+				this.cursorPosition = (this.cursorPosition + 1) % this.cursorPositionsY.length;
+			}
+			this.i = (this.i + 1) % this.ix;
+		}
+		if (this.game.controller.pressingButton('up')){
+			if (this.i === 0){
+				this.cursorPosition = (this.cursorPosition + this.cursorPositionsY.length - 1) % this.cursorPositionsY.length;
+			}
+			this.i = (this.i + 1) % this.ix;
 		}
 		this.moveCursor();
 
