@@ -2,6 +2,10 @@ module.exports =  class extends Phaser.Scene {
 	constructor(){
 		super({key: 'MainMenu', active: true});
 
+		this.shipI = 0;
+		this.shipIMax = 20;
+		this.shipY = 195;
+
 		// frame buffer for adjusting input timing
 		this.i = 0;
 		this.ix = 10;
@@ -10,13 +14,19 @@ module.exports =  class extends Phaser.Scene {
 	preload(){
 		this.load.image('menuBox', 'assets/menu/menuBox.png');
 		this.load.image('title', 'assets/menu/title.png');
+		this.load.image('ship', 'assets/menu/ship.png');
 		this.load.spritesheet('menuCursor', 'assets/menu/menuCursor.png', {frameWidth: 280, frameHeight: 27});
 	}
 
 	create(){
 		let centerX = this.game.canvas.width/2;
+
+		this.ship = this.add.sprite(centerX, this.shipY, 'ship');
+
 		this.add.sprite(centerX, this.game.canvas.height/8,'title');
 
+		// menu box
+		////////////////////////////////////////////////////////////////////////////////////////////////////////
 		let menuY = this.game.canvas.height/3*2;
 		this.menuBox = this.add.sprite(centerX, menuY,'menuBox');
 		this.graphics = this.add.graphics({fillStyle: {color : 0xffffff}, lineStyle: {color: 0}});
@@ -29,6 +39,7 @@ module.exports =  class extends Phaser.Scene {
 		this.createAnimations();
 		this.menuCursor = this.add.sprite(centerX, this.cursorPositionsY[this.cursorPosition], 'menuCursor');
 		this.menuCursor.anims.play('menuCursorAnimation')
+		////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		this.input.keyboard.on('keydown', e => {
 			this.game.controller.press(e.key);
@@ -78,6 +89,9 @@ module.exports =  class extends Phaser.Scene {
 	}
 
 	update(){
+		// moves ship
+		this.ship.y = this.shipY + 7 * Math.sin(0.1*this.shipI++ / Math.PI)
+
 		if (this.game.controller.pressingButton('down')){
 			if (this.i === 0){
 				this.cursorPosition = (this.cursorPosition + 1) % this.cursorPositionsY.length;
