@@ -1,7 +1,7 @@
 {
-  "name": "Bullethell-Survival",
+  "name": "Salvos-I",
   "version": "1.0.0",
-  "description": "HTML5 Game - Survive as long as possible",
+  "description": "HTML5 Bullethell Game - Survive as long as possible",
   "main": "index.js",
   "scripts": {
     "start": "concurrently \"watchify src/game.js --debug -o dist/game.js -v\" \"node index.js\"",
