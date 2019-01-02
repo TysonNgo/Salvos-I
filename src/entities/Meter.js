@@ -20,21 +20,10 @@ module.exports = class extends Entity{
 		meterOverlay.depth = 101;
 
 		this.graphics = this.scene.add.graphics({fillStyle: {color : this.getMeterColor()}});
-		this.graphics.depth = 100
-		try{
-			// Phaser is not imported here, so the
-			// tests will fail due to a
-			// ReferenceError. When this is ran on
-			// client side in the browser, the Phaser
-			// library will be imported via <script>
-			// tag. Thus, no ReferenceError
-			this.rect = new Phaser.Geom.Rectangle(this.x, this.y, 50, 14);
-		} catch(e){
-			if (!(e instanceof ReferenceError)){
-				console.log(e);
-			}
-		}
-		this.graphics.fillRectShape(this.rect);
+		this.graphics.depth = 100;
+
+		this.meterBarHeight = 14;
+		this.graphics.fillRect(this.x, this.y, (this.meter/this.meterMax)*this.width, this.meterBarHeight);
 	}
 
 	static loadAssets(scene){
@@ -79,7 +68,6 @@ module.exports = class extends Entity{
 		// update graphics
 		this.graphics.clear();
 		this.graphics.fillStyle(this.getMeterColor())
-		this.rect.width = (this.meter/this.meterMax)*this.width;
-		this.graphics.fillRectShape(this.rect);
+		this.graphics.fillRect(this.x, this.y, (this.meter/this.meterMax)*this.width, this.meterBarHeight);
 	}
 }

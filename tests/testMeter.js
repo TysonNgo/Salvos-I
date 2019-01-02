@@ -6,7 +6,7 @@ const scene = {
 		}),
 		graphics: () => ({
 			depth: 0,
-			fillRectShape: () => {
+			fillRect: () => {
 
 			}
 		})

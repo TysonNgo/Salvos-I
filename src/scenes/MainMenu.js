@@ -6,6 +6,7 @@ module.exports =  class extends Phaser.Scene {
 	preload(){
 		this.load.image('menuBox', 'assets/menu/menuBox.png');
 		this.load.image('title', 'assets/menu/title.png');
+		this.load.spritesheet('menuCursor', 'assets/menu/menuCursor.png', {frameWidth: 280, frameHeight: 27});
 	}
 
 	create(){
@@ -16,12 +17,34 @@ module.exports =  class extends Phaser.Scene {
 		this.menuBox = this.add.sprite(centerX, menuY,'menuBox');
 		this.graphics = this.add.graphics({fillStyle: {color : 0xffffff}, lineStyle: {color: 0}});
 
+		this.cursorPositionsY = [320, 389, 461];
+		this.cursorPosition = 0;
+
 		this.drawMenuBoxes();
 
-		this.start = false;
+		this.createAnimations();
+		this.menuCursor = this.add.sprite(centerX, this.cursorPositionsY[this.cursorPosition], 'menuCursor');
+		this.menuCursor.anims.play('menuCursorAnimation')
+
 		this.input.keyboard.on('keydown', e => {
-			this.start = true;
+			this.game.controller.press(e.key);
 		})
+		this.input.keyboard.on('keyup', e => {
+			this.game.controller.release(e.key);
+		})
+	}
+
+	createAnimations(){
+		this.anims.create({
+			key: 'menuCursorAnimation',
+			frames: this.anims.generateFrameNumbers('menuCursor', {start: 0, end: 2}),
+			frameRate: 6,
+			repeat: -1
+		});
+	}
+
+	moveCursor(){
+		this.menuCursor.y = this.cursorPositionsY[this.cursorPosition];
 	}
 
 	drawMenuBoxes(){
@@ -40,25 +63,32 @@ module.exports =  class extends Phaser.Scene {
 		let startBox = [centerX-buttonBoxWidth/2, buttonBoxFirstY, buttonBoxWidth, buttonBoxHeight];
 		this.graphics.fillRect(...startBox);
 		this.graphics.strokeRect(...startBox);
-		this.startButton = this.add.text(centerX, this.game.canvas.height/2, 'START', buttonStyle)
+		this.startButton = this.add.text(centerX, this.cursorPositionsY[0], 'START', buttonStyle)
 		this.startButton.setOrigin(0.5);
 
 		let configBox = [centerX-buttonBoxWidth/2, buttonBoxFirstY+buttonBoxYOffset, buttonBoxWidth, buttonBoxHeight];
 		this.graphics.fillRect(...configBox);
 		this.graphics.strokeRect(...configBox);
-		this.configButton = this.add.text(centerX, menuY-38, 'CONFIG', buttonStyle)
+		this.configButton = this.add.text(centerX, this.cursorPositionsY[1], 'CONFIG', buttonStyle)
 		this.configButton.setOrigin(0.5);
 
 		let howToBox = [centerX-buttonBoxWidth/2, buttonBoxFirstY+buttonBoxYOffset*2, buttonBoxWidth, buttonBoxHeight];
 		this.graphics.fillRect(...howToBox);
 		this.graphics.strokeRect(...howToBox);
-		this.configButton = this.add.text(centerX, menuY+34, 'HOW TO PLAY', buttonStyle)
+		this.configButton = this.add.text(centerX, this.cursorPositionsY[2], 'HOW TO PLAY', buttonStyle)
 		this.configButton.setOrigin(0.5);
 	}
 
 	update(){
-		if (this.start){
-			this.start = false;
+		if (this.game.controller.pressingButton('up')){
+			this.cursorPosition = (this.cursorPosition + 1) % this.cursorPositionsY.length;
+		}
+		if (this.game.controller.pressingButton('down')){
+			this.cursorPosition = (this.cursorPosition + this.cursorPositionsY.length - 1) % this.cursorPositionsY.length;
+		}
+		this.moveCursor();
+
+		if (this.game.controller.pressingButton('shoot') && this.cursorPosition === 0){
 			this.scene.start('Game');
 		}
 	}
