@@ -16,9 +16,14 @@ module.exports =  class extends Phaser.Scene {
 		this.load.image('title', 'assets/menu/title.png');
 		this.load.image('ship', 'assets/menu/ship.png');
 		this.load.spritesheet('menuCursor', 'assets/menu/menuCursor.png', {frameWidth: 280, frameHeight: 27});
+
+		this.load.audio('menuSelect', ['assets/audio/menuSelect.mp3', 'assets/audio/menuSelect.ogg']);
 	}
 
 	create(){
+		// audio
+		this.menuSelect = this.sound.add('menuSelect');
+
 		let centerX = this.game.canvas.width/2;
 
 		this.ship = this.add.sprite(centerX, this.shipY, 'ship');
@@ -95,12 +100,14 @@ module.exports =  class extends Phaser.Scene {
 		if (this.game.controller.pressingButton('down')){
 			if (this.i === 0){
 				this.cursorPosition = (this.cursorPosition + 1) % this.cursorPositionsY.length;
+				this.menuSelect.play();
 			}
 			this.i = (this.i + 1) % this.ix;
 		}
 		if (this.game.controller.pressingButton('up')){
 			if (this.i === 0){
 				this.cursorPosition = (this.cursorPosition + this.cursorPositionsY.length - 1) % this.cursorPositionsY.length;
+				this.menuSelect.play();
 			}
 			this.i = (this.i + 1) % this.ix;
 		}
