@@ -12,11 +12,12 @@ module.exports = class extends Entity{
 
 		this.sprite.anims.play('player_idle');
 
-		this.meter = new Meter(0);
+		this.meter = new Meter(0, this.scene);
 	}
 
 	static loadAssets(scene){
 		scene.load.spritesheet('player', 'assets/game/player/idle.png', {frameWidth: 50, frameHeight: 50});
+		Meter.loadAssets(scene);
 	}
 
 	createAnimations(){
@@ -47,5 +48,7 @@ module.exports = class extends Entity{
 		}
 		this.sprite.x = this.x;
 		this.sprite.y = this.y;
+
+		this.meter.update();
 	}
 }

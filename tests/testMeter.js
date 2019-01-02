@@ -1,5 +1,24 @@
 const { expect } = require('chai');
-const Meter = require('../src/entities/Meter');
+const scene = {
+	add: {
+		sprite: () => ({
+			depth: 0
+		}),
+		graphics: () => ({
+			depth: 0,
+			fillRectShape: () => {
+
+			}
+		})
+	}
+}
+
+let Meter = require('../src/entities/Meter')
+Meter = class extends Meter{
+	constructor(meter = 0){
+		super(meter, scene);
+	}
+}
 
 describe('Test constructor', function() {
 	it('default', function() {
