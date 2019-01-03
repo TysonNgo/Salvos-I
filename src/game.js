@@ -6,6 +6,17 @@ class Game extends Phaser.Game{
 	constructor(config){
 		super(config);
 		this.controller = new Controller();
+		let buttonConfig = localStorage.getItem('buttonConfig');
+		if (buttonConfig){
+			try{
+				buttonConfig = JSON.parse(buttonConfig);
+				for (let button in buttonConfig){
+					this.controller.changeKey(button, buttonConfig[button]);
+				}
+			} catch (e){
+				console.log(e);
+			}
+		}
 	}
 }
 

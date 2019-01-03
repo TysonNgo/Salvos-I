@@ -76,6 +76,14 @@ module.exports =  class extends Phaser.Scene {
 				this.changingKey = false;
 				if (e.code === 'Escape') return this.drawMenu(this.menu);
 				this.game.controller.changeKey(this.buttonToChange, e.code);
+				localStorage.setItem('buttonConfig', JSON.stringify({
+					'up': this.game.controller.getKey('up'),
+					'down': this.game.controller.getKey('down'),
+					'left': this.game.controller.getKey('left'),
+					'right': this.game.controller.getKey('right'),
+					'shoot': this.game.controller.getKey('shoot'),
+					'shield': this.game.controller.getKey('shield')
+				}))
 				this.drawMenu(this.menu);
 			} else {
 				this.game.controller.press(e.code);
