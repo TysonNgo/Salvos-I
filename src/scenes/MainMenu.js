@@ -31,12 +31,14 @@ module.exports =  class extends Phaser.Scene {
 
 		this.load.audio('menuSelect', ['assets/audio/menuSelect.mp3', 'assets/audio/menuSelect.ogg']);
 		this.load.audio('menuBack', ['assets/audio/menuBack.mp3', 'assets/audio/menuBack.ogg']);
+		this.load.audio('menuClick', ['assets/audio/menuClick.mp3', 'assets/audio/menuClick.ogg']);
 	}
 
 	create(){
 		// audio
 		this.menuSelect = this.sound.add('menuSelect');
 		this.menuBack = this.sound.add('menuBack');
+		this.menuClick = this.sound.add('menuClick');
 
 		let centerX = this.game.canvas.width/2;
 
@@ -76,7 +78,11 @@ module.exports =  class extends Phaser.Scene {
 		this.input.keyboard.on('keydown', e => {
 			if (this.changingKey){
 				this.changingKey = false;
-				if (e.code === 'Escape') return this.drawMenu(this.menu);
+				if (e.code === 'Escape'){
+					this.menuBack.play();
+					return this.drawMenu(this.menu);
+				}
+				this.menuClick.play();
 				this.game.controller.changeKey(this.buttonToChange, e.code);
 				localStorage.setItem('buttonConfig', JSON.stringify({
 					'up': this.game.controller.getKey('up'),
@@ -221,6 +227,7 @@ module.exports =  class extends Phaser.Scene {
 		if (this.game.controller.pressingButton('shoot')){
 			if (this.i === 0){
 				if (this.menu === this.menuEnum.main){
+					this.menuClick.play();
 					switch(this.cursorPosition[this.menu]){
 						case 0: this.removeAnimations(); this.scene.start('Game'); break;
 						case 1: this.drawMenu(this.menuEnum.config); break;
@@ -236,6 +243,7 @@ module.exports =  class extends Phaser.Scene {
 							break;
 						case 1: case 2: case 3:
 						case 4: case 5: case 6:
+							this.menuClick.play();
 							this.graphics.fillRect(50, 135, this.game.canvas.width-100, 150);
 							this.graphics.strokeRect(50, 135, this.game.canvas.width-100, 150);
 							this.menuObjects.push(
