@@ -3,7 +3,7 @@ const Controller = require('../src/Controller');
 
 describe('Controller.changeKey(button, key)\n' +
 '    button - one of [up, down, left, right, shoot, shield]\n' +
-'    key - Phaser 3 keyboard event key string', function() {
+'    key - Phaser 3 keyboard event key code string', function() {
 	it('[button, key] identical to initial state; no change', function() {
 		let initialCon = new Controller();
 		let controller = new Controller();
@@ -11,8 +11,8 @@ describe('Controller.changeKey(button, key)\n' +
 		controller.changeKey('down', 'ArrowDown');
 		controller.changeKey('left', 'ArrowLeft');
 		controller.changeKey('right', 'ArrowRight');
-		controller.changeKey('shoot', 'x');
-		controller.changeKey('shield', 'z');
+		controller.changeKey('shoot', 'KeyX');
+		controller.changeKey('shield', 'KeyZ');
 
 		for (let k in initialCon.keys){
 			expect(initialCon.keys[k].button).to.be.a('string', controller.keys[k].button);
@@ -21,17 +21,17 @@ describe('Controller.changeKey(button, key)\n' +
 
 	it('[different button, existing key]; swap button of keys', function(){
 		let controller = new Controller();
-		let keyZ = controller.keys['z'];
-		let keyX = controller.keys['x'];
-		controller.changeKey('shoot', 'z');
+		let keyZ = controller.keys['KeyZ'];
+		let keyX = controller.keys['KeyX'];
+		controller.changeKey('shoot', 'KeyZ');
 
-		expect(keyZ.button).to.be.a('string', controller.keys['x'].button);
-		expect(keyX.button).to.be.a('string', controller.keys['z'].button);
+		expect(keyZ.button).to.be.a('string', controller.keys['KeyX'].button);
+		expect(keyX.button).to.be.a('string', controller.keys['KeyZ'].button);
 	})
 
 	it('invalid button given', function(){
 		let controller = new Controller();
-		expect(controller.changeKey('what', 'x')).to.be.false;
+		expect(controller.changeKey('what', 'KeyX')).to.be.false;
 	})
 
 	it('change key to unique button', function(){
@@ -43,7 +43,7 @@ describe('Controller.changeKey(button, key)\n' +
 })
 
 describe('Controller.press(key)\n' +
-'    key - Phaser 3 keyboard event key string', function() {
+'    key - Phaser 3 keyboard event key code string', function() {
 	it('press valid key', function(){
 		let controller = new Controller();
 		controller.press('ArrowUp');
@@ -52,8 +52,8 @@ describe('Controller.press(key)\n' +
 		expect(keys.ArrowDown.down).to.be.false;
 		expect(keys.ArrowLeft.down).to.be.false;
 		expect(keys.ArrowRight.down).to.be.false;
-		expect(keys.x.down).to.be.false;
-		expect(keys.z.down).to.be.false;
+		expect(keys.KeyX.down).to.be.false;
+		expect(keys.KeyZ.down).to.be.false;
 		expect(Object.keys(keys).length).to.be.equal(6);
 	})
 	it('press invalid key', function(){
@@ -64,8 +64,8 @@ describe('Controller.press(key)\n' +
 		expect(keys.ArrowDown.down).to.be.false;
 		expect(keys.ArrowLeft.down).to.be.false;
 		expect(keys.ArrowRight.down).to.be.false;
-		expect(keys.x.down).to.be.false;
-		expect(keys.z.down).to.be.false;
+		expect(keys.KeyX.down).to.be.false;
+		expect(keys.KeyZ.down).to.be.false;
 		expect(Object.keys(keys).length).to.be.equal(6);
 	})
 	it('press key that is already pressed', function(){
@@ -77,37 +77,37 @@ describe('Controller.press(key)\n' +
 		expect(keys.ArrowDown.down).to.be.false;
 		expect(keys.ArrowLeft.down).to.be.false;
 		expect(keys.ArrowRight.down).to.be.false;
-		expect(keys.x.down).to.be.false;
-		expect(keys.z.down).to.be.false;
+		expect(keys.KeyX.down).to.be.false;
+		expect(keys.KeyZ.down).to.be.false;
 		expect(Object.keys(keys).length).to.be.equal(6);
 	})
 })
 
 describe('Controller.release(key)\n' +
-'    key - Phaser 3 keyboard event key string', function() {
+'    key - Phaser 3 keyboard event key code string', function() {
 	it('release valid key', function(){
 		let controller = new Controller();
 		controller.press('ArrowUp');
 		controller.press('ArrowDown');
 		controller.press('ArrowLeft');
 		controller.press('ArrowRight');
-		controller.press('x');
-		controller.press('z');
+		controller.press('KeyX');
+		controller.press('KeyZ');
 		let keys = controller.keys;
 		expect(keys.ArrowUp.down).to.be.true;
 		expect(keys.ArrowDown.down).to.be.true;
 		expect(keys.ArrowLeft.down).to.be.true;
 		expect(keys.ArrowRight.down).to.be.true;
-		expect(keys.x.down).to.be.true;
-		expect(keys.z.down).to.be.true;
+		expect(keys.KeyX.down).to.be.true;
+		expect(keys.KeyZ.down).to.be.true;
 		expect(Object.keys(keys).length).to.be.equal(6);
 		controller.release('ArrowUp');
 		expect(keys.ArrowUp.down).to.be.false;
 		expect(keys.ArrowDown.down).to.be.true;
 		expect(keys.ArrowLeft.down).to.be.true;
 		expect(keys.ArrowRight.down).to.be.true;
-		expect(keys.x.down).to.be.true;
-		expect(keys.z.down).to.be.true;
+		expect(keys.KeyX.down).to.be.true;
+		expect(keys.KeyZ.down).to.be.true;
 		expect(Object.keys(keys).length).to.be.equal(6);
 	})
 	it('release invalid key', function(){
@@ -116,23 +116,23 @@ describe('Controller.release(key)\n' +
 		controller.press('ArrowDown');
 		controller.press('ArrowLeft');
 		controller.press('ArrowRight');
-		controller.press('x');
-		controller.press('z');
+		controller.press('KeyX');
+		controller.press('KeyZ');
 		let keys = controller.keys;
 		expect(keys.ArrowUp.down).to.be.true;
 		expect(keys.ArrowDown.down).to.be.true;
 		expect(keys.ArrowLeft.down).to.be.true;
 		expect(keys.ArrowRight.down).to.be.true;
-		expect(keys.x.down).to.be.true;
-		expect(keys.z.down).to.be.true;
+		expect(keys.KeyX.down).to.be.true;
+		expect(keys.KeyZ.down).to.be.true;
 		expect(Object.keys(keys).length).to.be.equal(6);
 		controller.release('q');
 		expect(keys.ArrowUp.down).to.be.true;
 		expect(keys.ArrowDown.down).to.be.true;
 		expect(keys.ArrowLeft.down).to.be.true;
 		expect(keys.ArrowRight.down).to.be.true;
-		expect(keys.x.down).to.be.true;
-		expect(keys.z.down).to.be.true;
+		expect(keys.KeyX.down).to.be.true;
+		expect(keys.KeyZ.down).to.be.true;
 		expect(Object.keys(keys).length).to.be.equal(6);
 	})
 	it('release key that is already released', function(){
@@ -141,31 +141,31 @@ describe('Controller.release(key)\n' +
 		controller.press('ArrowDown');
 		controller.press('ArrowLeft');
 		controller.press('ArrowRight');
-		controller.press('x');
-		controller.press('z');
+		controller.press('KeyX');
+		controller.press('KeyZ');
 		let keys = controller.keys;
 		expect(keys.ArrowUp.down).to.be.true;
 		expect(keys.ArrowDown.down).to.be.true;
 		expect(keys.ArrowLeft.down).to.be.true;
 		expect(keys.ArrowRight.down).to.be.true;
-		expect(keys.x.down).to.be.true;
-		expect(keys.z.down).to.be.true;
+		expect(keys.KeyX.down).to.be.true;
+		expect(keys.KeyZ.down).to.be.true;
 		expect(Object.keys(keys).length).to.be.equal(6);
 		controller.release('ArrowUp');
 		expect(keys.ArrowUp.down).to.be.false;
 		expect(keys.ArrowDown.down).to.be.true;
 		expect(keys.ArrowLeft.down).to.be.true;
 		expect(keys.ArrowRight.down).to.be.true;
-		expect(keys.x.down).to.be.true;
-		expect(keys.z.down).to.be.true;
+		expect(keys.KeyX.down).to.be.true;
+		expect(keys.KeyZ.down).to.be.true;
 		expect(Object.keys(keys).length).to.be.equal(6);
 		controller.release('ArrowUp');
 		expect(keys.ArrowUp.down).to.be.false;
 		expect(keys.ArrowDown.down).to.be.true;
 		expect(keys.ArrowLeft.down).to.be.true;
 		expect(keys.ArrowRight.down).to.be.true;
-		expect(keys.x.down).to.be.true;
-		expect(keys.z.down).to.be.true;
+		expect(keys.KeyX.down).to.be.true;
+		expect(keys.KeyZ.down).to.be.true;
 		expect(Object.keys(keys).length).to.be.equal(6);
 	})
 })
@@ -187,8 +187,8 @@ describe('Controller.pressingButton(button)\n' +
 		expectButton('ArrowDown');
 		expectButton('ArrowLeft');
 		expectButton('ArrowRight');
-		expectButton('x');
-		expectButton('z');
+		expectButton('KeyX');
+		expectButton('KeyZ');
 	})
 	it('check pressing specific button', function(){
 		let controller = new Controller();
@@ -212,8 +212,8 @@ describe('Controller.pressingButton(button)\n' +
 		expectButton('ArrowDown', 'down');
 		expectButton('ArrowLeft', 'left');
 		expectButton('ArrowRight', 'right');
-		expectButton('x', 'shoot');
-		expectButton('z', 'shield');
+		expectButton('KeyX', 'shoot');
+		expectButton('KeyZ', 'shield');
 	})
 })
 
@@ -227,8 +227,8 @@ describe('Controller.getKey(button)\n' +
 		expect(controller.getKey('down')).to.be.equal('ArrowDown');
 		expect(controller.getKey('left')).to.be.equal('ArrowLeft');
 		expect(controller.getKey('right')).to.be.equal('ArrowRight');
-		expect(controller.getKey('shoot')).to.be.equal('x');
-		expect(controller.getKey('shield')).to.be.equal('z');
+		expect(controller.getKey('shoot')).to.be.equal('KeyX');
+		expect(controller.getKey('shield')).to.be.equal('KeyZ');
 	})
 
 	it('invalid button', function(){

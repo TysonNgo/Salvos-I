@@ -18,8 +18,8 @@ module.exports = class Controller{
 			'ArrowDown': this.down,
 			'ArrowLeft': this.left,
 			'ArrowRight': this.right,
-			'x': this.shoot,
-			'z': this.shield
+			'KeyX': this.shoot,
+			'KeyZ': this.shield
 		}
 	}
 
