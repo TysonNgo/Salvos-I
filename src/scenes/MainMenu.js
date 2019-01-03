@@ -229,7 +229,11 @@ module.exports =  class extends Phaser.Scene {
 				if (this.menu === this.menuEnum.main){
 					this.menuClick.play();
 					switch(this.cursorPosition[this.menu]){
-						case 0: this.removeAnimations(); this.scene.start('Game'); break;
+						case 0:
+							this.removeAnimations();
+							this.game.controller.releaseAll();
+							this.scene.start('Game');
+							break;
 						case 1: this.drawMenu(this.menuEnum.config); break;
 						case 2: this.drawMenu(this.menuEnum.howto); break;
 					}

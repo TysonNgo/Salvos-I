@@ -76,6 +76,12 @@ module.exports = class Controller{
 		}
 	}
 
+	releaseAll(){
+		for (let key in this.keys){
+			this.keys[key].down = false;
+		}
+	}
+
 	pressingButton(button=null){
 		if (~['up', 'down', 'left', 'right', 'shoot', 'shield'].indexOf(button)){
 			return this[button].down;
