@@ -29,7 +29,7 @@ module.exports =  class extends Phaser.Scene {
 
 		this.ship = this.add.sprite(centerX, this.shipY, 'ship');
 
-		this.add.sprite(centerX, this.game.canvas.height/8,'title');
+		this.add.sprite(centerX-3, this.game.canvas.height/8,'title');
 
 		// menu box
 		////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -63,7 +63,6 @@ module.exports =  class extends Phaser.Scene {
 
 		this.input.keyboard.on('keydown', e => {
 			this.game.controller.press(e.key);
-			console.log(e.key)
 		})
 		this.input.keyboard.on('keyup', e => {
 			this.game.controller.release(e.key);
