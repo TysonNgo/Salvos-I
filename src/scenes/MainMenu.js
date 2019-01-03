@@ -153,6 +153,11 @@ module.exports =  class extends Phaser.Scene {
 	drawMenuBoxes(){
 		let boxes = [];
 		let box;
+		let style = {
+			fontFamily: 'Kong Text',
+			fill: '#000',
+			backgroundColor: '#fff'
+		}
 		switch(this.menu){
 			case this.menuEnum.main:
 				box = [190, 60, 290, 70];
@@ -163,11 +168,6 @@ module.exports =  class extends Phaser.Scene {
 			case this.menuEnum.config:
 				box = [190, 30, 533, -40];
 				boxes.push(this.drawMenuBox(0,'BACK', 190, 40, 533, 70));
-				let style = {
-					fontFamily: 'Kong Text',
-					fill: '#000',
-					backgroundColor: '#fff'
-				}
 				let text = [null, 'UP', 'DOWN', 'LEFT', 'RIGHT', 'SHOOT', 'SHIELD'];
 				for (let i = 1; i < this.cursorPositionsY[this.menu].length; i++){
 					this.drawMenuBox(i,'', ...box);
@@ -180,6 +180,36 @@ module.exports =  class extends Phaser.Scene {
 			case this.menuEnum.howto:
 				box = [190, 40, 533, 70];
 				boxes.push(this.drawMenuBox(0,'BACK', ...box));
+				this.drawMenuBox(1,'', 190, 230, 290, 0);
+				style.fontSize = '8.5px';
+				boxes.push(this.add.text(90, 300,
+`THE OBJECTIVE IS
+TO SURVIVE AS LONG
+AS POSSIBLE.
+
+controls:
+  UP     (${this.game.controller.getKey('up')})
+  DOWN   (${this.game.controller.getKey('down')})
+  LEFT   (${this.game.controller.getKey('left')})
+  RIGHT  (${this.game.controller.getKey('right')})
+  SHOOT  (${this.game.controller.getKey('shoot')})
+  SHIELD (${this.game.controller.getKey('shield')})
+
+SHOOT UP TO 5 BULLETS
+AT A TIME.
+
+SHIELD MAKES YOU
+INVULNERABLE FOR
+3 SECONDS AND
+COSTS 25% METER.
+
+SHIELD+SHOOT = DASH
+
+METER IS BUILT WHEN
+A BULLET HITS THE
+BOSS.
+`
+					, style));
 				break;
 		}
 		return boxes;
