@@ -31,11 +31,10 @@ module.exports = class extends Entity{
 
 	listenKeystrokes(){
 		this.scene.input.keyboard.on('keydown', e => {
-			this.scene.game.controller.press(e.key);
-			if (e.key in this.scene.game.controller.keys) console.log(this.scene.game.controller.keys[e.key].button);
+			this.scene.game.controller.press(e.code);
 		})
 		this.scene.input.keyboard.on('keyup', e => {
-			this.scene.game.controller.release(e.key);
+			this.scene.game.controller.release(e.code);
 		})
 	}
 

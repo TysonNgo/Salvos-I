@@ -17,6 +17,9 @@ module.exports =  class extends Phaser.Scene {
 			config: 1,
 			howto: 2
 		}
+
+		this.changingKey = false;
+		this.buttonToChange = null;
 	}
 
 	preload(){
@@ -69,7 +72,14 @@ module.exports =  class extends Phaser.Scene {
 			{fontFamily: 'Kong Text', fontSize: '8.5pt', fill: '#000', backgroundColor: '#fff'}).setOrigin(1);
 
 		this.input.keyboard.on('keydown', e => {
-			this.game.controller.press(e.code);
+			if (this.changingKey){
+				this.changingKey = false;
+				if (e.code === 'Escape') return this.drawMenu(this.menu);
+				this.game.controller.changeKey(this.buttonToChange, e.code);
+				this.drawMenu(this.menu);
+			} else {
+				this.game.controller.press(e.code);
+			}
 		})
 		this.input.keyboard.on('keyup', e => {
 			this.game.controller.release(e.code);
@@ -176,6 +186,8 @@ module.exports =  class extends Phaser.Scene {
 		// moves ship
 		this.ship.y = this.shipY + 7 * Math.sin(0.1*this.shipI++ / Math.PI)
 
+		if (this.changingKey) return;
+		// key input
 		if (this.game.controller.pressingButton('down')){
 			if (this.i === 0){
 				this.cursorPosition[this.menu] = (this.cursorPosition[this.menu] + 1) % this.cursorPositionsY[this.menu].length;
@@ -201,10 +213,23 @@ module.exports =  class extends Phaser.Scene {
 						case 2: this.drawMenu(this.menuEnum.howto); break;
 					}
 				} else if (this.menu === this.menuEnum.config){
+					let buttons = [null, 'up', 'down', 'left', 'right', 'shoot', 'shield'];
 					switch(this.cursorPosition[this.menu]){
 						case 0:
 							this.cursorPosition[this.menu] = 1;
 							this.drawMenu(this.menuEnum.main);
+							break;
+						case 1: case 2: case 3:
+						case 4: case 5: case 6:
+							this.graphics.fillRect(50, 135, this.game.canvas.width-100, 150);
+							this.graphics.strokeRect(50, 135, this.game.canvas.width-100, 150);
+							this.menuObjects.push(
+								this.add.text(80,165, 
+									`Press a key\nto change the\n'${buttons[this.cursorPosition[this.menu]]}' button\n\nESC to cancel`,
+									{fontFamily: 'Kong Text', fill: '#000', backgroundColor: '#fff'})
+							);
+							this.changingKey = true;
+							this.buttonToChange = buttons[this.cursorPosition[this.menu]];
 							break;
 					}
 				} else if (this.menu === this.menuEnum.howto){
