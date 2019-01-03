@@ -1,3 +1,5 @@
+// this scene has messy code
+// refactor some time
 module.exports =  class extends Phaser.Scene {
 	constructor(){
 		super({key: 'MainMenu', active: true});
@@ -9,6 +11,12 @@ module.exports =  class extends Phaser.Scene {
 		// frame buffer for adjusting input timing
 		this.i = 0;
 		this.ix = 10;
+
+		this.menuEnum = {
+			main: 0,
+			config: 1,
+			howto: 2
+		}
 	}
 
 	preload(){
@@ -37,35 +45,34 @@ module.exports =  class extends Phaser.Scene {
 		this.menuBox = this.add.sprite(centerX, menuY,'menuBox');
 		this.graphics = this.add.graphics({fillStyle: {color : 0xffffff}, lineStyle: {color: 0}});
 
-		this.cursorPositionsY = [320, 389, 461];
-		this.cursorPosition = 0;
-
-		this.drawMenuBoxes();
+		this.menu = this.menuEnum.main;
+		this.cursorPositionsY = {
+			[this.menuEnum.main]: [320, 389, 461],
+			[this.menuEnum.config]: [555, 310, 350, 390, 430, 470, 510],
+			[this.menuEnum.howto]: [555]
+		}
+		this.cursorPosition = {
+			[this.menuEnum.main]: 0,
+			[this.menuEnum.config]: 1,
+			[this.menuEnum.howto]: 0
+		}
 
 		this.createAnimations();
-		this.menuCursor = this.add.sprite(centerX, this.cursorPositionsY[this.cursorPosition], 'menuCursor');
+		this.menuCursor = this.add.sprite(centerX, this.cursorPositionsY[this.menu][this.cursorPosition[this.menu]], 'menuCursor');
 		this.menuCursor.anims.play('menuCursorAnimation')
 
-		// menu keys display
-		this.add.sprite(145, 538, 'updown')
-		let style = {
-			fontFamily: 'Kong Text',
-			fontSize: '8.5pt',
-			fill: '#000',
-			backgroundColor: '#fff'
-		}
-		this.add.text(125, 505, this.game.controller.getKey('up'), style);
-		this.add.text(125, 560, this.game.controller.getKey('down'), style);
-		this.add.text(196, 533, this.game.controller.getKey('shoot'), style);
+		this.menuObjects = [];
+		this.drawMenu();
 		////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-		this.add.text(this.game.canvas.width-5, this.game.canvas.height-5, 'made by Tyson Ngo', style).setOrigin(1);
+		this.add.text(this.game.canvas.width-5, this.game.canvas.height-5, 'made by Tyson Ngo',
+			{fontFamily: 'Kong Text', fontSize: '8.5pt', fill: '#000', backgroundColor: '#fff'}).setOrigin(1);
 
 		this.input.keyboard.on('keydown', e => {
-			this.game.controller.press(e.key);
+			this.game.controller.press(e.code);
 		})
 		this.input.keyboard.on('keyup', e => {
-			this.game.controller.release(e.key);
+			this.game.controller.release(e.code);
 			this.i = 0;
 		})
 	}
@@ -80,32 +87,89 @@ module.exports =  class extends Phaser.Scene {
 	}
 
 	moveCursor(){
-		this.menuCursor.y = this.cursorPositionsY[this.cursorPosition];
+		this.menuCursor.y = this.cursorPositionsY[this.menu][this.cursorPosition[this.menu]];
+	}
+
+	drawMenu(menu = 0){
+		this.graphics.clear();
+		this.menuObjects.forEach(o => {
+			o.destroy();
+		})
+		this.menu = menu;
+		switch(this.menu){
+			case this.menuEnum.main:
+				this.menuObjects.push(...this.drawMenuBoxes());
+				// menu keys display
+				this.menuObjects.push(this.add.sprite(145, 538, 'updown'));
+				let style = {
+					fontFamily: 'Kong Text',
+					fontSize: '8.5pt',
+					fill: '#000',
+					backgroundColor: '#fff'
+				}
+				this.menuObjects.push(this.add.text(125, 505, this.game.controller.getKey('up'), style));
+				this.menuObjects.push(this.add.text(125, 560, this.game.controller.getKey('down'), style));
+				this.menuObjects.push(this.add.text(196, 533, this.game.controller.getKey('shoot'), style));
+			break;
+			case this.menuEnum.config:
+				this.menuObjects.push(...this.drawMenuBoxes());
+			break;
+			case this.menuEnum.howto:
+				this.menuObjects.push(...this.drawMenuBoxes());
+			break;
+		}
 	}
 
 	drawMenuBoxes(){
-		this.drawMenuBox(0,'START');
-		this.drawMenuBox(1,'CONFIG');
-		this.drawMenuBox(2,'HOW TO PLAY');
+		let boxes = [];
+		let box;
+		switch(this.menu){
+			case this.menuEnum.main:
+				box = [190, 60, 290, 70];
+				boxes.push(this.drawMenuBox(0,'START', ...box));
+				boxes.push(this.drawMenuBox(1,'CONFIG', ...box));
+				boxes.push(this.drawMenuBox(2,'HOW TO PLAY', ...box));
+				break;
+			case this.menuEnum.config:
+				box = [190, 30, 533, -40];
+				boxes.push(this.drawMenuBox(0,'BACK', 190, 40, 533, 70));
+				let style = {
+					fontFamily: 'Kong Text',
+					fill: '#000',
+					backgroundColor: '#fff'
+				}
+				let text = [null, 'UP', 'DOWN', 'LEFT', 'RIGHT', 'SHOOT', 'SHIELD'];
+				for (let i = 1; i < this.cursorPositionsY[this.menu].length; i++){
+					this.drawMenuBox(i,'', ...box);
+					style.fontSize = '13px';
+					boxes.push(this.add.text(130, this.cursorPositionsY[this.menu][i], text[i], style).setOrigin(0.5));
+					style.fontSize = '8px';
+					boxes.push(this.add.text(180, this.cursorPositionsY[this.menu][i]-3, this.game.controller.getKey(text[i].toLowerCase()), style));
+				}
+				break;
+			case this.menuEnum.howto:
+				box = [190, 40, 533, 70];
+				boxes.push(this.drawMenuBox(0,'BACK', ...box));
+				break;
+		}
+		return boxes;
 	}
 
-	drawMenuBox(menuPos, text){
+	drawMenuBox(menuPos, text, boxWidth, boxHeight, boxFirstY, boxYOffset){
 		let menuY = this.game.canvas.height/3*2;
 		let centerX = this.game.canvas.width/2;
-		let buttonBoxWidth = 190;
-		let buttonBoxHeight = 60;
-		let buttonBoxFirstY = 290;
-		let buttonBoxYOffset = 70;
 		let buttonStyle = {
 			fontFamily: 'Kong Text',
 			fill: '#000',
 			backgroundColor: '#fff'
 		}
 
-		let startBox = [centerX-buttonBoxWidth/2, buttonBoxFirstY+buttonBoxYOffset*menuPos, buttonBoxWidth, buttonBoxHeight];
-		this.graphics.fillRect(...startBox);
-		this.graphics.strokeRect(...startBox);
-		this.add.text(centerX, this.cursorPositionsY[menuPos], text, buttonStyle).setOrigin(0.5);
+		let box = [centerX-boxWidth/2, boxFirstY+boxYOffset*menuPos, boxWidth, boxHeight];
+		this.graphics.fillRect(...box);
+		this.graphics.strokeRect(...box);
+		if (text){
+			return this.add.text(centerX, this.cursorPositionsY[this.menu][menuPos], text, buttonStyle).setOrigin(0.5);
+		}
 	}
 
 	update(){
@@ -114,22 +178,40 @@ module.exports =  class extends Phaser.Scene {
 
 		if (this.game.controller.pressingButton('down')){
 			if (this.i === 0){
-				this.cursorPosition = (this.cursorPosition + 1) % this.cursorPositionsY.length;
+				this.cursorPosition[this.menu] = (this.cursorPosition[this.menu] + 1) % this.cursorPositionsY[this.menu].length;
 				this.menuSelect.play();
 			}
 			this.i = (this.i + 1) % this.ix;
 		}
 		if (this.game.controller.pressingButton('up')){
 			if (this.i === 0){
-				this.cursorPosition = (this.cursorPosition + this.cursorPositionsY.length - 1) % this.cursorPositionsY.length;
+				this.cursorPosition[this.menu] = (this.cursorPosition[this.menu] + this.cursorPositionsY[this.menu].length - 1) % this.cursorPositionsY[this.menu].length;
 				this.menuSelect.play();
 			}
 			this.i = (this.i + 1) % this.ix;
 		}
 		this.moveCursor();
 
-		if (this.game.controller.pressingButton('shoot') && this.cursorPosition === 0){
-			this.scene.start('Game');
+		if (this.game.controller.pressingButton('shoot')){
+			if (this.i === 0){
+				if (this.menu === this.menuEnum.main){
+					switch(this.cursorPosition[this.menu]){
+						case 0: this.scene.start('Game'); break;
+						case 1: this.drawMenu(this.menuEnum.config); break;
+						case 2: this.drawMenu(this.menuEnum.howto); break;
+					}
+				} else if (this.menu === this.menuEnum.config){
+					switch(this.cursorPosition[this.menu]){
+						case 0:
+							this.cursorPosition[this.menu] = 1;
+							this.drawMenu(this.menuEnum.main);
+							break;
+					}
+				} else if (this.menu === this.menuEnum.howto){
+					this.drawMenu(this.menuEnum.main);
+				}
+			}
+			this.i = (this.i + 1) % this.ix;
 		}
 	}
 }
