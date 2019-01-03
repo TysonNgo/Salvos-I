@@ -29,6 +29,10 @@ module.exports = class extends Entity{
 		});
 	}
 
+	removeAnimations(){
+		this.scene.anims.remove('player_idle');
+	}
+
 	listenKeystrokes(){
 		this.scene.input.keyboard.on('keydown', e => {
 			this.scene.game.controller.press(e.code);

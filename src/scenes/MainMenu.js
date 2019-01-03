@@ -30,11 +30,13 @@ module.exports =  class extends Phaser.Scene {
 		this.load.spritesheet('menuCursor', 'assets/menu/menuCursor.png', {frameWidth: 280, frameHeight: 27});
 
 		this.load.audio('menuSelect', ['assets/audio/menuSelect.mp3', 'assets/audio/menuSelect.ogg']);
+		this.load.audio('menuBack', ['assets/audio/menuBack.mp3', 'assets/audio/menuBack.ogg']);
 	}
 
 	create(){
 		// audio
 		this.menuSelect = this.sound.add('menuSelect');
+		this.menuBack = this.sound.add('menuBack');
 
 		let centerX = this.game.canvas.width/2;
 
@@ -102,6 +104,10 @@ module.exports =  class extends Phaser.Scene {
 			frameRate: 6,
 			repeat: -1
 		});
+	}
+
+	removeAnimations(){
+		this.anims.remove('menuCursorAnimation');
 	}
 
 	moveCursor(){
@@ -216,7 +222,7 @@ module.exports =  class extends Phaser.Scene {
 			if (this.i === 0){
 				if (this.menu === this.menuEnum.main){
 					switch(this.cursorPosition[this.menu]){
-						case 0: this.scene.start('Game'); break;
+						case 0: this.removeAnimations(); this.scene.start('Game'); break;
 						case 1: this.drawMenu(this.menuEnum.config); break;
 						case 2: this.drawMenu(this.menuEnum.howto); break;
 					}
@@ -226,6 +232,7 @@ module.exports =  class extends Phaser.Scene {
 						case 0:
 							this.cursorPosition[this.menu] = 1;
 							this.drawMenu(this.menuEnum.main);
+							this.menuBack.play();
 							break;
 						case 1: case 2: case 3:
 						case 4: case 5: case 6:
@@ -242,6 +249,7 @@ module.exports =  class extends Phaser.Scene {
 					}
 				} else if (this.menu === this.menuEnum.howto){
 					this.drawMenu(this.menuEnum.main);
+					this.menuBack.play();
 				}
 			}
 			this.i = (this.i + 1) % this.ix;
