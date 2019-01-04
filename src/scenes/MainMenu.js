@@ -27,6 +27,7 @@ module.exports =  class extends Phaser.Scene {
 		this.load.image('updown', 'assets/menu/updown.png');
 		this.load.image('title', 'assets/menu/title.png');
 		this.load.image('ship', 'assets/menu/ship.png');
+		this.load.image('howto360', 'assets/menu/360.png');
 		this.load.spritesheet('menuCursor', 'assets/menu/menuCursor.png', {frameWidth: 280, frameHeight: 27});
 
 		this.load.audio('menuSelect', ['assets/audio/menuSelect.mp3', 'assets/audio/menuSelect.ogg']);
@@ -181,10 +182,9 @@ module.exports =  class extends Phaser.Scene {
 				box = [190, 40, 533, 70];
 				boxes.push(this.drawMenuBox(0,'BACK', ...box));
 				this.drawMenuBox(1,'', 190, 230, 290, 0);
-				style.fontSize = '8.5px';
+				style.fontSize = '8px';
 				boxes.push(this.add.text(90, 300,
-`THE OBJECTIVE IS
-TO SURVIVE AS LONG
+`SURVIVE AS LONG
 AS POSSIBLE.
 
 controls:
@@ -199,17 +199,23 @@ SHOOT UP TO 5 BULLETS
 AT A TIME.
 
 SHIELD MAKES YOU
-INVULNERABLE FOR
-3 SECONDS AND
-COSTS 25% METER.
+INVULNERABLE FOR A
+SHORT TIME AT A
+COST OF 25% METER.
 
-SHIELD+SHOOT = DASH
+SHIELD+SHOOT TO DASH
+
+    360+SHOOT TO CLEAR
+    OUT NEARBY ENEMY
+    PROJECTILES AT A
+    COST OF 100% METER.
 
 METER IS BUILT WHEN
 A BULLET HITS THE
-BOSS.
+ENEMY.
 `
 					, style));
+				boxes.push(this.add.sprite(105, 461, 'howto360'));
 				break;
 		}
 		return boxes;
