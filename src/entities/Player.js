@@ -6,12 +6,12 @@ module.exports = class Player extends Entity{
 	constructor(x, y, scene){
 		super(x, y);
 		this.scene = scene;
-		this.sprite = this.scene.add.sprite(this.x, this.y, 'player');
-
 		this.createAnimations();
 		this.listenKeystrokes();
-
-		this.sprite.anims.play('player_idle');
+		
+		this.sprite = this.scene.add.sprite(this.x, this.y, 'player');
+		this.spriteJetfire = this.scene.add.sprite(this.x, this.y, 'player_jetfire');
+		this.spriteJetfire.anims.play('player_jetfire_animation');
 
 		this.meter = new Meter(0, this.scene);
 
@@ -24,7 +24,8 @@ module.exports = class Player extends Entity{
 	}
 
 	static loadAssets(scene){
-		scene.load.spritesheet('player', 'assets/game/player/idle.png', {frameWidth: 50, frameHeight: 50});
+		scene.load.image('player', 'assets/game/player/idle.png');
+		scene.load.spritesheet('player_jetfire', 'assets/game/player/jetfire.png', {frameWidth: 50, frameHeight: 50});
 		Meter.loadAssets(scene);
 		BulletContainer.loadAssets(scene);
 
@@ -35,15 +36,15 @@ module.exports = class Player extends Entity{
 
 	createAnimations(){
 		this.scene.anims.create({
-			key: 'player_idle',
-			frames: this.scene.anims.generateFrameNumbers('player', {start: 0, end: 4}),
+			key: 'player_jetfire_animation',
+			frames: this.scene.anims.generateFrameNumbers('player_jetfire', {start: 0, end: 4}),
 			frameRate: 8,
 			repeat: -1
 		});
 	}
 
 	removeAnimations(){
-		this.scene.anims.remove('player_idle');
+		this.scene.anims.remove('player_jetfire_animation');
 	}
 
 	listenKeystrokes(){
@@ -85,6 +86,8 @@ module.exports = class Player extends Entity{
 		}
 		this.sprite.x = this.x;
 		this.sprite.y = this.y;
+		this.spriteJetfire.x = this.x;
+		this.spriteJetfire.y = this.y;
 
 		this.meter.update();
 		this.bullets.update();
