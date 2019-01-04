@@ -245,18 +245,22 @@ ENEMY.
 		if (this.changingKey) return;
 		// key input
 		if (this.game.controller.pressingButton('down')){
-			if (this.i === 0){
-				this.cursorPosition[this.menu] = (this.cursorPosition[this.menu] + 1) % this.cursorPositionsY[this.menu].length;
-				this.menuSelect.play();
+			if (this.cursorPositionsY[this.menu].length > 1){
+				if (this.i === 0){
+					this.cursorPosition[this.menu] = (this.cursorPosition[this.menu] + 1) % this.cursorPositionsY[this.menu].length;
+					this.menuSelect.play();
+				}
+				this.i = (this.i + 1) % this.ix;
 			}
-			this.i = (this.i + 1) % this.ix;
 		}
 		if (this.game.controller.pressingButton('up')){
-			if (this.i === 0){
-				this.cursorPosition[this.menu] = (this.cursorPosition[this.menu] + this.cursorPositionsY[this.menu].length - 1) % this.cursorPositionsY[this.menu].length;
-				this.menuSelect.play();
+			if (this.cursorPositionsY[this.menu].length > 1){
+				if (this.i === 0){
+					this.cursorPosition[this.menu] = (this.cursorPosition[this.menu] + this.cursorPositionsY[this.menu].length - 1) % this.cursorPositionsY[this.menu].length;
+					this.menuSelect.play();
+				}
+				this.i = (this.i + 1) % this.ix;
 			}
-			this.i = (this.i + 1) % this.ix;
 		}
 		this.moveCursor();
 
