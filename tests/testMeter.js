@@ -13,7 +13,7 @@ const scene = {
 	}
 }
 
-let Meter = require('../src/entities/Meter')
+let Meter = require('../src/entities/player/Meter')
 Meter = class extends Meter{
 	constructor(meter = 0){
 		super(meter, scene);

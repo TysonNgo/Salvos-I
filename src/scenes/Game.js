@@ -1,10 +1,19 @@
 let Background = require('../entities/Background');
-let Boss = require('../entities/Boss');
-let Player = require('../entities/Player');
+let Boss = require('../entities/boss/Boss');
+let Player = require('../entities/player/Player');
 
 module.exports = class extends Phaser.Scene {
 	constructor(){
 		super({key: 'Game', active: false});
+		this.objects = {};
+	}
+
+	addObject(key, obj){
+		if (key in obj){
+			this.objects[key].push(obj);
+		} else {
+			this.objects[key] = [obj];
+		}
 	}
 
 	init(data){

@@ -1,4 +1,4 @@
-const Entity = require('./Entity');
+const Entity = require('../Entity');
 const Meter = require('./Meter');
 const BulletContainer = require('./BulletContainer');
 
@@ -6,6 +6,7 @@ module.exports = class Player extends Entity{
 	constructor(x, y, scene){
 		super(x, y);
 		this.scene = scene;
+		this.scene.addObject('player', this);
 		this.createAnimations();
 		this.listenKeystrokes();
 		

@@ -1,4 +1,4 @@
-const Entity = require('./Entity');
+const Entity = require('../Entity');
 
 module.exports = class extends Entity{
 	constructor(meter = 0, scene){
