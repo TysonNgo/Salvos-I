@@ -1,13 +1,13 @@
 const Entity = require('./Entity');
 
-module.exports = class extends Entity{
+module.exports = class Boss extends Entity{
 	constructor(x, y, scene){
 		super(x, y);
 		this.scene = scene;
 		this.sprite = this.scene.add.sprite(this.x, this.y, 'boss')
 		this.createAnimations();
 		this.sprite.anims.play('boss_idle');
-		//this.scene.add.sprite(this.x, this.y+100, 'boss_missile')
+		//this.scene.add.sprite(this.x, this.y+140, 'boss_missile')
 	}
 
 	static loadAssets(scene){
@@ -23,7 +23,7 @@ module.exports = class extends Entity{
 			repeat: -1
 		});
 	}
-	
+
 	removeAnimations(){
 		this.scene.anims.remove('boss_idle');
 	}

@@ -1,7 +1,8 @@
 const Entity = require('./Entity');
 const Meter = require('./Meter');
+const BulletContainer = require('./BulletContainer');
 
-module.exports = class extends Entity{
+module.exports = class Player extends Entity{
 	constructor(x, y, scene){
 		super(x, y);
 		this.scene = scene;
@@ -13,11 +14,23 @@ module.exports = class extends Entity{
 		this.sprite.anims.play('player_idle');
 
 		this.meter = new Meter(0, this.scene);
+
+		this.shootSFX = this.scene.sound.add('playerShoot');
+		this.shieldSFX = this.scene.sound.add('playerShield');
+		this.dashSFX = this.scene.sound.add('playerDash');
+		this.i = 0;
+
+		this.bullets = new BulletContainer(5, this);
 	}
 
 	static loadAssets(scene){
 		scene.load.spritesheet('player', 'assets/game/player/idle.png', {frameWidth: 50, frameHeight: 50});
 		Meter.loadAssets(scene);
+		BulletContainer.loadAssets(scene);
+
+		scene.load.audio('playerShoot', ['assets/audio/playerShoot.mp3', 'assets/audio/playerShoot.ogg']);
+		scene.load.audio('playerDash', ['assets/audio/playerDash.mp3', 'assets/audio/playerDash.ogg']);
+		scene.load.audio('playerShield', ['assets/audio/playerShield.mp3', 'assets/audio/playerShield.ogg']);
 	}
 
 	createAnimations(){
@@ -39,6 +52,7 @@ module.exports = class extends Entity{
 		})
 		this.scene.input.keyboard.on('keyup', e => {
 			this.scene.game.controller.release(e.code);
+			this.i = 0;
 		})
 	}
 
@@ -49,9 +63,30 @@ module.exports = class extends Entity{
 			this.scene.game.controller.pressingButton('down') ? this.y+=3: ''
 			this.scene.game.controller.pressingButton('right') ? this.x+=3: ''
 		}
+
+		if (this.scene.game.controller.pressingButton('shoot') &&
+			this.scene.game.controller.pressingButton('shield')){
+			if (this.i === 0){
+				this.dashSFX.play();
+			}
+			this.i = (this.i + 1) % 60;
+		} else if (this.scene.game.controller.pressingButton('shoot')){
+			if (this.i === 0){
+				if (this.bullets.fire()){
+					this.shootSFX.play();
+				}
+			}
+			this.i = (this.i + 1) % 10;
+		} else if (this.scene.game.controller.pressingButton('shield')){
+			if (this.i === 0){
+				this.shieldSFX.play();
+			}
+			this.i = (this.i + 1) % 60;
+		}
 		this.sprite.x = this.x;
 		this.sprite.y = this.y;
 
 		this.meter.update();
+		this.bullets.update();
 	}
 }

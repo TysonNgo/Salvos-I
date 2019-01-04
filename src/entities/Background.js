@@ -6,7 +6,8 @@ module.exports = class {
 			this.speedlines[i] = this.scene.add.sprite(
 				Math.random() * this.scene.game.canvas.width,
 				Math.random() * this.scene.game.canvas.height,
-				'speedline')
+				'speedline');
+			this.speedlines[i].depth = -100;
 		}
 	}
 
