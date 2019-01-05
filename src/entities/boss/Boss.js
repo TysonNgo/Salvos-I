@@ -33,8 +33,6 @@ module.exports = class Boss extends Entity{
 	}
 
 	static loadAssets(scene){
-		scene.load.image('test', 'assets/game/boss/test.png');
-
 		scene.load.image('boss_missile', 'assets/game/boss/missile.png');
 		scene.load.image('boss', 'assets/game/boss/idle.png');
 		scene.load.spritesheet('boss_orb', 'assets/game/boss/orb.png', {frameWidth: 56, frameHeight: 56});

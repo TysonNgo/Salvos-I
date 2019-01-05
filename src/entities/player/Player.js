@@ -1,8 +1,12 @@
 const Entity = require('../Entity');
 const Meter = require('./Meter');
 const BulletContainer = require('./BulletContainer');
+const addDash = require('./Dash');
+const addShoot = require('./Shoot');
+const addShield = require('./Shield');
+const addSpecials = require('./Specials');
 
-module.exports = class Player extends Entity{
+class Player extends Entity{
 	constructor(x, y, scene){
 		super(x, y);
 		this.scene = scene;
@@ -19,7 +23,7 @@ module.exports = class Player extends Entity{
 		this.shootSFX = this.scene.sound.add('playerShoot');
 		this.shieldSFX = this.scene.sound.add('playerShield');
 		this.dashSFX = this.scene.sound.add('playerDash');
-		this.i = 0;
+		this.specialSFX = this.scene.sound.add('playerSpecial');
 
 		this.bullets = new BulletContainer(5, this);
 	}
@@ -33,6 +37,7 @@ module.exports = class Player extends Entity{
 		scene.load.audio('playerShoot', ['assets/audio/playerShoot.mp3', 'assets/audio/playerShoot.ogg']);
 		scene.load.audio('playerDash', ['assets/audio/playerDash.mp3', 'assets/audio/playerDash.ogg']);
 		scene.load.audio('playerShield', ['assets/audio/playerShield.mp3', 'assets/audio/playerShield.ogg']);
+		scene.load.audio('playerSpecial', ['assets/audio/playerSpecial.mp3', 'assets/audio/playerSpecial.ogg']);
 	}
 
 	createAnimations(){
@@ -54,7 +59,6 @@ module.exports = class Player extends Entity{
 		})
 		this.scene.input.keyboard.on('keyup', e => {
 			this.scene.game.controller.release(e.code);
-			this.i = 0;
 		})
 	}
 
@@ -65,26 +69,6 @@ module.exports = class Player extends Entity{
 			this.scene.game.controller.pressingButton('down') ? this.y+=3: ''
 			this.scene.game.controller.pressingButton('right') ? this.x+=3: ''
 		}
-
-		if (this.scene.game.controller.pressingButton('shoot') &&
-			this.scene.game.controller.pressingButton('shield')){
-			if (this.i === 0){
-				this.dashSFX.play();
-			}
-			this.i = (this.i + 1) % 60;
-		} else if (this.scene.game.controller.pressingButton('shoot')){
-			if (this.i === 0){
-				if (this.bullets.fire()){
-					this.shootSFX.play();
-				}
-			}
-			this.i = (this.i + 1) % 10;
-		} else if (this.scene.game.controller.pressingButton('shield')){
-			if (this.i === 0){
-				this.shieldSFX.play();
-			}
-			this.i = (this.i + 1) % 60;
-		}
 		this.sprite.x = this.x;
 		this.sprite.y = this.y;
 		this.spriteJetfire.x = this.x;
@@ -94,3 +78,10 @@ module.exports = class Player extends Entity{
 		this.bullets.update();
 	}
 }
+
+addDash(Player);
+addShoot(Player);
+addShield(Player);
+addSpecials(Player);
+
+module.exports = Player;
