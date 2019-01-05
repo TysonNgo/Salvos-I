@@ -21,6 +21,19 @@ module.exports = function(player){
 		}
 
 		if (this.shieldActive && shieldTimer > 0){
+			if (shieldTimer <= 10){
+				if (shieldTimer % 2 === 0){
+					this.spriteShield.visible = false;
+				} else {
+					this.spriteShield.visible = true;
+				}
+			} else if (shieldTimer <= 60){
+				if (shieldTimer % 5 === 0){
+					this.spriteShield.visible = false;
+				} else {
+					this.spriteShield.visible = true;
+				}
+			}
 			shieldTimer--;
 		} else {
 			this.shieldActive = false;
