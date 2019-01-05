@@ -3,7 +3,7 @@ const Meter = require('./Meter');
 
 module.exports = class Bullet extends Entity{
 	constructor(player){
-		super(player.x+1, player.y-10);
+		super(player.x+1, player.y-10, 5, 20);
 		this.player = player;
 		this.player.scene.addObject('player_bullet', this);
 		this.speed = 20;

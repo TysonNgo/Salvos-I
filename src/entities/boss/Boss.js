@@ -1,8 +1,8 @@
 const Entity = require('../Entity');
 
 module.exports = class Boss extends Entity{
-	constructor(x, y, scene){
-		super(x, y);
+	constructor(scene, x, y){
+		super(x, y, 125, 110);
 		this.scene = scene;
 		this.scene.addObject('boss', this);
 		this.createAnimations();

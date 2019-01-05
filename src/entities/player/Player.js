@@ -7,8 +7,8 @@ const addShield = require('./Shield');
 const addSpecials = require('./Specials');
 
 class Player extends Entity{
-	constructor(x, y, scene){
-		super(x, y);
+	constructor(scene, x, y){
+		super(x, y, 12, 12);
 		this.scene = scene;
 		this.scene.addObject('player', this);
 		this.createAnimations();

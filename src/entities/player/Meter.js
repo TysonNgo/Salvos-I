@@ -12,7 +12,7 @@ module.exports = class extends Entity{
 		this.scene = scene;
 
 		// graphics
-		this.width = 144;
+		this.barWidth = 144;
 
 		let meterBg = this.scene.add.sprite(this.x+69, this.y+12, 'meter', 1);
 		meterBg.depth = 99;
@@ -23,7 +23,7 @@ module.exports = class extends Entity{
 		this.graphics.depth = 100;
 
 		this.meterBarHeight = 14;
-		this.graphics.fillRect(this.x, this.y, (this.meter/this.meterMax)*this.width, this.meterBarHeight);
+		this.graphics.fillRect(this.x, this.y, (this.meter/this.meterMax)*this.barWidth, this.meterBarHeight);
 	}
 
 	static loadAssets(scene){
@@ -68,6 +68,6 @@ module.exports = class extends Entity{
 		// update graphics
 		this.graphics.clear();
 		this.graphics.fillStyle(this.getMeterColor())
-		this.graphics.fillRect(this.x, this.y, (this.meter/this.meterMax)*this.width, this.meterBarHeight);
+		this.graphics.fillRect(this.x, this.y, (this.meter/this.meterMax)*this.barWidth, this.meterBarHeight);
 	}
 }
