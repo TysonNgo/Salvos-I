@@ -2,6 +2,9 @@ const {decorate} = require('../../utils');
 
 module.exports = function(player){
 	player.prototype.shieldActive = false;
+	player.prototype.canHit = function(){
+		return !this.shieldActive;
+	}
 	let shieldTimer = 0;
 	let shieldTimerT = 120;
 	let i = 0;

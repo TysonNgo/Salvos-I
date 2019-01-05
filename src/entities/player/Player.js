@@ -13,8 +13,22 @@ class Player extends Entity{
 		this.scene.addObject('player', this);
 		this.createAnimations();
 		this.listenKeystrokes();
+		this.speed = 3;
+		this.isDashing = false;
 		
 		this.sprite = this.scene.add.sprite(this.x, this.y, 'player');
+		this.spriteAfterImages = [
+			scene.add.sprite(this.x, this.y, 'player'),
+			scene.add.sprite(this.x, this.y, 'player'),
+			scene.add.sprite(this.x, this.y, 'player')
+		]
+		this.spriteAfterImages.forEach((img, i) => {
+			img.tint = 0x3333e6;
+			img.alpha = 1 - i/this.spriteAfterImages.length;
+			img.depth = -(i+1);
+			img.visible = false;
+		})
+			
 		this.spriteShield = this.scene.add.sprite(this.x, this.y, 'player_shield');
 		this.spriteShield.visible = false;
 		this.spriteJetfire = this.scene.add.sprite(this.x, this.y, 'player_jetfire');
@@ -66,11 +80,11 @@ class Player extends Entity{
 	}
 
 	update(){
-		if (this.scene.game.controller.pressingButton()){
-			this.scene.game.controller.pressingButton('left') ? this.x-=3: ''
-			this.scene.game.controller.pressingButton('up') ? this.y-=3: ''
-			this.scene.game.controller.pressingButton('down') ? this.y+=3: ''
-			this.scene.game.controller.pressingButton('right') ? this.x+=3: ''
+		if (!this.isDashing){
+			this.scene.game.controller.pressingButton('left') ? this.x-=this.speed: ''
+			this.scene.game.controller.pressingButton('up') ? this.y-=this.speed: ''
+			this.scene.game.controller.pressingButton('down') ? this.y+=this.speed: ''
+			this.scene.game.controller.pressingButton('right') ? this.x+=this.speed: ''
 		}
 		this.sprite.x = this.x;
 		this.sprite.y = this.y;
