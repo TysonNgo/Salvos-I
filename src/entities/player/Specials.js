@@ -77,7 +77,7 @@ module.exports = function(player){
 		}
 
 		if (this.scene.game.controller.pressingButton('shoot')){
-			if (is360()){
+			if (is360() && this.meter.useBars(4)){
 				this.specialSFX.play();
 			}
 			inputBuffer.length = 0;

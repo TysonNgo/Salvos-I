@@ -15,6 +15,8 @@ class Player extends Entity{
 		this.listenKeystrokes();
 		
 		this.sprite = this.scene.add.sprite(this.x, this.y, 'player');
+		this.spriteShield = this.scene.add.sprite(this.x, this.y, 'player_shield');
+		this.spriteShield.visible = false;
 		this.spriteJetfire = this.scene.add.sprite(this.x, this.y, 'player_jetfire');
 		this.spriteJetfire.anims.play('player_jetfire_animation');
 
@@ -30,6 +32,7 @@ class Player extends Entity{
 
 	static loadAssets(scene){
 		scene.load.image('player', 'assets/game/player/idle.png');
+		scene.load.image('player_shield', 'assets/game/player/shield.png');
 		scene.load.spritesheet('player_jetfire', 'assets/game/player/jetfire.png', {frameWidth: 50, frameHeight: 50});
 		Meter.loadAssets(scene);
 		BulletContainer.loadAssets(scene);
