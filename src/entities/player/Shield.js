@@ -11,8 +11,9 @@ module.exports = function(player){
 
 	player.prototype.update = decorate(player.prototype.update, function(){
 		if (this.scene.game.controller.pressingButton('shield') &&
+			!this.scene.game.controller.buttonHeld('shield') &&
 			!this.scene.game.controller.pressingButton('shoot')){
-			if (i === 0 && this.meter.useBars(1)){
+			if (i === 3 && this.meter.useBars(1)){
 				this.shieldSFX.play();
 				this.spriteShield.visible = true;
 				this.shieldActive = true;

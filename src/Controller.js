@@ -2,6 +2,7 @@ class Key {
 	constructor(button, down){
 		this.button = button;
 		this.down = down;
+		this.held = false;
 	}
 }
 
@@ -66,6 +67,9 @@ module.exports = class Controller{
 
 	press(key){
 		if (key in this.keys){
+			if (this.keys[key].down){
+				this.keys[key].held = true;
+			}
 			this.keys[key].down = true;
 		}
 	}
@@ -73,6 +77,7 @@ module.exports = class Controller{
 	release(key){
 		if (key in this.keys){
 			this.keys[key].down = false;
+			this.keys[key].held = false;
 		}
 	}
 
@@ -87,5 +92,12 @@ module.exports = class Controller{
 			return this[button].down;
 		}
 		return Object.values(this.keys).some(k => k.down);
+	}
+
+	buttonHeld(button){
+		if (~['up', 'down', 'left', 'right', 'shoot', 'shield'].indexOf(button)){
+			return this[button].held;
+		}
+		return false;
 	}
 }

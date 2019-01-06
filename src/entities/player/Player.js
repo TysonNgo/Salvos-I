@@ -1,5 +1,6 @@
 const Entity = require('../Entity');
 const Meter = require('./Meter');
+const ClearRadius = require('./ClearRadius');
 const BulletContainer = require('./BulletContainer');
 const addDash = require('./Dash');
 const addShoot = require('./Shoot');
@@ -28,7 +29,7 @@ class Player extends Entity{
 			img.depth = -(i+1);
 			img.visible = false;
 		})
-			
+
 		this.spriteShield = this.scene.add.sprite(this.x, this.y, 'player_shield');
 		this.spriteShield.visible = false;
 		this.spriteJetfire = this.scene.add.sprite(this.x, this.y, 'player_jetfire');
@@ -42,6 +43,7 @@ class Player extends Entity{
 		this.specialSFX = this.scene.sound.add('playerSpecial');
 
 		this.bullets = new BulletContainer(5, this);
+		this.special = new ClearRadius(this);
 	}
 
 	static loadAssets(scene){
@@ -96,9 +98,9 @@ class Player extends Entity{
 	}
 }
 
-addDash(Player);
 addShoot(Player);
 addShield(Player);
+addDash(Player);
 addSpecials(Player);
 
 module.exports = Player;

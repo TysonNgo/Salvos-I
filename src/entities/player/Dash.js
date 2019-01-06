@@ -32,16 +32,16 @@ module.exports = function(player){
 			dashActive--;
 
 			if ((dirBits & up) === up){
-				this.y -= this.speed*2;
+				this.y -= this.speed*(1+dashActive/dashActiveInit);
 			}
 			if ((dirBits & down) === down){
-				this.y += this.speed*2;
+				this.y += this.speed*(1+dashActive/dashActiveInit);
 			}
 			if ((dirBits & left) === left){
-				this.x -= this.speed*2;
+				this.x -= this.speed*(1+dashActive/dashActiveInit);
 			}
 			if ((dirBits & right) === right){
-				this.x += this.speed*2;
+				this.x += this.speed*(1+dashActive/dashActiveInit);
 			}
 
 			// cosmetic dash afterimage effect
@@ -66,20 +66,26 @@ module.exports = function(player){
 			}
 		} else {
 			this.spriteAfterImages.forEach(img => {
+				img.x =  this.x;
+				img.y = this.y;
 				img.visible = false;
 			})
 		}
 		if (this.scene.game.controller.pressingButton('shoot')){
 			holdingShoot++;
-			if (this.scene.game.controller.pressingButton('shield') && holdingShoot <= 3){
+			if (this.scene.game.controller.pressingButton('shield') &&
+				!this.scene.game.controller.buttonHeld('shield') &&
+				holdingShoot <= 3){
 				if (!this.isDashing){
-					this.dashSFX.play();
 					dirBits = 0;
 					dirBits = (dirBits << 1) + this.scene.game.controller.pressingButton('up');
 					dirBits = (dirBits << 1) + this.scene.game.controller.pressingButton('down');
 					dirBits = (dirBits << 1) + this.scene.game.controller.pressingButton('left');
 					dirBits = (dirBits << 1) + this.scene.game.controller.pressingButton('right');
-					this.isDashing = true;
+					if (dirBits !== 0){
+						this.dashSFX.play();
+						this.isDashing = true;
+					}
 				}
 			}
 		} else {
