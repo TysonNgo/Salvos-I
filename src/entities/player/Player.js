@@ -52,6 +52,7 @@ class Player extends Entity{
 		scene.load.spritesheet('player_jetfire', 'assets/game/player/jetfire.png', {frameWidth: 50, frameHeight: 50});
 		Meter.loadAssets(scene);
 		BulletContainer.loadAssets(scene);
+		ClearRadius.loadAssets(scene);
 
 		scene.load.audio('playerShoot', ['assets/audio/playerShoot.mp3', 'assets/audio/playerShoot.ogg']);
 		scene.load.audio('playerDash', ['assets/audio/playerDash.mp3', 'assets/audio/playerDash.ogg']);
@@ -70,6 +71,7 @@ class Player extends Entity{
 
 	removeAnimations(){
 		this.scene.anims.remove('player_jetfire_animation');
+		this.special.removeAnimations();
 	}
 
 	listenKeystrokes(){
@@ -95,6 +97,7 @@ class Player extends Entity{
 
 		this.meter.update();
 		this.bullets.update();
+		this.special.update();
 	}
 }
 

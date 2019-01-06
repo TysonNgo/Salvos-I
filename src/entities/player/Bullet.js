@@ -10,7 +10,6 @@ module.exports = class Bullet extends Entity{
 		this.fired = false;
 
 		this.sprite = this.player.scene.add.sprite(this.x, this.y, 'player_bullet');
-		this.sprite.visible = false;
 		this.sprite.depth = -1;
 
 		this.bulletContainers = [];
@@ -26,7 +25,6 @@ module.exports = class Bullet extends Entity{
 
 	unload(){
 		this.fired = false;
-		this.sprite.visible = false;
 		for (let i = 0; i < this.bulletContainers.length; i++){
 			this.bulletContainers[i].reload(this);
 		}
@@ -37,7 +35,6 @@ module.exports = class Bullet extends Entity{
 			this.x = this.player.x+1;
 			this.y = this.player.y-10;
 			this.fired = true;
-			this.sprite.visible = true;
 		}
 	}
 
@@ -50,5 +47,6 @@ module.exports = class Bullet extends Entity{
 		}
 		this.sprite.x = this.x;
 		this.sprite.y = this.y;
+		this.sprite.visible = this.fired;
 	}
 }

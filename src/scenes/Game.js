@@ -52,8 +52,9 @@ module.exports = class extends Phaser.Scene {
 
 		this.debugFps = this.add.text(10, this.game.canvas.height-30,`${this.game.loop.actualFps.toFixed(1)} fps`,
 		{fontFamily: 'Kong Text', fill: '#000', backgroundColor: '#fff'})
+		this.debugFps.depth = 1000;
 		this.debugHitbox = this.add.graphics({lineStyle: {color : 0xff0000}});
-		this.debugHitbox.depth = 1000
+		this.debugHitbox.depth = 1000;
 	}
 
 	update(){
