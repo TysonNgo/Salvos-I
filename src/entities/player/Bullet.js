@@ -48,5 +48,11 @@ module.exports = class Bullet extends Entity{
 		this.sprite.x = this.x;
 		this.sprite.y = this.y;
 		this.sprite.visible = this.fired;
+
+		// gain meter when bullet hits boss
+		if (this.collidesWith(this.player.scene.objects.boss[0]) && this.fired){
+			this.player.meter.gainMeter(1);
+			this.unload();
+		}
 	}
 }

@@ -66,9 +66,9 @@ module.exports = function(player){
 			}
 		} else {
 			this.spriteAfterImages.forEach(img => {
+				img.visible = false;
 				img.x =  this.x;
 				img.y = this.y;
-				img.visible = false;
 			})
 		}
 		if (this.scene.game.controller.pressingButton('shoot')){

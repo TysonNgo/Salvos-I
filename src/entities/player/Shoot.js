@@ -8,7 +8,6 @@ module.exports = function(player){
 			if (i === 0){
 				if (this.bullets.fire()){
 					this.shootSFX.play();
-					this.meter.gainMeter(5);
 				}
 			}
 			i = (i + 1) % 10;
