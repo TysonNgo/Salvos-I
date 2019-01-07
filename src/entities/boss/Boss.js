@@ -1,5 +1,7 @@
 const Entity = require('../Entity');
 const Missile = require('./Missile');
+const Orb = require('./Orb');
+const Radar = require('./RadarAttack');
 
 module.exports = class Boss extends Entity{
 	constructor(scene, x, y){
@@ -13,29 +15,15 @@ module.exports = class Boss extends Entity{
 		this.spriteJetfire.anims.play('boss_jetfire_animation');
 
 		this.missile = new Missile(this);
-		/* conceptualizing boss patterns
-		this.shoot = false;
-		this.spriteOrb = this.scene.add.sprite(this.x-40, this.y+40, 'boss_orb');
-		this.spriteChargedOrb = this.scene.add.sprite(this.x+1, this.y+58, 'boss_orb');
-		this.spriteChargedOrb.anims.play('boss_charge_orb')
-		this.spriteChargedOrb.on('animationcomplete', () => {
-			this.shoot = true;
-			this.finalX = (this.scene.objects.player[0].x-this.spriteChargedOrb.x)/15
-			this.finalY = (this.scene.objects.player[0].y-this.spriteChargedOrb.y)/15
-		}, this.scene)
-
-
-		this.graphics = this.scene.add.graphics({lineStyle: {color : 0, width: 7}});
-		this.graphics.depth =  -5;
-		this.i = 0;
-		this.graphics.strokeCircle(this.x, this.y, 100)
-		*/
+		// conceptualizing boss patterns
+		this.orb = new Orb(this);
+		this.radar = new Radar(this);
 	}
 
 	static loadAssets(scene){
 		Missile.loadAssets(scene);
+		Orb.loadAssets(scene);
 		scene.load.image('boss', 'assets/game/boss/idle.png');
-		scene.load.spritesheet('boss_orb', 'assets/game/boss/orb.png', {frameWidth: 56, frameHeight: 56});
 		scene.load.spritesheet('boss_jetfire', 'assets/game/boss/jetfire.png', {frameWidth: 214, frameHeight: 191});
 	}
 
@@ -83,29 +71,12 @@ module.exports = class Boss extends Entity{
 	}
 
 	update(){
-		/*
-		if (this.spriteChargedOrb.y >= this.scene.game.canvas.height){
-			this.spriteChargedOrb.x = this.x+1;
-			this.spriteChargedOrb.y = this.y+58
-			this.spriteChargedOrb.anims.play('boss_charge_orb')
-			this.shoot = false;
-		}
-		else if (this.shoot){
-			this.spriteChargedOrb.x += this.finalX
-			this.spriteChargedOrb.y += this.finalY
-		}
-		this.graphics.clear()
-		this.graphics.strokeCircle(this.x, this.y, this.i);
-		this.graphics.alpha = this.i % 120 /120;
-		this.graphics.alpha = this.graphics.alpha >= 0.6 ? 1 : 0.2;
-		this.i = (this.i+3) % 700;
-		*/
-
 		this.spriteJetfire.x = this.x;
 		this.sprite.y = this.y;
 		this.sprite.x = this.x;
 		this.sprite.y = this.y;
 
 		this.missile.update();
+		this.radar.update();
 	}
 }

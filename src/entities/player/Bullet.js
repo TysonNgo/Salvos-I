@@ -1,5 +1,4 @@
 const Entity = require('../Entity');
-const Meter = require('./Meter');
 
 module.exports = class Bullet extends Entity{
 	constructor(player){
