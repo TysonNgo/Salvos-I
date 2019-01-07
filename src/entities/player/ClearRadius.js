@@ -92,6 +92,7 @@ module.exports = class ClearRadius extends Entity{
 				this.player.scene.objects[key].forEach(obj => {
 					if (this.collidesWith(obj) && this.active){
 						// TODO remove enemy projectiles from screen
+						obj.destroy();
 					}
 				})
 			}

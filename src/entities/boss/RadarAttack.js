@@ -22,7 +22,6 @@ module.exports = class Radar extends Entity{
 
 	changeHitboxes(){
 		this.hitboxes.length = 0;
-		if (!this.active) return;
 		let r = this.radius;
 		let pi = Math.PI;
 		let numHitboxes = Math.round(((pi*(r+this.width))**2 - (pi*r)**2))/(this.width*this.height*4);
@@ -42,6 +41,10 @@ module.exports = class Radar extends Entity{
 				})
 			}
 		}
+	}
+
+	destroy(){
+		this.active = false;
 	}
 
 	update(){

@@ -103,7 +103,7 @@ class Player extends Entity{
 		for (let key in this.scene.objects){
 			if (key.startsWith('boss')){
 				this.scene.objects[key].forEach(obj => {
-					if (this.collidesWith(obj) && !this.shieldActive){
+					if (this.collidesWith(obj) && obj.active && !this.shieldActive){
 						// TODO implement death stuff
 					}
 				})

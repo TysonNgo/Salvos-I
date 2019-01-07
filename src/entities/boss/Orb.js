@@ -25,6 +25,10 @@ module.exports = class Orb extends Entity{
 		scene.load.spritesheet('boss_orb', 'assets/game/boss/orb.png', {frameWidth: 56, frameHeight: 56});
 	}
 
+	destroy(){
+		this.active = false;
+	}
+
 	update(){
 		/*
 		if (this.spriteChargedOrb.y >= this.boss.scene.game.canvas.height){
@@ -40,5 +44,6 @@ module.exports = class Orb extends Entity{
 		*/
 		this.sprite.x = this.x;
 		this.sprite.y = this.y;
+		this.sprite.visible = this.active;
 	}
 }

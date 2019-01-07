@@ -13,10 +13,15 @@ module.exports = class Missile extends Entity{
 		scene.load.image('boss_missile', 'assets/game/boss/missile.png');
 	}
 
+	destroy(){
+		this.active = false;
+	}
+
 	update(){
 		this.x = this.boss.x;
 		this.y = this.boss.y+140;
 		this.sprite.x = this.x;
 		this.sprite.y = this.y;
+		this.sprite.visible = this.active;
 	}
 }

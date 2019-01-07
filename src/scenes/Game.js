@@ -1,6 +1,7 @@
 let Background = require('../entities/Background');
 let Boss = require('../entities/boss/Boss');
 let Player = require('../entities/player/Player');
+let Timer = require('../entities/Timer');
 
 module.exports = class extends Phaser.Scene {
 	constructor(){
@@ -36,6 +37,9 @@ module.exports = class extends Phaser.Scene {
 		if (!this.disableBackground) {
 			this.background = new Background(this);
 		}
+
+		this.timer = new Timer(this);
+
 		this.player = new Player(this, 180, 500);
 		this.boss = new Boss(this, 180, 100);
 
@@ -59,6 +63,7 @@ module.exports = class extends Phaser.Scene {
 
 	update(){
 		if (!this.disableBackground) this.background.update();
+		this.timer.update();
 		this.boss.update();
 		this.player.update();
 
