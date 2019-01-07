@@ -17,7 +17,7 @@ module.exports = class {
 
 	update(){
 		for (let i = 0; i < this.speedlines.length; i++){
-			this.speedlines[i].y += 10
+			this.speedlines[i].y += 20;
 			if (this.speedlines[i].y > (this.scene.game.canvas.height+this.speedlines[i].height)){
 				this.speedlines[i].x = Math.random() * this.scene.game.canvas.width;
 				this.speedlines[i].y = Math.random() * this.scene.game.canvas.height;
