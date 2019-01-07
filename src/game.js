@@ -25,7 +25,8 @@ const config = {
 	width: 360,
 	height: 640,
 	backgroundColor: 0xffffff,
-	scene: [MainMenu, GameScene]
+	scene: [MainMenu, GameScene],
+	disableContextMenu: true
 };
 
 const game = new Game(config);
