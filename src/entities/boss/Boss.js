@@ -1,9 +1,10 @@
 const Entity = require('../Entity');
+const trapInBounds = require('../trapInBounds');
 const Missile = require('./Missile');
 const Orb = require('./Orb');
 const Radar = require('./RadarAttack');
 
-module.exports = class Boss extends Entity{
+class Boss extends Entity{
 	constructor(scene, x, y){
 		super(x, y, 125, 110);
 		this.scene = scene;
@@ -80,3 +81,7 @@ module.exports = class Boss extends Entity{
 		this.radar.update();
 	}
 }
+
+trapInBounds(Boss);
+
+module.exports = Boss;

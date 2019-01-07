@@ -1,4 +1,5 @@
 const Entity = require('../Entity');
+const trapInBounds = require('../trapInBounds');
 const Meter = require('./Meter');
 const ClearRadius = require('./ClearRadius');
 const BulletContainer = require('./BulletContainer');
@@ -115,5 +116,6 @@ addShoot(Player);
 addShield(Player);
 addDash(Player);
 addSpecials(Player);
+trapInBounds(Player);
 
 module.exports = Player;
