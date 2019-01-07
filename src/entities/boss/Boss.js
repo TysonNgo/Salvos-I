@@ -59,6 +59,10 @@ module.exports = class Boss extends Entity{
 		this.scene.anims.remove('boss_charge_orb');
 	}
 
+	hit(){
+		
+	}
+
 	update(){
 		/*
 		if (this.spriteChargedOrb.y >= this.scene.game.canvas.height){

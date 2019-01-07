@@ -44,5 +44,15 @@ module.exports = class ClearRadius extends Entity{
 		this.sprite.x = this.x;
 		this.sprite.y = this.y;
 		this.sprite.visible = this.active;
+
+		for (let key in this.player.scene.objects){
+			if (key.startsWith('boss_')){
+				this.player.scene.objects[key].forEach(obj => {
+					if (this.collidesWith(obj)){
+						console.log(key)
+					}
+				})
+			}
+		}
 	}
 }
