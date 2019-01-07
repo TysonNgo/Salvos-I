@@ -39,6 +39,25 @@ module.exports = class Boss extends Entity{
 		scene.load.spritesheet('boss_jetfire', 'assets/game/boss/jetfire.png', {frameWidth: 214, frameHeight: 191});
 	}
 
+	addHitboxes(){
+		this.hitboxes.push({
+			x: -30.5,
+			y: -59,
+			width: 65,
+			height: 110
+		},{
+			x: -59.5,
+			y: -19,
+			width: 123,
+			height: 62
+		},{
+			x: -70.5,
+			y: 23,
+			width: 145,
+			height: 13
+		})
+	}
+
 	createAnimations(){
 		this.scene.anims.create({
 			key: 'boss_jetfire_animation',
@@ -60,7 +79,7 @@ module.exports = class Boss extends Entity{
 	}
 
 	hit(){
-		
+
 	}
 
 	update(){
