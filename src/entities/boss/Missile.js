@@ -7,10 +7,28 @@ module.exports = class Missile extends Entity{
 		this.boss.scene.addObject('boss_missile', this);
 
 		this.sprite = this.boss.scene.add.sprite(this.x, this.y, 'boss_missile');
+
+		this.createAnimations();
+		this.spriteFire = this.boss.scene.add.sprite(this.x, this.y, 'boss_missile_fire');
+		this.spriteFire.play('boss_missile_fire_animation');
 	}
 
 	static loadAssets(scene){
 		scene.load.image('boss_missile', 'assets/game/boss/missile.png');
+		scene.load.spritesheet('boss_missile_fire', 'assets/game/boss/missile_fire.png', {frameWidth: 38, frameHeight: 140});
+	}
+
+	createAnimations(){
+		this.boss.scene.anims.create({
+			key: 'boss_missile_fire_animation',
+			frames: this.boss.scene.anims.generateFrameNumbers('boss_missile_fire', {start: 0, end: 3}),
+			frameRate: 8,
+			repeat: -1
+		});
+	}
+
+	removeAnimations(){
+		this.boss.scene.anims.remove('boss_missile_fire_animation');
 	}
 
 	destroy(){
@@ -22,6 +40,9 @@ module.exports = class Missile extends Entity{
 		this.y = this.boss.y+140;
 		this.sprite.x = this.x;
 		this.sprite.y = this.y;
+		this.spriteFire.x = this.x;
+		this.spriteFire.y = this.y-38;
 		this.sprite.visible = this.active;
+		this.spriteFire.visible = this.active;
 	}
 }

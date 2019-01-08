@@ -14,6 +14,8 @@ class Boss extends Entity{
 		this.sprite = this.scene.add.sprite(this.x, this.y, 'boss');
 		this.spriteJetfire = this.scene.add.sprite(this.x, this.y, 'boss_jetfire');
 		this.spriteJetfire.anims.play('boss_jetfire_animation');
+		this.spriteTeleport = this.scene.add.sprite(this.x, this.y, 'boss_teleport');
+		this.spriteTeleport.anims.play('boss_teleport_animation');
 
 		this.missile = new Missile(this);
 		// conceptualizing boss patterns
@@ -26,6 +28,7 @@ class Boss extends Entity{
 		Orb.loadAssets(scene);
 		scene.load.image('boss', 'assets/game/boss/idle.png');
 		scene.load.spritesheet('boss_jetfire', 'assets/game/boss/jetfire.png', {frameWidth: 214, frameHeight: 191});
+		scene.load.spritesheet('boss_teleport', 'assets/game/boss/teleport.png', {frameWidth: 214, frameHeight: 191});
 	}
 
 	addHitboxes(){
@@ -60,11 +63,18 @@ class Boss extends Entity{
 			frames: this.scene.anims.generateFrameNumbers('boss_orb', {start: 0, end: 5}),
 			frameRate: 5,
 		});
+
+		this.scene.anims.create({
+			key: 'boss_teleport_animation',
+			frames: this.scene.anims.generateFrameNumbers('boss_teleport', {start: 0, end: 2}),
+			frameRate: 8,
+		});
 	}
 
 	removeAnimations(){
 		this.scene.anims.remove('boss_jetfire_animation');
 		this.scene.anims.remove('boss_charge_orb');
+		this.missile.removeAnimations();
 	}
 
 	hit(){
@@ -73,7 +83,7 @@ class Boss extends Entity{
 
 	update(){
 		this.spriteJetfire.x = this.x;
-		this.sprite.y = this.y;
+		this.spriteJetfire.y = this.y;
 		this.sprite.x = this.x;
 		this.sprite.y = this.y;
 

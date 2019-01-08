@@ -6,7 +6,7 @@ module.exports = class Bullet extends Entity{
 		this.player = player;
 		this.player.scene.addObject('player_bullet', this);
 		this.speed = 20;
-		this.fired = false;
+		this.active = false;
 
 		this.sprite = this.player.scene.add.sprite(this.x, this.y, 'player_bullet');
 		this.sprite.depth = -1;
@@ -23,33 +23,33 @@ module.exports = class Bullet extends Entity{
 	}
 
 	unload(){
-		this.fired = false;
+		this.active = false;
 		for (let i = 0; i < this.bulletContainers.length; i++){
 			this.bulletContainers[i].reload(this);
 		}
 	}
 
 	fire(){
-		if (!this.fired){
+		if (!this.active){
 			this.x = this.player.x+1;
 			this.y = this.player.y-10;
-			this.fired = true;
+			this.active = true;
 		}
 	}
 
 	update(){
-		if (this.y <= -this.sprite.height && this.fired){
+		if (this.y <= -this.sprite.height && this.active){
 			this.unload();
 		} 
-		if (this.fired){
+		if (this.active){
 			this.y -= this.speed;
 		}
 		this.sprite.x = this.x;
 		this.sprite.y = this.y;
-		this.sprite.visible = this.fired;
+		this.sprite.visible = this.active;
 
 		// gain meter when bullet hits boss
-		if (this.collidesWith(this.player.scene.objects.boss[0]) && this.fired){
+		if (this.collidesWith(this.player.scene.objects.boss[0]) && this.active){
 			this.player.scene.objects.boss[0].hit();
 			this.player.meter.gainMeter(25);
 			this.unload();

@@ -70,13 +70,15 @@ module.exports = class extends Phaser.Scene {
 		this.debugHitbox.clear();
 		for (let k in this.objects){
 			this.objects[k].forEach(o => {
-				if (!o.height){
+				if (!o.height && o.active){
 					this.debugHitbox.lineStyle(1, 0x006600)
 					this.debugHitbox.strokeCircle(o.x, o.y, o.radius);
 				}
 				o.hitboxes.forEach(h => {
-					this.debugHitbox.lineStyle(1, 0xff0000)
-					this.debugHitbox.strokeRect(o.x+h.x, o.y+h.y, h.width, h.height);
+					if (o.active){
+						this.debugHitbox.lineStyle(1, 0xff0000)
+						this.debugHitbox.strokeRect(o.x+h.x, o.y+h.y, h.width, h.height);
+					}
 				})
 			})
 		}
