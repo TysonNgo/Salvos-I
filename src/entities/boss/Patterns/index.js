@@ -11,7 +11,7 @@ const Teleport2Player = require('./Teleport');
 const SlowMove = require('./SlowMove');
 const FastMove = require('./FastMove');
 const Retreat = require('./Retreat');
-const SineMove = require('./Pattern');
+const SineMove = require('./SineMove');
 
 // tackle patterns
 const VTackle = require('./Pattern');
@@ -33,6 +33,7 @@ module.exports = class Patterns {
 			new SlowMove(this.boss),
 			new FastMove(this.boss),
 			new Retreat(this.boss),
+			new SineMove(this.boss),
 		];
 	}
 

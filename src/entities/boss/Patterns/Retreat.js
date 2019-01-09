@@ -6,7 +6,7 @@ module.exports = class Retreat extends Pattern {
 	}
 
 	update(){
-		// returns
+		// retreats to the top of the screen
 		let defaultUpdate = this._update;
 
 		let x = this.boss.x;

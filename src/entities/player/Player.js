@@ -92,6 +92,13 @@ class Player extends Entity{
 		//   - retry/main menu button
 	}
 
+	updateSprite(){
+		this.sprite.x = this.x;
+		this.sprite.y = this.y;
+		this.spriteJetfire.x = this.x;
+		this.spriteJetfire.y = this.y;
+	}
+
 	update(){
 		if (!this.isDashing){
 			this.scene.game.controller.pressingButton('left') ? this.x-=this.speed: ''
@@ -99,10 +106,7 @@ class Player extends Entity{
 			this.scene.game.controller.pressingButton('down') ? this.y+=this.speed: ''
 			this.scene.game.controller.pressingButton('right') ? this.x+=this.speed: ''
 		}
-		this.sprite.x = this.x;
-		this.sprite.y = this.y;
-		this.spriteJetfire.x = this.x;
-		this.spriteJetfire.y = this.y;
+		this.updateSprite();
 
 		this.meter.update();
 		this.bullets.update();

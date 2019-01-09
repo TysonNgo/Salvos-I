@@ -16,7 +16,6 @@ module.exports = function(entity){
 			this.y = this.scene.game.canvas.height-h;
 		}
 
-		this.sprite.x = this.x;
-		this.sprite.y = this.y;
+		this.updateSprite();
 	})
 }
