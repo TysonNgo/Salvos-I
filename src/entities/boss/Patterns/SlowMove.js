@@ -9,10 +9,10 @@ module.exports = class SlowMove extends Pattern {
 		// move to a point within some radius
 		let defaultUpdate = this._update;
 		let rad = this.boss.random()*2*Math.PI;
-		let radius = Math.floor(this.boss.random()*75+25);
+		let radius = Math.floor(this.boss.random()*75+50);
 		let x = Math.cos(rad)*radius;
 		let y = Math.sin(rad)*radius;
-		let d = 2;
+		let d = 1;
 		let dunit = d;
 		let m = ((d**2)/(x**2 + y**2)) ** 0.5
 
