@@ -48,7 +48,7 @@ module.exports = class Teleport extends Pattern {
 					this.y = Math.floor(this.scene.objects.player[0].y - Math.sin(rad)*200);
 				}
 
-				this.updateSprite();
+				defaultUpdate.call(this);
 				moveBoss = false;
 				bossReappear = true;
 				return;

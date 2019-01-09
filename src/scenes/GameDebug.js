@@ -29,9 +29,10 @@ module.exports = function(GameScene){
 
 	GameScene.prototype.create = decorate(GameScene.prototype.create, function(){
 		window.debug._boss = this.boss;
+		debugForm.innerHTML += '<h5>BOSS PATTERNS</h5>'
 		this.boss.patterns.patterns.forEach((p, i) => {
 			debugForm.innerHTML += `
-				<div id=${i} onclick=(function(e){window.debug._boss.patterns.patterns[e.id].exec()})(this)>Pattern ${i}</div>
+				<div id=${i} onclick=(function(e){window.debug._boss.patterns.patterns[e.id].exec()})(this)>${window.debug._boss.patterns.patterns[i].constructor.name}</div>
 			`
 		})
 		this.input.keyboard.on('keydown', e => {

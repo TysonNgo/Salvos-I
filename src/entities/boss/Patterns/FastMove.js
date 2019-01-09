@@ -42,6 +42,7 @@ module.exports = class FastMove extends Pattern {
 				}
 				this.x += (finX-x) / steps;
 				this.y += (finY-y) / steps;
+				defaultUpdate.call(this);
 			} else {
 				if (i % 4 === 0){
 					this.x = x + Math.floor((this.random() > 0.5 ? 1 : -1) * this.random()*10);
@@ -54,9 +55,9 @@ module.exports = class FastMove extends Pattern {
 					move = true;
 					i = 0;
 				}
+				this.updateSprite();
 			}
 			i++;
-			defaultUpdate.call(this);
 		}
 	}
 }
