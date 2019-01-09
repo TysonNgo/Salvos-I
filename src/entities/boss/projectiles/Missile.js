@@ -1,4 +1,4 @@
-const Entity = require('../Entity');
+const Entity = require('../../Entity');
 
 module.exports = class Missile extends Entity{
 	constructor(boss){
@@ -18,17 +18,17 @@ module.exports = class Missile extends Entity{
 		scene.load.spritesheet('boss_missile_fire', 'assets/game/boss/missile_fire.png', {frameWidth: 38, frameHeight: 140});
 	}
 
-	createAnimations(){
-		this.boss.scene.anims.create({
+	static createAnimations(scene){
+		scene.anims.create({
 			key: 'boss_missile_fire_animation',
-			frames: this.boss.scene.anims.generateFrameNumbers('boss_missile_fire', {start: 0, end: 3}),
+			frames: scene.anims.generateFrameNumbers('boss_missile_fire', {start: 0, end: 3}),
 			frameRate: 8,
 			repeat: -1
 		});
 	}
 
-	removeAnimations(){
-		this.boss.scene.anims.remove('boss_missile_fire_animation');
+	static removeAnimations(scene){
+		scene.anims.remove('boss_missile_fire_animation');
 	}
 
 	destroy(){

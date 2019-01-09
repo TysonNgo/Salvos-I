@@ -1,4 +1,4 @@
-const Entity = require('../Entity');
+const Entity = require('../../Entity');
 
 module.exports = class Radar extends Entity{
 	constructor(boss){

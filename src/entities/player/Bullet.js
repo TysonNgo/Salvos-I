@@ -49,7 +49,9 @@ module.exports = class Bullet extends Entity{
 		this.sprite.visible = this.active;
 
 		// gain meter when bullet hits boss
-		if (this.collidesWith(this.player.scene.objects.boss[0]) && this.active){
+		if (this.player.scene.objects.boss &&
+			this.collidesWith(this.player.scene.objects.boss[0]) &&
+			this.active){
 			this.player.scene.objects.boss[0].hit();
 			if (this.player.shieldActive){
 				this.player.meter.gainMeter(0.5);

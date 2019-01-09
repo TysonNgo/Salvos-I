@@ -1,34 +1,25 @@
 const Entity = require('../Entity');
 const trapInBounds = require('../trapInBounds');
-const Missile = require('./Missile');
-const Orb = require('./Orb');
-const Radar = require('./RadarAttack');
+const Patterns = require('./Patterns');
 
 class Boss extends Entity{
 	constructor(scene, x, y){
 		super(x, y, 125, 110);
 		this.scene = scene;
 		this.scene.addObject('boss', this);
+
 		this.createAnimations();
+		this.patterns = new Patterns(this);
 
 		this.sprite = this.scene.add.sprite(this.x, this.y, 'boss');
 		this.spriteJetfire = this.scene.add.sprite(this.x, this.y, 'boss_jetfire');
 		this.spriteJetfire.anims.play('boss_jetfire_animation');
-		this.spriteTeleport = this.scene.add.sprite(this.x, this.y, 'boss_teleport');
-		this.spriteTeleport.anims.play('boss_teleport_animation');
-
-		this.missile = new Missile(this);
-		// conceptualizing boss patterns
-		this.orb = new Orb(this);
-		this.radar = new Radar(this);
 	}
 
 	static loadAssets(scene){
-		Missile.loadAssets(scene);
-		Orb.loadAssets(scene);
+		Patterns.loadAssets(scene);
 		scene.load.spritesheet('boss', 'assets/game/boss/boss.png', {frameWidth: 214, frameHeight: 191});
 		scene.load.spritesheet('boss_jetfire', 'assets/game/boss/jetfire.png', {frameWidth: 214, frameHeight: 191});
-		scene.load.spritesheet('boss_teleport', 'assets/game/boss/teleport.png', {frameWidth: 214, frameHeight: 191});
 	}
 
 	addHitboxes(){
@@ -51,6 +42,8 @@ class Boss extends Entity{
 	}
 
 	createAnimations(){
+		Patterns.createAnimations(this.scene);
+
 		this.scene.anims.create({
 			key: 'boss_hit_animation',
 			frames: this.scene.anims.generateFrameNumbers('boss', {start: 0, end: 2}),
@@ -64,25 +57,17 @@ class Boss extends Entity{
 			frameRate: 8,
 			repeat: -1
 		});
+	}
 
-		this.scene.anims.create({
-			key: 'boss_charge_orb',
-			frames: this.scene.anims.generateFrameNumbers('boss_orb', {start: 0, end: 5}),
-			frameRate: 5,
-		});
-
-		this.scene.anims.create({
-			key: 'boss_teleport_animation',
-			frames: this.scene.anims.generateFrameNumbers('boss_teleport', {start: 0, end: 2}),
-			frameRate: 8,
-		});
+	random(){
+		// implement a deterministic random function
+		return Math.random()
 	}
 
 	removeAnimations(){
-		this.scene.anims.remove('boss_jetfire_animation');
-		this.scene.anims.remove('boss_charge_orb');
+		Patterns.removeAnimations(this.scene);
 		this.scene.anims.remove('boss_hit_animation');
-		this.missile.removeAnimations();
+		this.scene.anims.remove('boss_jetfire_animation');
 	}
 
 	hit(){
@@ -96,9 +81,6 @@ class Boss extends Entity{
 		this.spriteJetfire.y = this.y;
 		this.sprite.x = this.x;
 		this.sprite.y = this.y;
-
-		this.missile.update();
-		this.radar.update();
 	}
 }
 

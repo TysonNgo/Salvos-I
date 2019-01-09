@@ -1,4 +1,4 @@
-const Entity = require('../Entity');
+const Entity = require('../../Entity');
 
 module.exports = class Orb extends Entity{
 	constructor(boss){
@@ -23,6 +23,18 @@ module.exports = class Orb extends Entity{
 
 	static loadAssets(scene){
 		scene.load.spritesheet('boss_orb', 'assets/game/boss/orb.png', {frameWidth: 56, frameHeight: 56});
+	}
+
+	static createAnimations(scene){
+		scene.anims.create({
+			key: 'boss_charge_orb',
+			frames: scene.anims.generateFrameNumbers('boss_orb', {start: 0, end: 5}),
+			frameRate: 5,
+		});
+	}
+
+	static removeAnimations(scene){
+		scene.anims.remove('boss_charge_orb');
 	}
 
 	destroy(){

@@ -25,7 +25,9 @@ for (let k in window.debug){
 document.body.appendChild(debugForm);
 
 module.exports = function(GameScene){
+
 	GameScene.prototype.create = decorate(GameScene.prototype.create, function(){
+		window.debug._boss = this.boss;
 		this.input.keyboard.on('keydown', e => {
 			if (e.code === 'Backquote'){
 				this.player.removeAnimations();
