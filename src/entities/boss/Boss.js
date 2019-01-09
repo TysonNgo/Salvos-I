@@ -76,11 +76,18 @@ class Boss extends Entity{
 		}
 	}
 
-	update(){
+	updateSprite(){
+		this.spriteJetfire.visible = this.active;
+		this.sprite.visible = this.active;
+
 		this.spriteJetfire.x = this.x;
 		this.spriteJetfire.y = this.y;
 		this.sprite.x = this.x;
 		this.sprite.y = this.y;
+	}
+
+	update(){
+		this.updateSprite();
 	}
 }
 
