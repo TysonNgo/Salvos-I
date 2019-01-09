@@ -28,6 +28,7 @@ const TwinMissile = require('./Pattern');
 module.exports = class Patterns {
 	constructor(boss){
 		this.boss = boss;
+		this.canExec = true;
 		this.patterns = [
 			new Teleport2Player(this.boss),
 			new SlowMove(this.boss),
@@ -35,6 +36,10 @@ module.exports = class Patterns {
 			new Retreat(this.boss),
 			new SineMove(this.boss),
 		];
+	}
+
+	finish(){
+		this.canExec = true;
 	}
 
 	static loadAssets(scene){
@@ -56,6 +61,9 @@ module.exports = class Patterns {
 	}
 
 	exec(){
-
+		if (this.canExec){
+			this.patterns[Math.floor(Math.random()*this.patterns.length)].exec();
+			this.canExec = false;
+		}
 	}
 }

@@ -23,6 +23,7 @@ module.exports = class Retreat extends Pattern {
 				this.x = Math.round(backX);
 				this.y = Math.round(backY);
 				this.update = defaultUpdate;
+				this.patterns.finish();
 				return;
 			}
 

@@ -29,6 +29,7 @@ module.exports = class SineMove extends Pattern {
 				this.x = Math.round(this.x);
 				this.y = Math.round(this.y);
 				this.update = defaultUpdate;
+				this.patterns.finish();
 				return;
 			}
 

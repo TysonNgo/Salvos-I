@@ -13,6 +13,7 @@ module.exports = class Teleport extends Pattern {
 		let moveBoss = false;
 		let bossReappear = false;
 		let done = false;
+		let i = 0;
 
 		this.teleport.active = true;
 		this.teleport.sprite.anims.play('boss_teleport_animation')
@@ -25,7 +26,13 @@ module.exports = class Teleport extends Pattern {
 		
 		return function(){
 			if (done){
-				this.update = defaultUpdate;
+				if (i >= 30){
+					this.update = defaultUpdate;
+					this.patterns.finish();
+				}
+				i++;
+				this.updateSprite();
+				return;
 			}
 
 			if (moveBoss){

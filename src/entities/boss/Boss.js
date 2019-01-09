@@ -88,6 +88,7 @@ class Boss extends Entity{
 
 	update(){
 		this.updateSprite();
+		this.patterns.exec();
 	}
 }
 

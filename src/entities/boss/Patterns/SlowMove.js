@@ -24,6 +24,7 @@ module.exports = class SlowMove extends Pattern {
 				this.x = Math.round(this.x);
 				this.y = Math.round(this.y);
 				this.update = defaultUpdate;
+				this.patterns.finish();
 				return;
 			}
 			this.x += x;
