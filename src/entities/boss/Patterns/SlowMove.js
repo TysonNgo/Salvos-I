@@ -1,12 +1,12 @@
 const Pattern = require('./Pattern');
-const teleport = require('../projectiles/Teleport');
 
-module.exports = class Teleport extends Pattern {
+module.exports = class SlowMove extends Pattern {
 	constructor(boss){
 		super(boss);
 	}
 
 	update(){
+		// move to a point within some radius
 		let defaultUpdate = this._update;
 		let rad = this.boss.random()*2*Math.PI;
 		let radius = Math.floor(this.boss.random()*75+25);
