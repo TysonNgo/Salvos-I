@@ -84,6 +84,14 @@ class Player extends Entity{
 		})
 	}
 
+	hit(){
+		// TODO
+		// death animation
+		// final "score" menu containing:
+		//   - final time
+		//   - retry/main menu button
+	}
+
 	update(){
 		if (!this.isDashing){
 			this.scene.game.controller.pressingButton('left') ? this.x-=this.speed: ''
@@ -100,11 +108,14 @@ class Player extends Entity{
 		this.bullets.update();
 		this.special.update();
 
+		// player dies if touched by the boss
+		// or its projectiles unless the player
+		// has a shield active
 		for (let key in this.scene.objects){
 			if (key.startsWith('boss')){
 				this.scene.objects[key].forEach(obj => {
 					if (this.collidesWith(obj) && obj.active && !this.shieldActive){
-						// TODO implement death stuff
+						this.hit();
 					}
 				})
 			}

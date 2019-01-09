@@ -1,4 +1,27 @@
 const { decorate } = require('../utils');
+const Player = require('../entities/player/Player');
+
+window.debug = {
+	showHitboxes: true,
+	showFPS: true,
+	infiniteMeter: true,
+	invincible: true,
+	_playerHit: Player.prototype.hit
+}
+
+// html menu to toggle various flags
+let debugForm = document.createElement('form');
+debugForm.innerHTML = '';
+debugForm.style.position = 'fixed'
+for (let k in window.debug){
+	if (k.startsWith('_')) continue;
+	debugForm.innerHTML += `
+	<label style='display:block'>
+		<input id='${k}' type='checkbox' ${window.debug[k]? 'checked': ''}
+		onclick = '(function(e){window.debug[e.id] = e.checked})(this)' />
+	${k}<label>`
+}
+document.body.appendChild(debugForm);
 
 module.exports = function(GameScene){
 	GameScene.prototype.create = decorate(GameScene.prototype.create, function(){
@@ -11,7 +34,7 @@ module.exports = function(GameScene){
 			}
 		})
 
-		this.debugFps = this.add.text(10, this.game.canvas.height-30,`${this.game.loop.actualFps.toFixed(1)} fps`,
+		this.debugFps = this.add.text(10, this.game.canvas.height-30,'',
 		{fontFamily: 'Kong Text', fill: '#000', backgroundColor: '#fff'})
 		this.debugFps.depth = 1000;
 		this.debugHitbox = this.add.graphics({lineStyle: {color : 0xff0000}});
@@ -20,21 +43,37 @@ module.exports = function(GameScene){
 
 	GameScene.prototype.update = decorate(GameScene.prototype.update, function(){
 		this.debugHitbox.clear();
-		for (let k in this.objects){
-			this.objects[k].forEach(o => {
-				if (!o.height && o.active){
-					this.debugHitbox.lineStyle(1, 0x006600)
-					this.debugHitbox.strokeCircle(o.x, o.y, o.radius);
-				}
-				o.hitboxes.forEach(h => {
-					if (o.active){
-						this.debugHitbox.lineStyle(1, 0xff0000)
-						this.debugHitbox.strokeRect(o.x+h.x, o.y+h.y, h.width, h.height);
+		if (window.debug.showHitboxes){
+			for (let k in this.objects){
+				this.objects[k].forEach(o => {
+					if (!o.height && o.active){
+						this.debugHitbox.lineStyle(1, 0x006600)
+						this.debugHitbox.strokeCircle(o.x, o.y, o.radius);
 					}
+					o.hitboxes.forEach(h => {
+						if (o.active){
+							this.debugHitbox.lineStyle(1, 0xff0000)
+							this.debugHitbox.strokeRect(o.x+h.x, o.y+h.y, h.width, h.height);
+						}
+					})
 				})
-			})
+			}
 		}
 
-		this.debugFps.setText(this.game.loop.actualFps.toFixed(1))
+		if (window.debug.showFPS){
+			this.debugFps.setText(this.game.loop.actualFps.toFixed(1))
+		} else {
+			this.debugFps.setText('');
+		}
+
+		if (window.debug.infiniteMeter){
+			this.player.meter.gainMeter(100)
+		}
+
+		if (window.debug.invincible){
+			this.player.hit = function(){};
+		} else {
+			this.player.hit = window.debug._playerHit;
+		}
 	})
 }
