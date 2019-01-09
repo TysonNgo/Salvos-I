@@ -8,7 +8,7 @@ const Teleport2Player = require('./Teleport');
 
 // TODO
 // movement patterns
-const SlowMove = require('./Pattern');
+const SlowMove = require('./SlowMove');
 const FastMove = require('./Pattern');
 const SineMove = require('./Pattern');
 const ResetPosition = require('./Pattern');
@@ -29,7 +29,8 @@ module.exports = class Patterns {
 	constructor(boss){
 		this.boss = boss;
 		this.patterns = [
-			new Teleport2Player(this.boss)
+			new Teleport2Player(this.boss),
+			new SlowMove(this.boss),
 		];
 	}
 

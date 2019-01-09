@@ -1,7 +1,11 @@
 module.exports = class Pattern {
 	constructor(boss){
 		this.boss = boss;
+		this._update = this.boss.update;
 	}
 
-	exec(){}
+	update(){}
+	exec(){
+		this.boss.update = this.update();
+	}
 }

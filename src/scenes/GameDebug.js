@@ -11,6 +11,7 @@ window.debug = {
 
 // html menu to toggle various flags
 let debugForm = document.createElement('form');
+debugForm.id = 'debugForm'
 debugForm.innerHTML = '';
 debugForm.style.position = 'fixed'
 debugForm.style.background = 'rgba(255,255,255,0.85)'
@@ -28,6 +29,11 @@ module.exports = function(GameScene){
 
 	GameScene.prototype.create = decorate(GameScene.prototype.create, function(){
 		window.debug._boss = this.boss;
+		this.boss.patterns.patterns.forEach((p, i) => {
+			debugForm.innerHTML += `
+				<div id=${i} onclick=(function(e){window.debug._boss.patterns.patterns[e.id].exec()})(this)>Pattern ${i}</div>
+			`
+		})
 		this.input.keyboard.on('keydown', e => {
 			if (e.code === 'Backquote'){
 				this.player.removeAnimations();

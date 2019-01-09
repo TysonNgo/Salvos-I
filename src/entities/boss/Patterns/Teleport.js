@@ -4,14 +4,12 @@ const teleport = require('../projectiles/Teleport');
 module.exports = class Teleport extends Pattern {
 	constructor(boss){
 		super(boss);
-		this._update = this.boss.update;
 		this.teleport = new teleport(this.boss);
 	}
 
 	update(){
 		let teleport = this.teleport;
 		let defaultUpdate = this._update;
-		let i = 0;
 		let moveBoss = false;
 		let bossReappear = false;
 		let done = false;
@@ -60,9 +58,5 @@ module.exports = class Teleport extends Pattern {
 
 			teleport.update();
 		}
-	}
-
-	exec(){
-		this.boss.update = this.update();
 	}
 }
