@@ -20,6 +20,9 @@ class Game extends Phaser.Game{
 	}
 }
 
+const GameSceneDebug = require('./scenes/GameDebug');
+GameSceneDebug(GameScene);
+
 const config = {
 	type: Phaser.AUTO,
 	width: 360,
