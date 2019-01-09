@@ -13,6 +13,7 @@ window.debug = {
 let debugForm = document.createElement('form');
 debugForm.innerHTML = '';
 debugForm.style.position = 'fixed'
+debugForm.style.background = 'rgba(255,255,255,0.85)'
 for (let k in window.debug){
 	if (k.startsWith('_')) continue;
 	debugForm.innerHTML += `

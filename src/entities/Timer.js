@@ -4,12 +4,12 @@ module.exports = class Timer {
 		this.frames = 0;
 
 		this.text = this.scene.add.text(this.scene.game.canvas.width-41, 30, '',
-		{fontFamily: 'Kong Text', fill: '#444', backgroundColor: 'rgba(255,255,255,0.5)'})
+		{fontFamily: 'Kong Text', fill: '#000', backgroundColor: 'rgba(255,255,255,0.5)'})
 		this.text.setOrigin(1);
 		this.text.depth = 1000;
 
 		this.textMM = this.scene.add.text(this.scene.game.canvas.width-5, 30, '.00',
-		{fontFamily: 'Kong Text', fill: '#444', fontSize: '12px', backgroundColor: 'rgba(255,255,255,0.5)'})
+		{fontFamily: 'Kong Text', fill: '#000', fontSize: '12px', backgroundColor: 'rgba(255,255,255,0.5)'})
 		this.textMM.setOrigin(1);
 		this.textMM.depth = 1000;
 	}

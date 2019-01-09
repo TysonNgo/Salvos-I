@@ -26,7 +26,7 @@ class Boss extends Entity{
 	static loadAssets(scene){
 		Missile.loadAssets(scene);
 		Orb.loadAssets(scene);
-		scene.load.image('boss', 'assets/game/boss/idle.png');
+		scene.load.spritesheet('boss', 'assets/game/boss/boss.png', {frameWidth: 214, frameHeight: 191});
 		scene.load.spritesheet('boss_jetfire', 'assets/game/boss/jetfire.png', {frameWidth: 214, frameHeight: 191});
 		scene.load.spritesheet('boss_teleport', 'assets/game/boss/teleport.png', {frameWidth: 214, frameHeight: 191});
 	}
@@ -52,6 +52,13 @@ class Boss extends Entity{
 
 	createAnimations(){
 		this.scene.anims.create({
+			key: 'boss_hit_animation',
+			frames: this.scene.anims.generateFrameNumbers('boss', {start: 0, end: 2}),
+			frameRate: 12,
+			yoyo: true
+		});
+
+		this.scene.anims.create({
 			key: 'boss_jetfire_animation',
 			frames: this.scene.anims.generateFrameNumbers('boss_jetfire', {start: 0, end: 3}),
 			frameRate: 8,
@@ -74,11 +81,14 @@ class Boss extends Entity{
 	removeAnimations(){
 		this.scene.anims.remove('boss_jetfire_animation');
 		this.scene.anims.remove('boss_charge_orb');
+		this.scene.anims.remove('boss_hit_animation');
 		this.missile.removeAnimations();
 	}
 
 	hit(){
-
+		if (!this.sprite.anims.isPlaying){
+			this.sprite.anims.play('boss_hit_animation');
+		}
 	}
 
 	update(){
