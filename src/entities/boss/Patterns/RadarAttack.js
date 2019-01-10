@@ -15,9 +15,15 @@ module.exports = class RadarAttack extends Pattern {
 			radar.y = this.boss.y;
 		}
 
+		let i = 0;
+
 		return function(){
-			this.update = defaultUpdate;
-			this.patterns.finish();
+			if (i >= 30){
+				this.update = defaultUpdate;
+				this.patterns.finish();
+			}
+			defaultUpdate.call(this);
+			i++;
 		}
 	}
 }
