@@ -8,11 +8,11 @@ module.exports = class Radar extends Entity{
 
 		this.speed = 3;
 		this.active = false;
+		this.start = false;
 
 		this.graphics = this.boss.scene.add.graphics({lineStyle: {color : 0, width: 7}});
 		this.graphics.depth =  -5;
 		this.radius = 0;
-		this.graphics.strokeCircle(this.x, this.y, 100);
 
 		this.i = 0;
 		this.interval = 60;
@@ -45,29 +45,33 @@ module.exports = class Radar extends Entity{
 
 	destroy(){
 		this.active = false;
+		this.graphics.clear();
 	}
 
 	update(){
 		this.graphics.clear();
-		this.changeHitboxes();
-		this.graphics.strokeCircle(this.x, this.y, this.radius);
 
-		let alpha = this.i % this.interval / this.interval;
-		if (alpha >= 0.6){
-			this.active = true;
-			this.graphics.alpha = 1;
-		} else {
-			this.active = false;
-			this.graphics.alpha = 0.2;
-		}
-		this.i++;
-		this.changeHitboxes();
-		if (this.radius <= 700){
-			this.radius += this.speed;
-		} else {
-			this.radius = 0;
-			this.speed = Math.random()*4+1;
-			this.i = Math.random()*60+60;
+		if (this.start){
+			this.graphics.strokeCircle(this.x, this.y, this.radius);
+			let alpha = this.i % this.interval / this.interval;
+			if (alpha >= 0.6){
+				this.active = true;
+				this.graphics.alpha = 1;
+			} else {
+				this.active = false;
+				this.graphics.alpha = 0.2;
+			}
+			this.i++;
+			this.changeHitboxes();
+			if (this.radius <= 700){
+				this.radius += this.speed;
+			} else {
+				this.start = false;
+				this.radius = 0;
+				this.speed = this.boss.random()*4+1;
+				this.i = this.boss.random()*60+60;
+				return true;
+			}
 		}
 	}
 }
