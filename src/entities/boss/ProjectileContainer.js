@@ -10,9 +10,16 @@ module.exports = class ProjectileContainer {
 		}
 	}
 
-	get(){
+	get(n=0){
 		if (this.availableProjectiles.length === 0) return false;
-		return this.availableProjectiles.pop();
+		if (n === 0) return this.availableProjectiles.pop();
+
+		if (this.availableProjectiles.length % n !== 0) return false;
+		let result = [];
+		for (let i = 0; i < n; i++){
+			result.push(this.availableProjectiles.pop());
+		}
+		return result;
 	}
 
 	reload(projectile){

@@ -6,10 +6,16 @@ module.exports = class Missile extends Entity{
 		this.boss = boss;
 		this.boss.scene.addObject('boss_missile', this);
 
+		this.active = false;
+		this.fired = false;
+
 		this.sprite = this.boss.scene.add.sprite(this.x, this.y, 'boss_missile');
 
 		this.spriteFire = this.boss.scene.add.sprite(this.x, this.y, 'boss_missile_fire');
 		this.spriteFire.play('boss_missile_fire_animation');
+
+		this.sprite.depth =  -1;
+		this.spriteFire.depth =  -1;
 	
 		this.container = [];
 	}
@@ -41,8 +47,12 @@ module.exports = class Missile extends Entity{
 	}
 
 	update(){
-		this.x = this.boss.x;
-		this.y = this.boss.y+140;
+		if (this.fired){
+			this.y += this.boss.random()*10+10;
+		} else {
+			this.x = this.boss.x;
+			this.y = this.boss.y;
+		}
 		this.sprite.x = this.x;
 		this.sprite.y = this.y;
 		this.spriteFire.x = this.x;

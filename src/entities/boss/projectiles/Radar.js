@@ -52,6 +52,17 @@ module.exports = class Radar extends Entity{
 	destroy(){
 		this.active = false;
 		this.graphics.clear();
+		this.stop();
+	}
+
+	stop(){
+		for (let i = 0; i < this.container.length; i++){
+			this.container[i].reload(this);
+		}
+		this.start = false;
+		this.radius = 0;
+		this.speed = this.boss.random()*4+1;
+		this.i = this.boss.random()*60+60;
 	}
 
 	update(){
@@ -72,13 +83,7 @@ module.exports = class Radar extends Entity{
 			if (this.radius <= 700){
 				this.radius += this.speed;
 			} else {
-				for (let i = 0; i < this.container.length; i++){
-					this.container[i].reload(this);
-				}
-				this.start = false;
-				this.radius = 0;
-				this.speed = this.boss.random()*4+1;
-				this.i = this.boss.random()*60+60;
+				this.stop();
 				return true;
 			}
 		}
