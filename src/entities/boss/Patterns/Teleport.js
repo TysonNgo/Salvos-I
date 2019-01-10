@@ -25,6 +25,7 @@ module.exports = class Teleport extends Pattern {
 		}, this.teleport.sprite)
 		
 		return function(){
+			this.updateProjectiles();
 			if (done){
 				if (i >= 30){
 					this.update = defaultUpdate;

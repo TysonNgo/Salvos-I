@@ -28,6 +28,7 @@ module.exports = class FastMove extends Pattern {
 		let steps = 10;
 
 		return function(){
+			this.updateProjectiles();
 			if (done){
 				this.x = Math.round(this.x);
 				this.y = Math.round(this.y);
@@ -42,7 +43,8 @@ module.exports = class FastMove extends Pattern {
 				}
 				this.x += (finX-x) / steps;
 				this.y += (finY-y) / steps;
-				defaultUpdate.call(this);
+				
+				this.updateSprite();
 			} else {
 				if (i % 4 === 0){
 					this.x = x + Math.floor((this.random() > 0.5 ? 1 : -1) * this.random()*10);

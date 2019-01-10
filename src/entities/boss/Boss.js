@@ -1,6 +1,7 @@
 const Entity = require('../Entity');
 const trapInBounds = require('../trapInBounds');
 const Patterns = require('./Patterns');
+const Radar = require('./projectiles/Radar');
 
 class Boss extends Entity{
 	constructor(scene, x, y){
@@ -14,6 +15,12 @@ class Boss extends Entity{
 		this.sprite = this.scene.add.sprite(this.x, this.y, 'boss');
 		this.spriteJetfire = this.scene.add.sprite(this.x, this.y, 'boss_jetfire');
 		this.spriteJetfire.anims.play('boss_jetfire_animation');
+
+		this.radars = [
+			new Radar(this),
+			new Radar(this),
+			new Radar(this)
+		]
 	}
 
 	static loadAssets(scene){
@@ -86,9 +93,14 @@ class Boss extends Entity{
 		this.sprite.y = this.y;
 	}
 
+	updateProjectiles(){
+		this.radars.forEach(r => r.update());
+	}
+
 	update(){
 		this.updateSprite();
 		this.patterns.exec();
+		this.updateProjectiles();
 	}
 }
 
