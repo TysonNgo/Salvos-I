@@ -8,9 +8,14 @@ module.exports = class Missile extends Entity{
 
 		this.sprite = this.boss.scene.add.sprite(this.x, this.y, 'boss_missile');
 
-		this.createAnimations();
 		this.spriteFire = this.boss.scene.add.sprite(this.x, this.y, 'boss_missile_fire');
 		this.spriteFire.play('boss_missile_fire_animation');
+	
+		this.container = [];
+	}
+
+	addContainer(container){
+		this.container.push(container);
 	}
 
 	static loadAssets(scene){

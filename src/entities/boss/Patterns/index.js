@@ -20,7 +20,7 @@ const TrackTackle = require('./Pattern');
 
 // projectile patterns
 const SpiralOrb = require('./Pattern');
-const ChargeOrb = require('./Pattern');
+const ChargedOrb = require('./ChargedOrb');
 const RadarAttack = require('./RadarAttack');
 const TripleMissile = require('./Pattern');
 const TwinMissile = require('./Pattern');
@@ -36,6 +36,7 @@ module.exports = class Patterns {
 			new Retreat(this.boss),
 			new SineMove(this.boss),
 			new RadarAttack(this.boss),
+			new ChargedOrb(this.boss),
 		];
 	}
 

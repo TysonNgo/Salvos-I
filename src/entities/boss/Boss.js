@@ -2,6 +2,9 @@ const Entity = require('../Entity');
 const trapInBounds = require('../trapInBounds');
 const Patterns = require('./Patterns');
 const Radar = require('./projectiles/Radar');
+const Orb = require('./projectiles/Orb');
+const Missile = require('./projectiles/Missile');
+const ProjectileContainer = require('./ProjectileContainer');
 
 class Boss extends Entity{
 	constructor(scene, x, y){
@@ -16,11 +19,10 @@ class Boss extends Entity{
 		this.spriteJetfire = this.scene.add.sprite(this.x, this.y, 'boss_jetfire');
 		this.spriteJetfire.anims.play('boss_jetfire_animation');
 
-		this.radars = [
-			new Radar(this),
-			new Radar(this),
-			new Radar(this)
-		]
+		this.chargedOrb = new Orb(this);
+		this.radars = new ProjectileContainer(this, Radar, 3);
+		this.orbs = new ProjectileContainer(this, Radar, 16*5*3);
+		this.missiles = new ProjectileContainer(this, Missile, 3);;
 	}
 
 	static loadAssets(scene){
@@ -95,6 +97,9 @@ class Boss extends Entity{
 
 	updateProjectiles(){
 		this.radars.forEach(r => r.update());
+		this.orbs.forEach(r => r.update());
+		this.chargedOrb.update();
+		this.missiles.forEach(r => r.update());
 	}
 
 	update(){

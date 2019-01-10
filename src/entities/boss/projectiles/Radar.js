@@ -16,6 +16,12 @@ module.exports = class Radar extends Entity{
 
 		this.i = 0;
 		this.interval = 60;
+
+		this.container = [];
+	}
+
+	addContainer(container){
+		this.container.push(container);
 	}
 
 	addHitboxes(){}
@@ -66,6 +72,9 @@ module.exports = class Radar extends Entity{
 			if (this.radius <= 700){
 				this.radius += this.speed;
 			} else {
+				for (let i = 0; i < this.container.length; i++){
+					this.container[i].reload(this);
+				}
 				this.start = false;
 				this.radius = 0;
 				this.speed = this.boss.random()*4+1;

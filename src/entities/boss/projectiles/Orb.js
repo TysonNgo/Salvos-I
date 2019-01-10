@@ -6,19 +6,23 @@ module.exports = class Orb extends Entity{
 		this.boss = boss;
 		this.boss.scene.addObject('boss_orb', this);
 
+		this.active = false;
 		this.shoot = false;
 
 		this.y += 80;
 		this.sprite = this.boss.scene.add.sprite(this.x, this.y, 'boss_orb');
-		/*
-		this.spriteChargedOrb = this.scene.add.sprite(this.x+1, this.y+58, 'boss_orb');
-		this.spriteChargedOrb.anims.play('boss_charge_orb')
-		this.spriteChargedOrb.on('animationcomplete', () => {
+		
+		this.sprite.on('animationcomplete', () => {
 			this.shoot = true;
-			this.finalX = (this.scene.objects.player[0].x-this.spriteChargedOrb.x)/15
-			this.finalY = (this.scene.objects.player[0].y-this.spriteChargedOrb.y)/15
+			this.finalX = (this.boss.scene.objects.player[0].x-this.x)/15
+			this.finalY = (this.boss.scene.objects.player[0].y-this.y)/15
 		}, this.scene)
-		*/
+		
+		this.container = [];
+	}
+
+	addContainer(container){
+		this.container.push(container);
 	}
 
 	static loadAssets(scene){
@@ -41,19 +45,65 @@ module.exports = class Orb extends Entity{
 		this.active = false;
 	}
 
+	chargeAndShoot(){
+		this.active = true;
+		this.sprite.anims.play('boss_charge_orb');
+	}
+
+	updateHitbox(){
+		let hitbox = this.hitboxes[0];
+		let width, height;
+
+		switch(this.sprite.frame.name){
+			case 0: 
+				width = 6;
+				height = 6;
+				break;
+			case 1:
+				width = 9;
+				height = 9;
+				break;
+			case 2:
+				width = 12;
+				height = 12;
+				break;
+			case 3:
+				width = 16;
+				height = 16;
+				break;
+			case 4:
+				width = 20;
+				height = 20;
+				break;
+			case 5:
+				width = 25;
+				height = 25;
+				break;
+		}
+
+		hitbox.x = -width/2;
+		hitbox.y = -height/2;
+		hitbox.width = width;
+		hitbox.height = height;
+	}
+
 	update(){
-		/*
-		if (this.spriteChargedOrb.y >= this.boss.scene.game.canvas.height){
-			this.spriteChargedOrb.x = this.x+1;
-			this.spriteChargedOrb.y = this.y+58
-			this.spriteChargedOrb.anims.play('boss_charge_orb')
+		if (this.y < 0 ||
+			this.y >= this.boss.scene.game.canvas.height ||
+			this.x >= this.boss.scene.game.canvas.width ||
+			this.x < 0){
 			this.shoot = false;
+			this.active = false;
+			this.sprite.setFrame(0);
+			for (let i = 0; i < this.container.length; i++){
+				this.container[i].reload(this);
+			}
 		}
 		else if (this.shoot){
-			this.spriteChargedOrb.x += this.finalX
-			this.spriteChargedOrb.y += this.finalY
+			this.x += this.finalX
+			this.y += this.finalY
 		}
-		*/
+		this.updateHitbox();
 		this.sprite.x = this.x;
 		this.sprite.y = this.y;
 		this.sprite.visible = this.active;

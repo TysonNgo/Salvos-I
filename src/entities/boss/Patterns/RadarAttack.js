@@ -8,16 +8,16 @@ module.exports = class RadarAttack extends Pattern {
 
 	update(){
 		let defaultUpdate = this._update;
-		if (!this.boss.radars[0].start){
-			this.boss.radars[0].start = true;
-			this.boss.radars[0].x = this.boss.x;
-			this.boss.radars[0].y = this.boss.y;
+		let radar = this.boss.radars.get();
+		if (radar && !radar.start){
+			radar.start = true;
+			radar.x = this.boss.x;
+			radar.y = this.boss.y;
 		}
 
 		return function(){
 			this.update = defaultUpdate;
 			this.patterns.finish();
-			
 		}
 	}
 }
