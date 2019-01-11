@@ -19,9 +19,9 @@ class Boss extends Entity{
 		this.spriteJetfire = this.scene.add.sprite(this.x, this.y, 'boss_jetfire');
 		this.spriteJetfire.anims.play('boss_jetfire_animation');
 
-		this.chargedOrb = new Orb(this);
+		this.chargedOrb = new ProjectileContainer(this, Orb, 3);
+		this.orbs = new ProjectileContainer(this, Orb, 16*5*3);
 		this.radars = new ProjectileContainer(this, Radar, 3);
-		this.orbs = new ProjectileContainer(this, Radar, 16*5*3);
 		this.twinMissiles = new ProjectileContainer(this, Missile, 2*3);;
 		this.tripleMissiles = new ProjectileContainer(this, Missile, 3*3);;
 	}
@@ -99,15 +99,15 @@ class Boss extends Entity{
 	updateProjectiles(){
 		this.radars.forEach(r => r.update());
 		this.orbs.forEach(r => r.update());
-		this.chargedOrb.update();
+		this.chargedOrb.forEach(r => r.update());
 		this.twinMissiles.forEach(r => r.update());
 		this.tripleMissiles.forEach(r => r.update());
 	}
 
 	update(){
 		this.updateSprite();
-		this.patterns.exec();
 		this.updateProjectiles();
+		this.patterns.exec();
 	}
 }
 

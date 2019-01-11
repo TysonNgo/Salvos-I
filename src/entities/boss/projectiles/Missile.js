@@ -9,6 +9,8 @@ module.exports = class Missile extends Entity{
 		this.active = false;
 		this.fired = false;
 
+		this.setSpeed();
+
 		this.sprite = this.boss.scene.add.sprite(this.x, this.y, 'boss_missile');
 
 		this.spriteFire = this.boss.scene.add.sprite(this.x, this.y, 'boss_missile_fire');
@@ -43,15 +45,29 @@ module.exports = class Missile extends Entity{
 	}
 
 	destroy(){
+		this.reload();
 		this.active = false;
+		this.fired = false;
+		this.y = 0;
+	}
+
+	reload(){
+		for (let i = 0; i < this.container.length; i++){
+			this.container[i].reload(this);
+		}
+	}
+
+	setSpeed(){
+		this.speed = this.boss.random()*10+10;
 	}
 
 	update(){
 		if (this.fired){
-			this.y += this.boss.random()*10+10;
-		} else {
-			this.x = this.boss.x;
-			this.y = this.boss.y;
+			this.y += this.speed;
+			
+			if (this.y >= (this.boss.scene.game.canvas.height + this.height)){
+				this.destroy();
+			}
 		}
 		this.sprite.x = this.x;
 		this.sprite.y = this.y;

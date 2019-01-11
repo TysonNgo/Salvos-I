@@ -8,14 +8,16 @@ module.exports = class ChargedOrb extends Pattern {
 	update(){
 		let defaultUpdate = this._update;
 
-		let orb = this.boss.chargedOrb;
-		orb.x = this.boss.x + 1;
-		orb.y = this.boss.y + 58;
-		orb.chargeAndShoot();
+		let orb = this.boss.chargedOrb.get();
+		if (orb){
+			orb.x = this.boss.x + 1;
+			orb.y = this.boss.y + 58;
+			orb.chargeAndShoot();
+		}
 
 		return function(){
 			this.updateProjectiles();
-			if (orb.shoot){
+			if (!orb || orb.shoot){
 				this.update = defaultUpdate;
 				this.patterns.finish();
 			} else {

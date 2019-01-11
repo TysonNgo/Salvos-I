@@ -47,7 +47,10 @@ module.exports = function(GameScene){
 		this.debugFps = this.add.text(10, this.game.canvas.height-30,'',
 		{fontFamily: 'Kong Text', fill: '#000', backgroundColor: '#fff'})
 		this.debugFps.depth = 1000;
-		this.debugHitbox = this.add.graphics({lineStyle: {color : 0xff0000}});
+		this.debugHitbox = this.add.graphics({
+			lineStyle: {color : 0xff0000},
+			fillStyle: {color: 0xff0000, alpha: 0.2}
+		});
 		this.debugHitbox.depth = 1000;
 	})
 
@@ -64,6 +67,7 @@ module.exports = function(GameScene){
 						if (o.active){
 							this.debugHitbox.lineStyle(1, 0xff0000)
 							this.debugHitbox.strokeRect(o.x+h.x, o.y+h.y, h.width, h.height);
+							this.debugHitbox.fillRect(o.x+h.x, o.y+h.y, h.width, h.height);
 						}
 					})
 				})

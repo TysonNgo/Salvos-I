@@ -13,6 +13,8 @@ module.exports = class TwinMissiles extends Pattern {
 		if (missiles){
 			missiles.forEach(m => {
 				m.active = true;
+				m.x = this.boss.x;
+				m.y = this.boss.y;
 			})
 
 			m1 = missiles[0];
@@ -22,15 +24,21 @@ module.exports = class TwinMissiles extends Pattern {
 		let i = 0;
 
 		return function(){
-			if (i >= 60){
-				if (m1 && m2){
-					m1.fired = true;
-					m2.fired = true;
-				}
+			defaultUpdate.call(this);
+			if (i >= 30 || !missiles){
 				this.update = defaultUpdate;
 				this.patterns.finish();
+				return;
+			}else if (i >= 25){
+				m1.fired = true;
+				m2.fired = true;
+				m1.speed = m2.speed;
+			} else{
+				m1.x -= 2;
+				m1.y -= 2;
+				m2.x += 2;
+				m2.y = m1.y;
 			}
-			this.updateProjectiles();
 			i++;
 		}
 	}
