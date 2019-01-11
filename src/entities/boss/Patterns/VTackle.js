@@ -21,7 +21,7 @@ module.exports = class USweep extends Pattern {
 			height: this.boss.height
 		}]
 
-		let minY = 235;
+		let i = 0;
 
 		return function(){
 			if (done){
@@ -30,16 +30,9 @@ module.exports = class USweep extends Pattern {
 				return;
 			}
 			switch(step){
-				case 0:
-					if (this.y > minY){
-						step++;
-					} else {
-						done = true;
-					}
-					break;
-				case 1: // go up out of screen
+				case 0: // go up out of screen
 					if (this.y > -this.height){
-						this.y -= slowSpeed*2;
+						this.y -= slowSpeed;
 					} else {
 						this.hitboxes = hitbox;
 						this.y = -fastSpeed;
@@ -47,21 +40,21 @@ module.exports = class USweep extends Pattern {
 						step++;
 					}
 					break;
-				case 2: // go down out to bottom of screen
+				case 1: // go down out to bottom of screen
 					this.y += fastSpeed;
 					if (this.y >= this.scene.game.canvas.height-fastSpeed){
 						this.y = this.scene.game.canvas.height - this.height/2;
 						step++;
 					}
 					break;
-				case 3: // go left to side of screen
+				case 2: // go left to side of screen
 					this.x -= fastSpeed;
 					if (this.x <= this.width/2){
 						step++;
 					}
 					this.setRotation(90)
 					break;
-				case 4: // go up out of screen
+				case 3: // go up out of screen
 					this.y -= fastSpeed;
 					if (this.y <= -this.height){
 						this.x = this.scene.game.canvas.width/2;
@@ -70,7 +63,7 @@ module.exports = class USweep extends Pattern {
 					}
 					this.setRotation(180)
 					break;
-				case 5: // ease into 1/4 from the the top of the screen
+				case 4: // ease into 1/4 from the the top of the screen
 					if (this.y < this.scene.game.canvas.height/4){
 						this.y += slowSpeed;
 					} else {
