@@ -21,13 +21,10 @@ module.exports = class USweep extends Pattern {
 			height: this.boss.height
 		}]
 
-		this.boss.hitboxes = hitbox;
-
 		let i = 0;
 
 		return function(){
 			if (done){
-				this.hitboxes = defaultHitbox;
 				this.update = defaultUpdate;
 				this.patterns.finish();
 				return;
@@ -37,6 +34,7 @@ module.exports = class USweep extends Pattern {
 					if (this.y > -this.height){
 						this.y -= slowSpeed;
 					} else {
+						this.hitboxes = hitbox;
 						this.y = -fastSpeed;
 						this.x = this.scene.game.canvas.width - this.width/2;
 						step++;
@@ -60,6 +58,7 @@ module.exports = class USweep extends Pattern {
 					this.y -= fastSpeed;
 					if (this.y <= -this.height){
 						this.x = this.scene.game.canvas.width/2;
+						this.hitboxes = defaultHitbox;
 						step++;
 					}
 					this.setRotation(180)
