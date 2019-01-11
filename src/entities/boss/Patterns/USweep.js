@@ -10,7 +10,7 @@ module.exports = class USweep extends Pattern {
 
 		let done = false;
 		let step = 0;
-		let slowSpeed = 8;
+		let slowSpeed = 6;
 		let fastSpeed = 25;
 
 		let defaultHitbox = this.boss.hitboxes;
@@ -39,7 +39,7 @@ module.exports = class USweep extends Pattern {
 					break;
 				case 1: // go up out of screen
 					if (this.y > -this.height){
-						this.y -= slowSpeed*2;
+						this.y -= slowSpeed;
 					} else {
 						this.hitboxes = hitbox;
 						this.y = -fastSpeed;
