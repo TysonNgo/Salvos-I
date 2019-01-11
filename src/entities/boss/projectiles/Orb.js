@@ -100,8 +100,12 @@ module.exports = class Orb extends Entity{
 			}
 		}
 		else if (this.shoot){
-			this.x += this.finalX
-			this.y += this.finalY
+			if (this.sprite.frame.name === 5){
+				this.x += this.finalX
+				this.y += this.finalY
+			} else {
+				this.destroy();
+			}
 		}
 		this.updateHitbox();
 		this.sprite.x = this.x;
