@@ -34,6 +34,11 @@ class Boss extends Entity{
 		scene.load.spritesheet('boss_jetfire', 'assets/game/boss/jetfire.png', {frameWidth: 214, frameHeight: 191});
 	}
 
+	setRotation(deg){
+		this.sprite.angle = deg;
+		this.spriteJetfire.angle = deg;
+	}
+
 	addHitboxes(){
 		this.hitboxes.push({
 			x: -30.5,

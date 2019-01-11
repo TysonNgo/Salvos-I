@@ -15,7 +15,7 @@ const SineMove = require('./SineMove');
 
 // tackle patterns
 const VTackle = require('./Pattern');
-const USweep = require('./Pattern');
+const USweep = require('./USweep');
 const TrackTackle = require('./Pattern');
 
 // projectile patterns
@@ -39,6 +39,7 @@ module.exports = class Patterns {
 			new ChargedOrb(this.boss),
 			new SlowMissile(this.boss),
 			new TwinMissiles(this.boss),
+			new USweep(this.boss),
 		];
 	}
 
