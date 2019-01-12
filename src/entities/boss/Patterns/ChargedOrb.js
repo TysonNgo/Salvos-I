@@ -12,11 +12,14 @@ module.exports = class ChargedOrb extends Pattern {
 		if (orb && !orb.shoot){
 			orb.x = this.boss.x + 1;
 			orb.y = this.boss.y + 58;
-			if (orb.y >= this.boss.scene.game.canvas.height){
-				this.boss.patterns.finish();
-				return defaultUpdate;
-			}
+
 			orb.chargeAndShoot();
+		}
+
+		if (orb && orb.y >= this.boss.scene.game.canvas.height){
+			this.boss.patterns.finish();
+			console.log(this.boss.patterns.canExec)
+			return defaultUpdate;
 		}
 
 		return function(){

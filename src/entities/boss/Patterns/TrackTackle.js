@@ -5,8 +5,9 @@ module.exports = class TrackTackle extends Pattern {
 		super(boss);
 		this._hit = boss.hit;
 		this.graphics = boss.scene.add.graphics({
-			lineStyle: {color: 0, width: 5}
+			lineStyle: {color: 0x555555, width: 5}
 		});
+		this.graphics.depth = -5;
 	}
 
 	update(){

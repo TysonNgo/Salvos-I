@@ -67,12 +67,18 @@ module.exports = class Patterns {
 	}
 
 	exec(){
+		console.log(this.canExec)
 		if (this.canExec){
+			this.canExec = false;
 			let rn = Math.floor(Math.random()*this.patterns.length);
 			this.patterns[rn].exec();
 			console.log(this.patterns[rn].constructor.name)
+			if (this.patterns[rn].constructor.name in window.debug._patterns){
+				window.debug._patterns[this.patterns[rn].constructor.name]++
+			} else {
+				window.debug._patterns[this.patterns[rn].constructor.name] = 1;
+			}
 			//this.patterns[1].exec();
-			this.canExec = false;
 		}
 	}
 }
