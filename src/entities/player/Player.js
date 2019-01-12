@@ -42,13 +42,14 @@ class Player extends Entity{
 		this.shieldSFX = this.scene.sound.add('playerShield');
 		this.dashSFX = this.scene.sound.add('playerDash');
 		this.specialSFX = this.scene.sound.add('playerSpecial');
+		this.deathSFX = this.scene.sound.add('playerDeath');
 
 		this.bullets = new BulletContainer(5, this);
 		this.special = new ClearRadius(this);
 	}
 
 	static loadAssets(scene){
-		scene.load.image('player', 'assets/game/player/idle.png');
+		scene.load.spritesheet('player', 'assets/game/player/player.png', {frameWidth: 50, frameHeight: 50});
 		scene.load.image('player_shield', 'assets/game/player/shield.png');
 		scene.load.spritesheet('player_jetfire', 'assets/game/player/jetfire.png', {frameWidth: 50, frameHeight: 50});
 		Meter.loadAssets(scene);
@@ -59,9 +60,16 @@ class Player extends Entity{
 		scene.load.audio('playerDash', ['assets/audio/playerDash.mp3', 'assets/audio/playerDash.ogg']);
 		scene.load.audio('playerShield', ['assets/audio/playerShield.mp3', 'assets/audio/playerShield.ogg']);
 		scene.load.audio('playerSpecial', ['assets/audio/playerSpecial.mp3', 'assets/audio/playerSpecial.ogg']);
+		scene.load.audio('playerDeath', ['assets/audio/playerDeath.mp3', 'assets/audio/playerDeath.ogg']);
 	}
 
 	createAnimations(){
+		this.scene.anims.create({
+			key: 'player_death_animation',
+			frames: this.scene.anims.generateFrameNumbers('player', {start: 0, end: 13}),
+			frameRate: 30
+		});
+
 		this.scene.anims.create({
 			key: 'player_jetfire_animation',
 			frames: this.scene.anims.generateFrameNumbers('player_jetfire', {start: 0, end: 4}),
@@ -78,6 +86,7 @@ class Player extends Entity{
 	}
 
 	removeAnimations(){
+		this.scene.anims.remove('player_death_animation');
 		this.scene.anims.remove('player_jetfire_animation');
 		this.scene.anims.remove('menuCursorAnimation');
 		this.special.removeAnimations();
@@ -94,6 +103,13 @@ class Player extends Entity{
 
 	hit(){
 		this.scene.timer.stop();
+		this.sprite.anims.play('player_death_animation');
+		this.deathSFX.play();
+		this.sprite.on('animationcomplete', function(){
+			this.visible = false;
+		}, this.sprite)
+		this.spriteJetfire.destroy();
+		this.spriteAfterImages.forEach(s => s.destroy());
 
 		let menu = this.scene.add.sprite(this.scene.game.canvas.width/2, this.scene.game.canvas.height/2, 'menuBox')
 
@@ -142,35 +158,40 @@ class Player extends Entity{
 
 		let option = 0;
 		let i = 0;
+		let j = 0;
 		let changeScene = false;
 
 		this.update = function(){
-			if (this.scene.game.controller.pressingButton('up')){
-				if (i === 0){
-					option = +!option;
-					this.scene.menuSelect.play();
+			if (j >= 60){
+				if (this.scene.game.controller.pressingButton('up')){
+					if (i === 0){
+						option = +!option;
+						this.scene.menuSelect.play();
+					}
+					i = (i+1) % 10;
+				} else if (this.scene.game.controller.pressingButton('down')){
+					if (i === 0){
+						option = +!option;
+						this.scene.menuSelect.play();
+					}
+					i = (i+1) % 10;
 				}
-				i = (i+1) % 10;
-			} else if (this.scene.game.controller.pressingButton('down')){
-				if (i === 0){
-					option = +!option;
-					this.scene.menuSelect.play();
-				}
-				i = (i+1) % 10;
-			}
 
-			if (this.scene.game.controller.pressingButton('shoot')){
-				this.scene.player.removeAnimations();
-				this.scene.boss.removeAnimations();
-				this.scene.destroyObjects();
-				if (option === 0 && !changeScene){
-					this.scene.scene.start('Game');
-				} else if (option === 1 && !changeScene){
-					this.scene.scene.start('MainMenu');
+				if (this.scene.game.controller.pressingButton('shoot')){
+					this.scene.player.removeAnimations();
+					this.scene.boss.removeAnimations();
+					this.scene.destroyObjects();
+					if (option === 0 && !changeScene){
+						this.scene.menuClick.play();
+						this.scene.scene.start('Game');
+					} else if (option === 1 && !changeScene){
+						this.scene.menuClick.play();
+						this.scene.scene.start('MainMenu');
+					}
+					changeScene = true;
 				}
-				changeScene = true;
 			}
-
+			j++;
 			cursor.y = [retry[1], mainmenu[1]][option]+37;
 			this.meter.update();
 			this.bullets.update();
