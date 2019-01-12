@@ -152,7 +152,7 @@ class Player extends Entity{
 		// TODO
 
 		this.scene.add.text(centerX, retry[1]+37, 'RETRY', buttonStyle).setOrigin(0.5);
-		this.scene.add.text(centerX, mainmenu[1]+37, 'Main Menu', buttonStyle).setOrigin(0.5);
+		this.scene.add.text(centerX, mainmenu[1]+37, 'MAIN MENU', buttonStyle).setOrigin(0.5);
 
 		cursor.y = retry[1]+37;
 
