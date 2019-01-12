@@ -16,7 +16,10 @@ module.exports = class TrackTackle extends Pattern {
 		let graphics = this.graphics;
 		let player = this.boss.scene.objects.player;
 
-		if (!player) return defaultUpdate;
+		if (!player){
+			this.boss.patterns.finish();
+			return defaultUpdate;
+		}
 		player = player[0];
 
 		this.boss.hit = function(){
