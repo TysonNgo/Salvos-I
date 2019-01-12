@@ -29,11 +29,21 @@ module.exports = class extends Phaser.Scene {
 
 	preload(){
 		if (!this.disableBackground) Background.loadAssets(this);
+		this.load.image('menuBox', 'assets/menu/menuBox.png');
+		this.load.spritesheet('menuCursor', 'assets/menu/menuCursor.png', {frameWidth: 280, frameHeight: 27});
+
+		this.load.audio('menuSelect', ['assets/audio/menuSelect.mp3', 'assets/audio/menuSelect.ogg']);
+		this.load.audio('menuBack', ['assets/audio/menuBack.mp3', 'assets/audio/menuBack.ogg']);
+		this.load.audio('menuClick', ['assets/audio/menuClick.mp3', 'assets/audio/menuClick.ogg']);
 		Boss.loadAssets(this);
 		Player.loadAssets(this);
 	}
 
 	create(){
+		this.menuSelect = this.sound.add('menuSelect');
+		this.menuBack = this.sound.add('menuBack');
+		this.menuClick = this.sound.add('menuClick');
+
 		if (!this.disableBackground) {
 			this.background = new Background(this);
 		}

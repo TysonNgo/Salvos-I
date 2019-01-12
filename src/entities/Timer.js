@@ -2,6 +2,7 @@ module.exports = class Timer {
 	constructor(scene){
 		this.scene = scene;
 		this.frames = 0;
+		this._stop = false;
 
 		this.text = this.scene.add.text(this.scene.game.canvas.width-41, 30, '',
 		{fontFamily: 'Kong Text', fill: '#000', backgroundColor: 'rgba(255,255,255,0.5)'})
@@ -31,10 +32,18 @@ module.exports = class Timer {
 		}
 	}
 
+	stop(){
+		this._stop = true;
+		this.text.alpha = 0.3
+		this.textMM.alpha = 0.3
+	}
+
 	update(){
-		this.frames++;
-		let {h, m, s, mm} = this.getHHMMSS()
-		this.text.setText(`${h}:${m}:${s}`)
-		this.textMM.setText(mm)
+		if (!this._stop){
+			this.frames++;
+			let {h, m, s, mm} = this.getHHMMSS()
+			this.text.setText(`${h}:${m}:${s}`)
+			this.textMM.setText(mm)
+		}
 	}
 }

@@ -68,10 +68,18 @@ class Player extends Entity{
 			frameRate: 8,
 			repeat: -1
 		});
+
+		this.scene.anims.create({
+			key: 'menuCursorAnimation',
+			frames: this.scene.anims.generateFrameNumbers('menuCursor', {start: 0, end: 2}),
+			frameRate: 6,
+			repeat: -1
+		});
 	}
 
 	removeAnimations(){
 		this.scene.anims.remove('player_jetfire_animation');
+		this.scene.anims.remove('menuCursorAnimation');
 		this.special.removeAnimations();
 	}
 
@@ -85,11 +93,89 @@ class Player extends Entity{
 	}
 
 	hit(){
+		this.scene.timer.stop();
+
+		let menu = this.scene.add.sprite(this.scene.game.canvas.width/2, this.scene.game.canvas.height/2, 'menuBox')
+
+		// to draw boxes
+		let graphics = this.scene.add.graphics({
+			lineStyle: {color: 0},
+			fillStyle: {color: 0xffffff}
+		})
+		let cursor = this.scene.add.sprite(this.scene.game.canvas.width/2, 0, 'menuCursor');
+		cursor.anims.play('menuCursorAnimation');
+
+		let buttonStyle = {
+			fontFamily: 'Kong Text',
+			fill: '#000',
+			backgroundColor: '#fff'
+		}
+
+		// retry/main menu buttons
+		let width = 190;
+		let height = 75;
+		let centerX = this.scene.game.canvas.width/2;
+		let x = centerX - width/2;
+		let retry = [x, 308, width, height];
+		let mainmenu = [x, 390, width, height];
+		graphics.strokeRect(...retry);
+		graphics.fillRect(...retry);
+		graphics.strokeRect(...mainmenu);
+		graphics.fillRect(...mainmenu);
+
+		// time achieved
+		let time = this.scene.timer.getHHMMSS();
+		this.scene.add.text(centerX, 185, `Time achieved:`, buttonStyle)
+			.setOrigin(0.5)
+			.setFontSize(10);
+		this.scene.add.text(centerX, 210, `${time.h}:${time.m}:${time.s}`, buttonStyle)
+			.setOrigin(0.5)
+			.setFontSize(19);
+
+		// best time
 		// TODO
-		// death animation
-		// final "score" menu containing:
-		//   - final time
-		//   - retry/main menu button
+
+		this.scene.add.text(centerX, retry[1]+37, 'RETRY', buttonStyle).setOrigin(0.5);
+		this.scene.add.text(centerX, mainmenu[1]+37, 'Main Menu', buttonStyle).setOrigin(0.5);
+
+		cursor.y = retry[1]+37;
+
+		let option = 0;
+		let i = 0;
+		let changeScene = false;
+
+		this.update = function(){
+			if (this.scene.game.controller.pressingButton('up')){
+				if (i === 0){
+					option = +!option;
+					this.scene.menuSelect.play();
+				}
+				i = (i+1) % 10;
+			} else if (this.scene.game.controller.pressingButton('down')){
+				if (i === 0){
+					option = +!option;
+					this.scene.menuSelect.play();
+				}
+				i = (i+1) % 10;
+			}
+
+			if (this.scene.game.controller.pressingButton('shoot')){
+				this.scene.player.removeAnimations();
+				this.scene.boss.removeAnimations();
+				this.scene.destroyObjects();
+				if (option === 0 && !changeScene){
+					this.scene.scene.start('Game');
+				} else if (option === 1 && !changeScene){
+					this.scene.scene.start('MainMenu');
+				}
+				changeScene = true;
+			}
+
+			cursor.y = [retry[1], mainmenu[1]][option]+37;
+			this.meter.update();
+			this.bullets.update();
+			this.special.update();
+		}
 	}
 
 	updateSprite(){
