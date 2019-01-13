@@ -10,8 +10,8 @@ module.exports = class USweep extends Pattern {
 
 		let done = false;
 		let step = 0;
-		let slowSpeed = 6;
-		let fastSpeed = 25;
+		let slowSpeed = 10;
+		let fastSpeed = 40;
 
 		let defaultHitbox = this.boss.hitboxes;
 		let hitbox = [{
