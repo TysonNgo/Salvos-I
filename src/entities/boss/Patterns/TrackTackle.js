@@ -51,7 +51,7 @@ module.exports = class TrackTackle extends Pattern {
 				this.sprite.tint = undefined;
 				return;
 			}
-			if (i > 120){
+			if (i > 60){
 				tackle = true;
 			}
 
@@ -78,7 +78,7 @@ module.exports = class TrackTackle extends Pattern {
 				vX = player.x - x1;
 				vY = player.y - y1;
 
-				m = Math.max(1-hits/15, 0.25);
+				m = Math.max(1-hits/12, 0.25);
 
 				x2 = x1+m*vX;
 				y2 = y1+m*vY;
