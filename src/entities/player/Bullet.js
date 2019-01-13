@@ -54,9 +54,9 @@ module.exports = class Bullet extends Entity{
 			this.active){
 			this.player.scene.objects.boss[0].hit();
 			if (this.player.shieldActive){
-				this.player.meter.gainMeter(0.5);
+				this.player.meter.gainMeter(0.3);
 			} else {
-				this.player.meter.gainMeter(1);
+				this.player.meter.gainMeter(0.8);
 			}
 			this.unload();
 		}
