@@ -1,13 +1,15 @@
 const Entity = require('../../Entity');
 
 module.exports = class Orb extends Entity{
-	constructor(boss){
+	constructor(boss, type){
 		super(boss.x, boss.y, 6, 6);
 		this.boss = boss;
 		this.boss.scene.addObject('boss_orb', this);
 
+		this.type = type;
 		this.active = false;
 		this.shoot = false;
+		this.angle = 0;
 
 		this.y += 80;
 		this.sprite = this.boss.scene.add.sprite(this.x, this.y, 'boss_orb');
@@ -50,6 +52,13 @@ module.exports = class Orb extends Entity{
 		this.sprite.anims.play('boss_charge_orb');
 	}
 
+	fire(){
+		this.active = true;
+		this.x = Math.floor(this.boss.x + 100*Math.cos(this.angle));
+		this.y = Math.floor(this.boss.y + 100*Math.sin(this.angle));
+		this.shoot = true;
+	}
+
 	updateHitbox(){
 		let hitbox = this.hitboxes[0];
 		let width, height;
@@ -88,10 +97,10 @@ module.exports = class Orb extends Entity{
 	}
 
 	update(){
-		if (this.y < 0 ||
+		if ((this.y < 0 ||
 			this.y >= this.boss.scene.game.canvas.height ||
 			this.x >= this.boss.scene.game.canvas.width ||
-			this.x < 0){
+			this.x < 0) && this.active){
 			this.shoot = false;
 			this.active = false;
 			this.sprite.setFrame(0);
@@ -100,11 +109,18 @@ module.exports = class Orb extends Entity{
 			}
 		}
 		else if (this.shoot){
-			if (this.sprite.frame.name === 5){
-				this.x += this.finalX
-				this.y += this.finalY
-			} else {
-				this.destroy();
+			if (this.type === 'charged'){
+				if (this.sprite.frame.name === 5){
+					this.x += this.finalX
+					this.y += this.finalY
+				} else {
+					this.destroy();
+				}
+			} else if (this.type === 'linear'){
+				this.sprite.setFrame(1);
+				this.x = Math.floor(this.x + 2.5*Math.cos(this.angle));
+				this.y = Math.floor(this.y + 2.5*Math.sin(this.angle));
+			} else if (this.type === 'spiral'){
 			}
 		}
 		this.updateHitbox();

@@ -21,8 +21,9 @@ class Boss extends Entity{
 
 		this.numPatterns = 5;
 
-		this.chargedOrb = new ProjectileContainer(this, Orb, this.numPatterns);
-		this.orbs = new ProjectileContainer(this, Orb, 16*5*this.numPatterns);
+		this.chargedOrb = new ProjectileContainer(this, Orb, this.numPatterns, 'charged');
+		this.linearRadialOrbs = new ProjectileContainer(this, Orb, 16*10*this.numPatterns, 'linear');
+		this.spiralOrbs = new ProjectileContainer(this, Orb, 16*10*this.numPatterns, 'spiral');
 		this.radars = new ProjectileContainer(this, Radar, this.numPatterns);
 		this.twinMissiles = new ProjectileContainer(this, Missile, 2*this.numPatterns);;
 		this.slowMissile = new ProjectileContainer(this, Missile, this.numPatterns);;
@@ -105,7 +106,8 @@ class Boss extends Entity{
 
 	updateProjectiles(){
 		this.radars.forEach(r => r.update());
-		this.orbs.forEach(r => r.update());
+		this.linearRadialOrbs.forEach(r => r.update());
+		this.spiralOrbs.forEach(r => r.update());
 		this.chargedOrb.forEach(r => r.update());
 		this.twinMissiles.forEach(r => r.update());
 		this.slowMissile.forEach(r => r.update());

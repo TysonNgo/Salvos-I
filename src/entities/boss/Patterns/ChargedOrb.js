@@ -18,7 +18,6 @@ module.exports = class ChargedOrb extends Pattern {
 
 		if (orb && orb.y >= this.boss.scene.game.canvas.height){
 			this.boss.patterns.finish();
-			console.log(this.boss.patterns.canExec)
 			return defaultUpdate;
 		}
 

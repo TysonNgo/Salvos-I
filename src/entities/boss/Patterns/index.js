@@ -19,7 +19,8 @@ const USweep = require('./USweep');
 const TrackTackle = require('./TrackTackle');
 
 // projectile patterns
-const SpiralOrb = require('./Pattern');
+const LinearRadialOrb = require('./LinearRadialOrb');
+//const SpiralOrb = require('./SpiralOrb');
 const ChargedOrb = require('./ChargedOrb');
 const RadarAttack = require('./RadarAttack');
 const SlowMissile = require('./SlowMissile');
@@ -37,6 +38,8 @@ module.exports = class Patterns {
 			new SineMove(this.boss),
 			new RadarAttack(this.boss),
 			new ChargedOrb(this.boss),
+			new LinearRadialOrb(this.boss),
+			//new SpiralOrb(this.boss),
 			new SlowMissile(this.boss),
 			new TwinMissiles(this.boss),
 			new USweep(this.boss),
@@ -67,18 +70,13 @@ module.exports = class Patterns {
 	}
 
 	exec(){
-		console.log(this.canExec)
 		if (this.canExec){
 			this.canExec = false;
 			let rn = Math.floor(Math.random()*this.patterns.length);
 			this.patterns[rn].exec();
+			
+			
 			console.log(this.patterns[rn].constructor.name)
-			if (this.patterns[rn].constructor.name in window.debug._patterns){
-				window.debug._patterns[this.patterns[rn].constructor.name]++
-			} else {
-				window.debug._patterns[this.patterns[rn].constructor.name] = 1;
-			}
-			//this.patterns[1].exec();
 		}
 	}
 }
