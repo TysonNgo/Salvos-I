@@ -12,7 +12,7 @@ module.exports = class ChargedOrb extends Pattern {
 		if (orb && !orb.shoot){
 			orb.x = this.boss.x + 1;
 			orb.y = this.boss.y + 58;
-
+			this.boss.chargeSFX.play({delay: 0.1});
 			orb.chargeAndShoot();
 		}
 

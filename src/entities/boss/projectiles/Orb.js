@@ -15,6 +15,7 @@ module.exports = class Orb extends Entity{
 		this.sprite = this.boss.scene.add.sprite(this.x, this.y, 'boss_orb');
 		
 		this.sprite.on('animationcomplete', () => {
+			this.boss.chargedOrbSFX.play();
 			this.shoot = true;
 			this.finalX = (this.boss.scene.objects.player[0].x-this.x)/15
 			this.finalY = (this.boss.scene.objects.player[0].y-this.y)/15
