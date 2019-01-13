@@ -29,7 +29,8 @@ module.exports = class TwinMissiles extends Pattern {
 				this.update = defaultUpdate;
 				this.patterns.finish();
 				return;
-			}else if (i >= 25){
+			}else if (i === 25){
+				this.missileSFX.play();
 				m1.fired = true;
 				m2.fired = true;
 				m1.speed = m2.speed;

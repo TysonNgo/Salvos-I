@@ -10,6 +10,7 @@ module.exports = class SlowMissile extends Pattern {
 
 		let missile = this.boss.slowMissile.get();
 		if (missile){
+			this.boss.missileSFX.play();
 			missile.active = true;
 			missile.fired = true;
 			missile.x = this.boss.x;

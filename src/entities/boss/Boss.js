@@ -20,6 +20,7 @@ class Boss extends Entity{
 		this.orbSFX = this.scene.sound.add('bossOrb');
 		this.chargeSFX = this.scene.sound.add('bossCharge');
 		this.chargedOrbSFX = this.scene.sound.add('bossChargedOrb');
+		this.missileSFX = this.scene.sound.add('bossMissile');
 
 		this.createAnimations();
 		this.patterns = new Patterns(this);
@@ -50,6 +51,7 @@ class Boss extends Entity{
 		scene.load.audio('bossOrb', ['assets/audio/bossOrb.mp3', 'assets/audio/bossOrb.ogg']);
 		scene.load.audio('bossCharge', ['assets/audio/bossCharge.mp3', 'assets/audio/bossCharge.ogg']);
 		scene.load.audio('bossChargedOrb', ['assets/audio/bossChargedOrb.mp3', 'assets/audio/bossChargedOrb.ogg']);
+		scene.load.audio('bossMissile', ['assets/audio/bossMissile.mp3', 'assets/audio/bossMissile.ogg']);
 	}
 
 	setRotation(deg){
