@@ -120,7 +120,11 @@ module.exports = class Orb extends Entity{
 				this.sprite.setFrame(1);
 				this.x = Math.floor(this.x + 2.5*Math.cos(this.angle));
 				this.y = Math.floor(this.y + 2.5*Math.sin(this.angle));
-			} else if (this.type === 'spiral'){
+			} else if (this.type === 'spiral'){				
+				this.sprite.setFrame(2);
+				this.angle += (this.boss.x % 2 === 0 ? 1 : -1) * 0.01;
+				this.x = Math.floor(this.x + 3*Math.cos(this.angle));
+				this.y = Math.floor(this.y + 3*Math.sin(this.angle));
 			}
 		}
 		this.updateHitbox();

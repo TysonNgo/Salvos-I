@@ -1,6 +1,6 @@
 const Pattern = require('./Pattern');
 
-module.exports = class LinearRadialOrb extends Pattern {
+module.exports = class SpiralOrb extends Pattern {
 	constructor(boss){
 		super(boss);
 	}
@@ -9,7 +9,7 @@ module.exports = class LinearRadialOrb extends Pattern {
 		let defaultUpdate = this._update;
 
 		let i = 0;
-		let orbClusters = 5;
+		let orbClusters = 10;
 
 		return function(){
 			if (orbClusters <= 0){
@@ -18,14 +18,10 @@ module.exports = class LinearRadialOrb extends Pattern {
 			}
 
 			if (i % 15 === 0 && orbClusters > 0){
-				console.log(this.orbs.availableProjectiles.length)
-				let orbs = this.orbs.get(16);
-				console.log(this.orbs.availableProjectiles.length)
+				let orbs = this.spiralOrbs.get(16);
 				if (orbs){
-					let angle = 2*Math.PI/orbs.length;
-					let angleOffset = i % 2 === 0 ? angle/2 : 0;
 					orbs.forEach((orb, i) => {
-						let angle = 2*Math.PI/orbs.length*i + angleOffset;
+						let angle = 2*Math.PI/orbs.length*i;
 						orb.angle = angle;
 						orb.fire();
 					})
