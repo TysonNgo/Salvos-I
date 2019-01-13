@@ -20,6 +20,7 @@ module.exports = class LinearRadialOrb extends Pattern {
 			if (i % 15 === 0 && orbClusters > 0){
 				let orbs = this.linearRadialOrbs.get(16);
 				if (orbs){
+					this.orbSFX.play();
 					let angleOffset = Math.PI*this.random();
 					orbs.forEach((orb, i) => {
 						let angle = 2*Math.PI/orbs.length*i + angleOffset;
