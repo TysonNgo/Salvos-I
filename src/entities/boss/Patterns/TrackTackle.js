@@ -51,8 +51,9 @@ module.exports = class TrackTackle extends Pattern {
 				this.sprite.tint = undefined;
 				return;
 			}
-			if (i > 60){
+			if (i > 60 && !tackle){
 				tackle = true;
+				this.fastSFX.play();
 			}
 
 			let hex = parseInt(((i % 16)+'').repeat(6), 16);

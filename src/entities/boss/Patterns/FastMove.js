@@ -46,6 +46,7 @@ module.exports = class FastMove extends Pattern {
 				
 				this.updateSprite();
 			} else {
+				// shake animation
 				if (i % 4 === 0){
 					this.x = x + Math.floor((this.random() > 0.5 ? 1 : -1) * this.random()*10);
 					this.y = y + Math.floor((this.random() > 0.5 ? 1 : -1) * this.random()*10);
@@ -56,6 +57,7 @@ module.exports = class FastMove extends Pattern {
 					this.y = y;
 					move = true;
 					i = 0;
+					this.fastSFX.play();
 				}
 				this.updateSprite();
 			}

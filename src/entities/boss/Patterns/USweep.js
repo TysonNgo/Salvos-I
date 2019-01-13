@@ -45,6 +45,7 @@ module.exports = class USweep extends Pattern {
 						this.y = -fastSpeed;
 						this.x = this.scene.game.canvas.width - this.width/2;
 						step++;
+						this.USweepSFX.play();
 					}
 					break;
 				case 2: // go down out to bottom of screen

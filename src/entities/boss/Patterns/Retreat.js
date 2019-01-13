@@ -18,6 +18,8 @@ module.exports = class Retreat extends Pattern {
 		let i = 1;
 		let steps = 10;
 
+		this.boss.retreatSFX.play();
+
 		return function(){
 			if (i >= 50){
 				this.x = Math.round(backX);

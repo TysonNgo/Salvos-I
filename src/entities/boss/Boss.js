@@ -12,6 +12,11 @@ class Boss extends Entity{
 		this.scene = scene;
 		this.scene.addObject('boss', this);
 
+		// sound effects
+		this.fastSFX = this.scene.sound.add('bossFast');
+		this.retreatSFX = this.scene.sound.add('bossRetreat');
+		this.USweepSFX = this.scene.sound.add('bossUSweep');
+
 		this.createAnimations();
 		this.patterns = new Patterns(this);
 
@@ -33,6 +38,10 @@ class Boss extends Entity{
 		Patterns.loadAssets(scene);
 		scene.load.spritesheet('boss', 'assets/game/boss/boss.png', {frameWidth: 214, frameHeight: 191});
 		scene.load.spritesheet('boss_jetfire', 'assets/game/boss/jetfire.png', {frameWidth: 214, frameHeight: 191});
+
+		scene.load.audio('bossFast', ['assets/audio/bossFast.mp3', 'assets/audio/bossFast.ogg']);
+		scene.load.audio('bossRetreat', ['assets/audio/bossRetreat.mp3', 'assets/audio/bossRetreat.ogg']);
+		scene.load.audio('bossUSweep', ['assets/audio/bossUSweep.mp3', 'assets/audio/bossUSweep.ogg']);
 	}
 
 	setRotation(deg){
