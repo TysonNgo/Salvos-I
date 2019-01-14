@@ -66,7 +66,7 @@ module.exports = class ClearRadius extends Entity{
 		this.player.scene.anims.create({
 			key: 'player_special',
 			frames: this.player.scene.anims.generateFrameNumbers('player_special', {start: 0, end: 6}),
-			frameRate: 8
+			frameRate: 5
 		});
 	}
 
