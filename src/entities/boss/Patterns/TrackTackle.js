@@ -42,6 +42,8 @@ module.exports = class TrackTackle extends Pattern {
 		let x1, x2, y1, y2;
 		let m, d;
 
+		this.boss.trackSFX.play();
+
 		return function(){
 			graphics.clear();
 			if (done){
