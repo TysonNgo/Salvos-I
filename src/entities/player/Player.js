@@ -10,7 +10,7 @@ const addSpecials = require('./Specials');
 
 class Player extends Entity{
 	constructor(scene, x, y){
-		super(x, y, 12, 12);
+		super(x, y, 9, 9);
 		this.scene = scene;
 		this.scene.addObject('player', this);
 		this.createAnimations();
