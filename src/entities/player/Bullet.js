@@ -31,8 +31,8 @@ module.exports = class Bullet extends Entity{
 
 	fire(){
 		if (!this.active){
-			this.x = this.player.x+1;
-			this.y = this.player.y-10;
+			this.x = Math.floor(this.player.x+1);
+			this.y = Math.floor(this.player.y-10);
 			this.active = true;
 		}
 	}
