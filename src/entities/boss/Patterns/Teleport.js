@@ -46,7 +46,9 @@ module.exports = class Teleport extends Pattern {
 					// between 45 and 135 degrees above the x-axis
 					let rad = this.random()*(Math.PI-2*Math.PI/4)+Math.PI/4;
 					this.x = Math.floor(this.scene.objects.player[0].x + Math.cos(rad)*200);
-					this.y = Math.floor(this.scene.objects.player[0].y - Math.sin(rad)*200);
+					this.y = Math.floor(
+						this.scene.objects.player[0].y +
+						(this.scene.objects.player[0].y < 200 ? 1 : -1)*Math.sin(rad)*200);
 				}
 
 				defaultUpdate.call(this);
