@@ -149,7 +149,27 @@ class Player extends Entity{
 			.setFontSize(19);
 
 		// best time
-		// TODO
+		let scores = localStorage.getItem('scores');
+		let topScore;
+		if (scores){
+			try{
+				scores = JSON.parse(scores);
+				scores.push(this.scene.timer.frames);
+				topScore = this.scene.timer.getHHMMSS(Math.max(...scores));
+				localStorage.setItem('scores', JSON.stringify(scores));
+			} catch (e){
+				console.log(e);
+			}
+		} else {
+			topScore = time;
+			localStorage.setItem('scores', JSON.stringify([this.scene.timer.frames]));
+		}
+		this.scene.add.text(centerX, 235, `Best time:`, buttonStyle)
+			.setOrigin(0.5)
+			.setFontSize(10);
+		this.scene.add.text(centerX, 260, `${topScore.h}:${topScore.m}:${topScore.s}`, buttonStyle)
+			.setOrigin(0.5)
+			.setFontSize(19);
 
 		this.scene.add.text(centerX, retry[1]+37, 'RETRY', buttonStyle).setOrigin(0.5);
 		this.scene.add.text(centerX, mainmenu[1]+37, 'MAIN MENU', buttonStyle).setOrigin(0.5);

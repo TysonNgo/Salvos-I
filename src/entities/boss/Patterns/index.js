@@ -74,9 +74,8 @@ module.exports = class Patterns {
 			this.canExec = false;
 			let rn = Math.floor(Math.random()*this.patterns.length);
 			this.patterns[rn].exec();
-			
-			
-			console.log(this.patterns[rn].constructor.name)
+
+			//console.log(this.patterns[rn].constructor.name)
 		}
 	}
 }

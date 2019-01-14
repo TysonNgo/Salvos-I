@@ -15,8 +15,9 @@ module.exports = class Timer {
 		this.textMM.depth = 1000;
 	}
 
-	getHHMMSS(){
-		let s = this.frames/this.scene.game.loop.targetFps;
+	getHHMMSS(frames){
+		frames = frames || this.frames;
+		let s = frames/this.scene.game.loop.targetFps;
 		let m = s/60;
 		s %= 60;
 		let mm = (s-Math.floor(s)).toFixed(2).substr(1);
