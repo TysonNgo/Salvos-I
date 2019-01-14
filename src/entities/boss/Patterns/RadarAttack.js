@@ -10,6 +10,7 @@ module.exports = class RadarAttack extends Pattern {
 		let defaultUpdate = this._update;
 		let radar = this.boss.radars.get();
 		if (radar && !radar.start){
+			this.boss.radarSFX.play();
 			radar.start = true;
 			radar.x = this.boss.x;
 			radar.y = this.boss.y;
