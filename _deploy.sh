@@ -1,3 +1,5 @@
+git checkout master .
+
 npm run build
 cp dist/game.js ./
 cp node_modules/phaser/dist/phaser.min.js ./
