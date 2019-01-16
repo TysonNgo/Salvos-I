@@ -188,13 +188,15 @@ class Player extends Entity{
 						option = +!option;
 						this.scene.menuSelect.play();
 					}
-					i = (i+1) % 10;
+					i = (i+1) % 20;
 				} else if (this.scene.game.controller.pressingButton('down')){
 					if (i === 0){
 						option = +!option;
 						this.scene.menuSelect.play();
 					}
-					i = (i+1) % 10;
+					i = (i+1) % 20;
+				} else {
+					i = 0;
 				}
 
 				if (this.scene.game.controller.pressingButton('shoot')){
