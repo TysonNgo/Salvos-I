@@ -6,7 +6,7 @@
   "scripts": {
     "start": "concurrently \"watchify src/game.js --debug -o dist/game.js -v\" \"node index.js\"",
     "test": "mocha tests/ -R spec",
-    "build": "browserify src/game.js -t [ babelify --presets [ @babel/env ] ] |  uglifyjs -cm -o dist/game.js "
+    "build": "browserify src/game.js -t [ babelify --presets [ @babel/env ] ] |  uglifyjs -c -o dist/game.js "
   },
   "author": "",
   "license": "MIT",
