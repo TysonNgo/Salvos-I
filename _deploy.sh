@@ -1,4 +1,5 @@
 git checkout master .
+git reset HEAD .
 
 npm run build
 cp dist/game.js ./
