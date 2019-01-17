@@ -3,6 +3,7 @@
 <head>
 	<title>Salvos-I</title>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="icon" type="image/png" href="assets/icon.png">
 	<meta name="description" content="A bullet hell survival game.">
 	<meta name="keywords" content="web game, html5, bullet hell">
@@ -14,9 +15,18 @@
 	<meta property="og:image" content="https://tysonngo.github.io/Salvos-I/assets/menu/ship.png">
 	<style type="text/css">
 		body{
+			margin: 0;
 			background: #aaa;
 			width: 100vw;
 			height: 100vh;
+		}
+		@media only screen and (max-width: 360px) {
+			canvas{
+				width: auto !important;
+				height: 100% !important;
+				max-height: 100% !important;
+				opacity: 0.5;
+			}
 		}
 		canvas{
 			display: block;
@@ -32,6 +42,7 @@
 		.font-loader{
 			font-family: "Kong Text";
 			visibility: hidden;
+			position: fixed;
 		}
 	</style>
 </head>
