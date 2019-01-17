@@ -36,6 +36,7 @@ module.exports =  class extends Phaser.Scene {
 	}
 
 	create(){
+		this.sound.setVolume(0.25);
 		// audio
 		this.menuSelect = this.sound.add('menuSelect');
 		this.menuBack = this.sound.add('menuBack');
