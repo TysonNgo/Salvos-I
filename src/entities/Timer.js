@@ -17,6 +17,7 @@ module.exports = class Timer {
 
 	getHHMMSS(frames){
 		frames = frames || this.frames;
+		if (!Number.isInteger(frames)) return null;
 		let s = frames/this.scene.game.loop.targetFps;
 		let m = s/60;
 		s %= 60;
@@ -26,7 +27,7 @@ module.exports = class Timer {
 		m = Math.floor(m % 60);
 
 		return {
-			h: ('00'+h).slice(-2),
+			h: h < 100 ? ('00'+h).slice(-2) : h.toString(),
 			m: ('00'+m).slice(-2),
 			s: ('00'+s).slice(-2),
 			mm: mm

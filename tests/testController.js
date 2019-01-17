@@ -1,387 +1,125 @@
 const { expect } = require('chai');
-const Controller = require('../src/Controller');
+const Timer = require('../src/entities/Timer');
 
-describe('Controller.changeKey(button, key)\n' +
-'    button - one of [up, down, left, right, shoot, shield]\n' +
-'    key - Phaser 3 keyboard event key code string', function() {
-	it('[button, key] identical to initial state; no change', function() {
-		let initialCon = new Controller();
-		let controller = new Controller();
-		controller.changeKey('up', 'ArrowUp');
-		controller.changeKey('down', 'ArrowDown');
-		controller.changeKey('left', 'ArrowLeft');
-		controller.changeKey('right', 'ArrowRight');
-		controller.changeKey('shoot', 'KeyX');
-		controller.changeKey('shield', 'KeyZ');
-
-		for (let k in initialCon.keys){
-			expect(initialCon.keys[k].button).to.be.a('string', controller.keys[k].button);
+const scene = {
+	add: {
+		text: () => ({
+			setText: () => {},
+			setOrigin: () => {},
+		})
+	},
+	game: {
+		loop: {
+			targetFps: 60
+		},
+		canvas: {
+			width: 360
 		}
-	})
+	}
+}
 
-	it('[different button, existing key]; swap button of keys', function(){
-		let controller = new Controller();
-		let keyZ = controller.keys['KeyZ'];
-		let keyX = controller.keys['KeyX'];
-		controller.changeKey('shoot', 'KeyZ');
 
-		expect(keyZ.button).to.be.a('string', controller.keys['KeyX'].button);
-		expect(keyX.button).to.be.a('string', controller.keys['KeyZ'].button);
-	})
+describe('Timer.update()', function() {
+	it('check frames after calling update', function(){
+		const timer = new Timer(scene);
 
-	it('invalid button given', function(){
-		let controller = new Controller();
-		expect(controller.changeKey('what', 'KeyX')).to.be.false;
-	})
+		expect(timer.frames).to.be.equal(0);
+		timer.update();
+		expect(timer.frames).to.be.equal(1);
+		timer.update();
+		expect(timer.frames).to.be.equal(2);
+		timer.update();
+		expect(timer.frames).to.be.equal(3);
 
-	it('change key to unique button', function(){
-		let controller = new Controller();
-		expect(Object.keys(controller.keys).length).to.equal(6);
-		controller.changeKey('up', 'w');
-		expect(Object.keys(controller.keys).length).to.equal(6);
-	})
-})
+		timer.stop();
 
-describe('Controller.press(key)\n' +
-'    key - Phaser 3 keyboard event key code string', function() {
-	it('press valid key', function(){
-		let controller = new Controller();
-		controller.press('ArrowUp');
-		let keys = controller.keys;
-		expect(keys.ArrowUp.down).to.be.true;
-		expect(keys.ArrowDown.down).to.be.false;
-		expect(keys.ArrowLeft.down).to.be.false;
-		expect(keys.ArrowRight.down).to.be.false;
-		expect(keys.KeyX.down).to.be.false;
-		expect(keys.KeyZ.down).to.be.false;
-		expect(Object.keys(keys).length).to.be.equal(6);
-	})
-	it('press invalid key', function(){
-		let controller = new Controller();
-		controller.press('q');
-		let keys = controller.keys;
-		expect(keys.ArrowUp.down).to.be.false;
-		expect(keys.ArrowDown.down).to.be.false;
-		expect(keys.ArrowLeft.down).to.be.false;
-		expect(keys.ArrowRight.down).to.be.false;
-		expect(keys.KeyX.down).to.be.false;
-		expect(keys.KeyZ.down).to.be.false;
-		expect(Object.keys(keys).length).to.be.equal(6);
-	})
-	it('press key that is already pressed', function(){
-		let controller = new Controller();
-		controller.press('ArrowUp');
-		controller.press('ArrowUp');
-		let keys = controller.keys;
-		expect(keys.ArrowUp.down).to.be.true;
-		expect(keys.ArrowDown.down).to.be.false;
-		expect(keys.ArrowLeft.down).to.be.false;
-		expect(keys.ArrowRight.down).to.be.false;
-		expect(keys.KeyX.down).to.be.false;
-		expect(keys.KeyZ.down).to.be.false;
-		expect(Object.keys(keys).length).to.be.equal(6);
-	})
-})
-
-describe('Controller.release(key)\n' +
-'    key - Phaser 3 keyboard event key code string', function() {
-	it('release valid key', function(){
-		let controller = new Controller();
-		controller.press('ArrowUp');
-		controller.press('ArrowDown');
-		controller.press('ArrowLeft');
-		controller.press('ArrowRight');
-		controller.press('KeyX');
-		controller.press('KeyZ');
-		let keys = controller.keys;
-		expect(keys.ArrowUp.down).to.be.true;
-		expect(keys.ArrowDown.down).to.be.true;
-		expect(keys.ArrowLeft.down).to.be.true;
-		expect(keys.ArrowRight.down).to.be.true;
-		expect(keys.KeyX.down).to.be.true;
-		expect(keys.KeyZ.down).to.be.true;
-		expect(Object.keys(keys).length).to.be.equal(6);
-		controller.release('ArrowUp');
-		expect(keys.ArrowUp.down).to.be.false;
-		expect(keys.ArrowDown.down).to.be.true;
-		expect(keys.ArrowLeft.down).to.be.true;
-		expect(keys.ArrowRight.down).to.be.true;
-		expect(keys.KeyX.down).to.be.true;
-		expect(keys.KeyZ.down).to.be.true;
-		expect(Object.keys(keys).length).to.be.equal(6);
-	})
-	it('release invalid key', function(){
-		let controller = new Controller();
-		controller.press('ArrowUp');
-		controller.press('ArrowDown');
-		controller.press('ArrowLeft');
-		controller.press('ArrowRight');
-		controller.press('KeyX');
-		controller.press('KeyZ');
-		let keys = controller.keys;
-		expect(keys.ArrowUp.down).to.be.true;
-		expect(keys.ArrowDown.down).to.be.true;
-		expect(keys.ArrowLeft.down).to.be.true;
-		expect(keys.ArrowRight.down).to.be.true;
-		expect(keys.KeyX.down).to.be.true;
-		expect(keys.KeyZ.down).to.be.true;
-		expect(Object.keys(keys).length).to.be.equal(6);
-		controller.release('q');
-		expect(keys.ArrowUp.down).to.be.true;
-		expect(keys.ArrowDown.down).to.be.true;
-		expect(keys.ArrowLeft.down).to.be.true;
-		expect(keys.ArrowRight.down).to.be.true;
-		expect(keys.KeyX.down).to.be.true;
-		expect(keys.KeyZ.down).to.be.true;
-		expect(Object.keys(keys).length).to.be.equal(6);
-	})
-	it('release key that is already released', function(){
-		let controller = new Controller();
-		controller.press('ArrowUp');
-		controller.press('ArrowDown');
-		controller.press('ArrowLeft');
-		controller.press('ArrowRight');
-		controller.press('KeyX');
-		controller.press('KeyZ');
-		let keys = controller.keys;
-		expect(keys.ArrowUp.down).to.be.true;
-		expect(keys.ArrowDown.down).to.be.true;
-		expect(keys.ArrowLeft.down).to.be.true;
-		expect(keys.ArrowRight.down).to.be.true;
-		expect(keys.KeyX.down).to.be.true;
-		expect(keys.KeyZ.down).to.be.true;
-		expect(Object.keys(keys).length).to.be.equal(6);
-		controller.release('ArrowUp');
-		expect(keys.ArrowUp.down).to.be.false;
-		expect(keys.ArrowDown.down).to.be.true;
-		expect(keys.ArrowLeft.down).to.be.true;
-		expect(keys.ArrowRight.down).to.be.true;
-		expect(keys.KeyX.down).to.be.true;
-		expect(keys.KeyZ.down).to.be.true;
-		expect(Object.keys(keys).length).to.be.equal(6);
-		controller.release('ArrowUp');
-		expect(keys.ArrowUp.down).to.be.false;
-		expect(keys.ArrowDown.down).to.be.true;
-		expect(keys.ArrowLeft.down).to.be.true;
-		expect(keys.ArrowRight.down).to.be.true;
-		expect(keys.KeyX.down).to.be.true;
-		expect(keys.KeyZ.down).to.be.true;
-		expect(Object.keys(keys).length).to.be.equal(6);
+		timer.update();
+		expect(timer.frames).to.be.equal(3);
 	})
 })
 
 
-describe('Controller.pressingButton(button)\n' +
-'    button - one of [up, down, left, right, shoot, shield]', function() {
-	it('empty param; check if pressing any button', function(){
-		let controller = new Controller();
-		let expectButton = function(key){
-			controller.press(key);
-			expect(controller.pressingButton()).to.be.true;
-			controller.release(key);
-			expect(controller.pressingButton()).to.be.false;
+describe('Timer.getHHMMSS(frames)', function() {
+	it('invalid frames parameter', function(){
+		const timer = new Timer(scene);
+
+		expect(timer.getHHMMSS('cacwasfawasfg')).to.be.equal(null);
+		expect(timer.getHHMMSS([])).to.be.equal(null);
+		expect(timer.getHHMMSS({})).to.be.equal(null);
+		expect(timer.getHHMMSS(0.015641)).to.be.equal(null);
+	})
+	it('undefined frames parameter', function(){
+		const timer = new Timer(scene);
+		let hms = function(h, m, s, mm){
+			this.h = h;
+			this.m = m;
+			this.s = s;
+			this.mm = '.'+mm;
 		}
-		expect(controller.pressingButton()).to.be.false;
-
-		expectButton('ArrowUp');
-		expectButton('ArrowDown');
-		expectButton('ArrowLeft');
-		expectButton('ArrowRight');
-		expectButton('KeyX');
-		expectButton('KeyZ');
-	})
-	it('check pressing specific button', function(){
-		let controller = new Controller();
-		let expectButton = function(key, button){
-			let options = ['up', 'down', 'left', 'right', 'shoot', 'shield'];
-			controller.press(key);
-			options.forEach(o => {
-				if (o === button){
-					expect(controller.pressingButton(o)).to.be.true;
-				} else {
-					expect(controller.pressingButton(o)).to.be.false;
-				}
-			})
-			controller.release(key);
-			
-			options.forEach(o => {
-				expect(controller.pressingButton(o)).to.be.false;
-			})
+		expect(timer.getHHMMSS()).to.deep.equal(new hms('00','00','00','00'));
+		for (let i = 0; i < 60; i++) {
+			timer.update();
 		}
-		expectButton('ArrowUp', 'up');
-		expectButton('ArrowDown', 'down');
-		expectButton('ArrowLeft', 'left');
-		expectButton('ArrowRight', 'right');
-		expectButton('KeyX', 'shoot');
-		expectButton('KeyZ', 'shield');
-	})
-})
-
-
-describe('Controller.holdingButton(button)\n' +
-'    button - one of [up, down, left, right, shoot, shield]', function() {
-	it('press each button, ', function(){
-		let controller = new Controller();
-		let expectButton = function(key){
-			controller.press(key);
-			expect(controller.pressingButton()).to.be.true;
-			controller.release(key);
-			expect(controller.pressingButton()).to.be.false;
+		expect(timer.getHHMMSS()).to.deep.equal(new hms('00','00','01','00'));
+		for (let i = 0; i < 120; i++) {
+			timer.update();
 		}
-		expect(controller.pressingButton()).to.be.false;
-
-		expectButton('ArrowUp');
-		expectButton('ArrowDown');
-		expectButton('ArrowLeft');
-		expectButton('ArrowRight');
-		expectButton('KeyX');
-		expectButton('KeyZ');
+		expect(timer.getHHMMSS()).to.deep.equal(new hms('00','00','03','00'));
 	})
-	it('check pressing specific button', function(){
-		let controller = new Controller();
-		let expectButton = function(key, button){
-			let options = ['up', 'down', 'left', 'right', 'shoot', 'shield'];
-			controller.press(key);
-			options.forEach(o => {
-				if (o === button){
-					expect(controller.pressingButton(o)).to.be.true;
-				} else {
-					expect(controller.pressingButton(o)).to.be.false;
-				}
-			})
-			controller.release(key);
-			
-			options.forEach(o => {
-				expect(controller.pressingButton(o)).to.be.false;
-			})
+	it('test milliseconds', function(){
+		const timer = new Timer(scene);
+		let hms = function(h, m, s, mm){
+			this.h = h;
+			this.m = m;
+			this.s = s;
+			this.mm = '.'+mm;
 		}
-		expectButton('ArrowUp', 'up');
-		expectButton('ArrowDown', 'down');
-		expectButton('ArrowLeft', 'left');
-		expectButton('ArrowRight', 'right');
-		expectButton('KeyX', 'shoot');
-		expectButton('KeyZ', 'shield');
+		expect(timer.getHHMMSS(1)).to.deep.equal(new hms('00','00','00','02'));
+		expect(timer.getHHMMSS(2)).to.deep.equal(new hms('00','00','00','03'));
+		expect(timer.getHHMMSS(15)).to.deep.equal(new hms('00','00','00','25'));
+		expect(timer.getHHMMSS(55)).to.deep.equal(new hms('00','00','00','92'));
 	})
-})
-
-
-describe('Controller.getKey(button)\n' +
-'    button - one of [up, down, left, right, shoot, shield]', function() {
-	it('valid button', function(){
-		let controller = new Controller();
-		
-		expect(controller.getKey('up')).to.be.equal('ArrowUp');
-		expect(controller.getKey('down')).to.be.equal('ArrowDown');
-		expect(controller.getKey('left')).to.be.equal('ArrowLeft');
-		expect(controller.getKey('right')).to.be.equal('ArrowRight');
-		expect(controller.getKey('shoot')).to.be.equal('KeyX');
-		expect(controller.getKey('shield')).to.be.equal('KeyZ');
+	it('test seconds', function(){
+		const timer = new Timer(scene);
+		let hms = function(h, m, s, mm){
+			this.h = h;
+			this.m = m;
+			this.s = s;
+			this.mm = '.'+mm;
+		}
+		expect(timer.getHHMMSS(60)).to.deep.equal(new hms('00','00','01','00'));
+		expect(timer.getHHMMSS(60*2)).to.deep.equal(new hms('00','00','02','00'));
+		expect(timer.getHHMMSS(60*10)).to.deep.equal(new hms('00','00','10','00'));
+		expect(timer.getHHMMSS(60*24)).to.deep.equal(new hms('00','00','24','00'));
 	})
-
-	it('invalid button', function(){
-		let controller = new Controller();
-		
-		expect(controller.getKey('zzz')).to.be.equal(undefined);
+	it('test minutes', function(){
+		const timer = new Timer(scene);
+		let hms = function(h, m, s, mm){
+			this.h = h;
+			this.m = m;
+			this.s = s;
+			this.mm = '.'+mm;
+		}
+		expect(timer.getHHMMSS(60*60)).to.deep.equal(new hms('00','01','00','00'));
+		expect(timer.getHHMMSS(60*60*2)).to.deep.equal(new hms('00','02','00','00'));
+		expect(timer.getHHMMSS(60*60*10)).to.deep.equal(new hms('00','10','00','00'));
+		expect(timer.getHHMMSS(60*60*24)).to.deep.equal(new hms('00','24','00','00'));
 	})
-})
-
-
-describe('Controller.buttonHeld(button)\n' +
-'    button - one of [up, down, left, right, shoot, shield]', function() {
-	it('not held', function(){
-		let controller = new Controller();
-
-		expect(controller.buttonHeld('up')).to.be.false;
-		expect(controller.buttonHeld('down')).to.be.false;
-		expect(controller.buttonHeld('left')).to.be.false;
-		expect(controller.buttonHeld('right')).to.be.false;
-		expect(controller.buttonHeld('shoot')).to.be.false;
-		expect(controller.buttonHeld('shield')).to.be.false;
-
-		controller.press('ArrowUp');
-		controller.press('ArrowDown');
-		controller.press('ArrowLeft');
-		controller.press('ArrowRight');
-		controller.press('KeyX');
-		controller.press('KeyZ');
-
-		expect(controller.buttonHeld('up')).to.be.false;
-		expect(controller.buttonHeld('down')).to.be.false;
-		expect(controller.buttonHeld('left')).to.be.false;
-		expect(controller.buttonHeld('right')).to.be.false;
-		expect(controller.buttonHeld('shoot')).to.be.false;
-		expect(controller.buttonHeld('shield')).to.be.false;
-	})
-
-	it('held', function(){
-		let controller = new Controller();
-
-		controller.press('ArrowUp');
-		controller.press('ArrowDown');
-		controller.press('ArrowLeft');
-		controller.press('ArrowRight');
-		controller.press('KeyX');
-		controller.press('KeyZ');
-
-		controller.press('ArrowUp');
-		controller.press('ArrowDown');
-		controller.press('ArrowLeft');
-		controller.press('ArrowRight');
-		controller.press('KeyX');
-		controller.press('KeyZ');
-
-		expect(controller.buttonHeld('up')).to.be.true;
-		expect(controller.buttonHeld('down')).to.be.true;
-		expect(controller.buttonHeld('left')).to.be.true;
-		expect(controller.buttonHeld('right')).to.be.true;
-		expect(controller.buttonHeld('shoot')).to.be.true;
-		expect(controller.buttonHeld('shield')).to.be.true;
-
-		controller.press('ArrowUp');
-		controller.press('ArrowDown');
-		controller.press('ArrowLeft');
-		controller.press('ArrowRight');
-		controller.press('KeyX');
-		controller.press('KeyZ');
-
-		expect(controller.buttonHeld('up')).to.be.true;
-		expect(controller.buttonHeld('down')).to.be.true;
-		expect(controller.buttonHeld('left')).to.be.true;
-		expect(controller.buttonHeld('right')).to.be.true;
-		expect(controller.buttonHeld('shoot')).to.be.true;
-		expect(controller.buttonHeld('shield')).to.be.true;
-	})
-
-	it('held and release', function(){
-		let controller = new Controller();
-
-		controller.press('ArrowUp');
-		controller.press('ArrowDown');
-		controller.press('ArrowLeft');
-		controller.press('ArrowRight');
-		controller.press('KeyX');
-		controller.press('KeyZ');
-
-		controller.press('ArrowUp');
-		controller.press('ArrowDown');
-		controller.press('ArrowLeft');
-		controller.press('ArrowRight');
-		controller.press('KeyX');
-		controller.press('KeyZ');
-
-
-		controller.release('ArrowUp');
-		controller.release('ArrowDown');
-		controller.release('ArrowLeft');
-		controller.release('ArrowRight');
-		controller.release('KeyX');
-		controller.release('KeyZ');
-
-		expect(controller.buttonHeld('up')).to.be.false;
-		expect(controller.buttonHeld('down')).to.be.false;
-		expect(controller.buttonHeld('left')).to.be.false;
-		expect(controller.buttonHeld('right')).to.be.false;
-		expect(controller.buttonHeld('shoot')).to.be.false;
-		expect(controller.buttonHeld('shield')).to.be.false;
+	it('test hours', function(){
+		const timer = new Timer(scene);
+		let hms = function(h, m, s, mm){
+			this.h = h;
+			this.m = m;
+			this.s = s;
+			this.mm = '.'+mm;
+		}
+		expect(timer.getHHMMSS(60*60*60)).to.deep.equal(new hms('01','00','00','00'));
+		expect(timer.getHHMMSS(60*60*60*2)).to.deep.equal(new hms('02','00','00','00'));
+		expect(timer.getHHMMSS(60*60*60*10)).to.deep.equal(new hms('10','00','00','00'));
+		expect(timer.getHHMMSS(60*60*60*23)).to.deep.equal(new hms('23','00','00','00'));
+		expect(timer.getHHMMSS(60*60*60*24)).to.deep.equal(new hms('24','00','00','00'));
+		expect(timer.getHHMMSS(60*60*60*25)).to.deep.equal(new hms('25','00','00','00'));
+		expect(timer.getHHMMSS(60*60*60*100)).to.deep.equal(new hms('100','00','00','00'));
+		expect(timer.getHHMMSS(60*60*60*1000)).to.deep.equal(new hms('1000','00','00','00'));
 	})
 })
