@@ -20,7 +20,7 @@ Meter = class extends Meter{
 	}
 }
 
-describe('Test constructor', function() {
+describe('Meter constructor', function() {
 	it('default', function() {
 		let meter = new Meter();
 		expect(meter.meter).to.be.equal(0);

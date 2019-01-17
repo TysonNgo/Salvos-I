@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const Entity = require('../src/entities/Entity');
 
 
-describe('Timer.update()', function() {
+describe('Entity.collidesWith()', function() {
 	it('collides', function(){
 		const a = new Entity(0,0,1,1);
 		const b = new Entity(1,1,2,2);
