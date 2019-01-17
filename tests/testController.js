@@ -220,7 +220,7 @@ describe('Controller.pressingButton(button)\n' +
 
 describe('Controller.holdingButton(button)\n' +
 '    button - one of [up, down, left, right, shoot, shield]', function() {
-	it('empty param; check if pressing any button', function(){
+	it('press each button, ', function(){
 		let controller = new Controller();
 		let expectButton = function(key){
 			controller.press(key);
@@ -282,5 +282,106 @@ describe('Controller.getKey(button)\n' +
 		let controller = new Controller();
 		
 		expect(controller.getKey('zzz')).to.be.equal(undefined);
+	})
+})
+
+
+describe('Controller.buttonHeld(button)\n' +
+'    button - one of [up, down, left, right, shoot, shield]', function() {
+	it('not held', function(){
+		let controller = new Controller();
+
+		expect(controller.buttonHeld('up')).to.be.false;
+		expect(controller.buttonHeld('down')).to.be.false;
+		expect(controller.buttonHeld('left')).to.be.false;
+		expect(controller.buttonHeld('right')).to.be.false;
+		expect(controller.buttonHeld('shoot')).to.be.false;
+		expect(controller.buttonHeld('shield')).to.be.false;
+
+		controller.press('ArrowUp');
+		controller.press('ArrowDown');
+		controller.press('ArrowLeft');
+		controller.press('ArrowRight');
+		controller.press('KeyX');
+		controller.press('KeyZ');
+
+		expect(controller.buttonHeld('up')).to.be.false;
+		expect(controller.buttonHeld('down')).to.be.false;
+		expect(controller.buttonHeld('left')).to.be.false;
+		expect(controller.buttonHeld('right')).to.be.false;
+		expect(controller.buttonHeld('shoot')).to.be.false;
+		expect(controller.buttonHeld('shield')).to.be.false;
+	})
+
+	it('held', function(){
+		let controller = new Controller();
+
+		controller.press('ArrowUp');
+		controller.press('ArrowDown');
+		controller.press('ArrowLeft');
+		controller.press('ArrowRight');
+		controller.press('KeyX');
+		controller.press('KeyZ');
+
+		controller.press('ArrowUp');
+		controller.press('ArrowDown');
+		controller.press('ArrowLeft');
+		controller.press('ArrowRight');
+		controller.press('KeyX');
+		controller.press('KeyZ');
+
+		expect(controller.buttonHeld('up')).to.be.true;
+		expect(controller.buttonHeld('down')).to.be.true;
+		expect(controller.buttonHeld('left')).to.be.true;
+		expect(controller.buttonHeld('right')).to.be.true;
+		expect(controller.buttonHeld('shoot')).to.be.true;
+		expect(controller.buttonHeld('shield')).to.be.true;
+
+		controller.press('ArrowUp');
+		controller.press('ArrowDown');
+		controller.press('ArrowLeft');
+		controller.press('ArrowRight');
+		controller.press('KeyX');
+		controller.press('KeyZ');
+
+		expect(controller.buttonHeld('up')).to.be.true;
+		expect(controller.buttonHeld('down')).to.be.true;
+		expect(controller.buttonHeld('left')).to.be.true;
+		expect(controller.buttonHeld('right')).to.be.true;
+		expect(controller.buttonHeld('shoot')).to.be.true;
+		expect(controller.buttonHeld('shield')).to.be.true;
+	})
+
+	it('held and release', function(){
+		let controller = new Controller();
+
+		controller.press('ArrowUp');
+		controller.press('ArrowDown');
+		controller.press('ArrowLeft');
+		controller.press('ArrowRight');
+		controller.press('KeyX');
+		controller.press('KeyZ');
+
+		controller.press('ArrowUp');
+		controller.press('ArrowDown');
+		controller.press('ArrowLeft');
+		controller.press('ArrowRight');
+		controller.press('KeyX');
+		controller.press('KeyZ');
+
+
+		controller.release('ArrowUp');
+		controller.release('ArrowDown');
+		controller.release('ArrowLeft');
+		controller.release('ArrowRight');
+		controller.release('KeyX');
+		controller.release('KeyZ');
+
+		expect(controller.buttonHeld('up')).to.be.false;
+		expect(controller.buttonHeld('down')).to.be.false;
+		expect(controller.buttonHeld('left')).to.be.false;
+		expect(controller.buttonHeld('right')).to.be.false;
+		expect(controller.buttonHeld('shoot')).to.be.false;
+		expect(controller.buttonHeld('shield')).to.be.false;
 	})
 })
